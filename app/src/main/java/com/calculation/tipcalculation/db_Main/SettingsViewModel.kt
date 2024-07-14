@@ -63,7 +63,6 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         externalFilterTipRepository.delete(externalFilterTip)
         Log.d("SettingsViewModel", "ExternalFilterTip удален: ${externalFilterTip.value}")
 
-        // Логирование всех ExternalFilterTip
         allExternalFilterTips.value?.let { tips ->
             Log.d("SettingsViewModel", "Все ExternalFilterTip: ${tips.map { it.value }}")
         }
