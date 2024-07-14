@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class StateViewModel : ViewModel() {
+
     private val _speeds = MutableLiveData<List<String>>()
     val speeds: LiveData<List<String>> = _speeds
 
@@ -81,16 +82,6 @@ class StateViewModel : ViewModel() {
         _speeds.value = List(count) { "" }
         if (_speeds.value.isNullOrEmpty()) {
             Log.e("StateViewModel", "Ошибка: список скоростей пустой после установки количества скоростей.")
-        }
-    }
-
-    fun updateSpeed(index: Int, value: String) {
-        Log.d("StateViewModel", "Обновление скорости на индексе $index до $value")
-        _speeds.value = _speeds.value?.toMutableList()?.apply {
-            this[index] = value
-        }
-        if (_speeds.value.isNullOrEmpty()) {
-            Log.e("StateViewModel", "Ошибка: не удалось обновить список скоростей.")
         }
     }
 }

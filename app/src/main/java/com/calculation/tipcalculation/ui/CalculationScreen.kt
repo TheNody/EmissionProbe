@@ -116,7 +116,7 @@ fun CalculationScreen(
                             value = field.first,
                             onValueChange = { newValue ->
                                 when (index) {
-                                    in speeds.indices -> stateViewModel.updateSpeed(index, newValue)
+                                    in speeds.indices -> stateViewModel.setSpeedCount(index)
                                     speeds.size -> stateViewModel.patm = newValue
                                     speeds.size + 1 -> stateViewModel.plsr = newValue
                                     speeds.size + 2 -> stateViewModel.tsr = newValue
@@ -186,7 +186,7 @@ fun CalculationScreen(
                                     value = field.first,
                                     onValueChange = { newValue ->
                                         when (index) {
-                                            in 0 until speeds.size -> stateViewModel.updateSpeed(index, newValue)
+                                            in speeds.indices -> stateViewModel.setSpeedCount(index)
                                             speeds.size -> stateViewModel.patm = newValue
                                             speeds.size + 1 -> stateViewModel.plsr = newValue
                                             speeds.size + 2 -> stateViewModel.tsr = newValue
