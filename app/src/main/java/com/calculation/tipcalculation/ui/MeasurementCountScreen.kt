@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -41,8 +42,8 @@ fun MeasurementCountScreen(
     stateViewModel: StateViewModel = viewModel()
 ) {
     var inputValue by remember { mutableStateOf("") }
-    val measurementCount by settingsViewModel.measurementCount.observeAsState()
-
+    val measurementCount by settingsViewModel.measurementCount.collectAsState()
+    Log.e("MeasurementCountScreen", "загрузка")
     Column(
         modifier = Modifier
             .fillMaxSize()

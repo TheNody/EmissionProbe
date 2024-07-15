@@ -13,6 +13,7 @@ import com.calculation.tipcalculation.db_Main.internalFilter.FilterTipRepository
 import com.calculation.tipcalculation.db_Main.measurementCount.MeasurementCount
 import com.calculation.tipcalculation.db_Main.measurementCount.MeasurementCountRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -21,7 +22,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     private val externalFilterTipRepository: ExternalFilterTipRepository
     private val filterTipRepository: FilterTipRepository
 
-    val measurementCount: LiveData<MeasurementCount?>
+    val measurementCount =  MutableStateFlow<MeasurementCount?>(null)
     val allExternalFilterTips: LiveData<List<ExternalFilterTip>>
     val allFilterTips: LiveData<List<FilterTip>>
 
@@ -34,7 +35,13 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         filterTipRepository = FilterTipRepository(database.filterTipDao())
 
         // Получение данных из репозиториев
-        measurementCount = measurementCountRepository.measurementCount.asLiveData()
+        viewModelScope.launch {
+            measurementCountRepository.measurementCount.collect {
+                Log.e("TEST CALCULATE", "collected $it")
+                measurementCount.value = it
+            }
+        }
+
         allExternalFilterTips = externalFilterTipRepository.allExternalFilterTips
         allFilterTips = filterTipRepository.allFilterTips
     }

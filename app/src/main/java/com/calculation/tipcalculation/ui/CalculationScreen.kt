@@ -23,6 +23,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -54,6 +55,7 @@ fun CalculationScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val speeds by stateViewModel.speeds.observeAsState(emptyList())
+    val countOfSpeeds = settingsViewModel.measurementCount.collectAsState().value
     val inputFields = speeds.mapIndexed { index, value ->
         Pair(value, "Введите V${index + 1} (м/с)")
     } + listOf(
@@ -110,10 +112,10 @@ fun CalculationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                inputFields.forEachIndexed { index, field ->
-                    item {
-                        CustomOutlinedTextField(
-                            value = field.first,
+                if (countOfSpeeds != null) {
+                    for (index in 1..<countOfSpeeds.value) {
+                        item {  CustomOutlinedTextField(
+                            value = inputFields[index].first,
                             onValueChange = { newValue ->
                                 when (index) {
                                     in speeds.indices -> stateViewModel.setSpeedCount(index)
@@ -124,7 +126,7 @@ fun CalculationScreen(
                                     speeds.size + 4 -> stateViewModel.preom = newValue
                                 }
                             },
-                            label = field.second,
+                            label = inputFields[index].second,
                             imeAction = if (index == inputFields.size - 1) ImeAction.Done else ImeAction.Next,
                             onImeAction = {
                                 if (index == inputFields.size - 1) {
@@ -133,7 +135,8 @@ fun CalculationScreen(
                                     focusManager.moveFocus(FocusDirection.Down)
                                 }
                             }
-                        )
+                        )}
+
                     }
                 }
                 item {
