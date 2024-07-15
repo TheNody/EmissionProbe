@@ -12,8 +12,7 @@ import androidx.lifecycle.ViewModel
 
 class StateViewModel : ViewModel() {
 
-    private val _speeds = MutableLiveData<List<String>>()
-    val speeds: LiveData<List<String>> = _speeds
+    val speeds = mutableStateListOf<String>()
 
     var patm by mutableStateOf("")
     var plsr by mutableStateOf("")
@@ -47,7 +46,6 @@ class StateViewModel : ViewModel() {
     var vpOfSelectedDiameter by mutableDoubleStateOf(0.0)
 
     fun resetValues() {
-        _speeds.value = emptyList()
         patm = ""
         plsr = ""
         tsr = ""
@@ -78,10 +76,9 @@ class StateViewModel : ViewModel() {
     }
 
     fun setSpeedCount(count: Int) {
-        Log.d("StateViewModel", "Установка количества скоростей: $count")
-        _speeds.value = List(count) { "" }
-        if (_speeds.value.isNullOrEmpty()) {
-            Log.e("StateViewModel", "Ошибка: список скоростей пустой после установки количества скоростей.")
-        }
+        speeds.clear()
+        speeds.addAll(List(count) { "" })
+        Log.d("StateViewModel", "Speed count set to $count")
     }
+
 }

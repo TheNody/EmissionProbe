@@ -44,25 +44,17 @@ import com.calculation.tipcalculation.screen_comp.CustomOutlinedTextField
 import com.calculation.tipcalculation.viewmodel.CalculationViewModel
 import com.calculation.tipcalculation.viewmodel.StateViewModel
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalculationScreen(
     navController: NavController,
-    stateViewModel: StateViewModel,
     calculationViewModel: CalculationViewModel,
+    stateViewModel: StateViewModel,
     settingsViewModel: SettingsViewModel = viewModel()
 ) {
     val focusManager = LocalFocusManager.current
-    val speeds by stateViewModel.speeds.observeAsState(emptyList())
-    val inputFields = speeds.mapIndexed { index, value ->
-        Pair(value, "Введите V${index + 1} (м/с)")
-    } + listOf(
-        Pair(stateViewModel.patm, "Введите P атм. (мм. рт. ст.)"),
-        Pair(stateViewModel.plsr, "Введите Р среды (мм.вод.ст.)"),
-        Pair(stateViewModel.tsr, "Введите t среды (оС)"),
-        Pair(stateViewModel.tasp, "Введите t асп (оС)"),
-        Pair(stateViewModel.preom, "Введите P реом (мм. рт. ст.)")
-    )
+    val speeds = stateViewModel.speeds
 
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val tabTitles = listOf("Внешняя фильтрация", "Внутренняя фильтрация")
@@ -110,38 +102,79 @@ fun CalculationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                inputFields.forEachIndexed { index, field ->
+                item {
+                    CustomOutlinedTextField(
+                        value = stateViewModel.patm,
+                        onValueChange = { stateViewModel.patm = it },
+                        label = "Введите P атм. (мм. рт. ст.)",
+                        imeAction = ImeAction.Next,
+                        onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    CustomOutlinedTextField(
+                        value = stateViewModel.plsr,
+                        onValueChange = { stateViewModel.plsr = it },
+                        label = "Введите Р среды (мм.вод.ст.)",
+                        imeAction = ImeAction.Next,
+                        onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    CustomOutlinedTextField(
+                        value = stateViewModel.tsr,
+                        onValueChange = { stateViewModel.tsr = it },
+                        label = "Введите t среды (оС)",
+                        imeAction = ImeAction.Next,
+                        onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    CustomOutlinedTextField(
+                        value = stateViewModel.tasp,
+                        onValueChange = { stateViewModel.tasp = it },
+                        label = "Введите t асп (оС)",
+                        imeAction = ImeAction.Next,
+                        onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    CustomOutlinedTextField(
+                        value = stateViewModel.preom,
+                        onValueChange = { stateViewModel.preom = it },
+                        label = "Введите P реом (мм. рт. ст.)",
+                        imeAction = ImeAction.Next,
+                        onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                speeds.forEachIndexed { index, speed ->
                     item {
                         CustomOutlinedTextField(
-                            value = field.first,
-                            onValueChange = { newValue ->
-                                when (index) {
-                                    in speeds.indices -> stateViewModel.setSpeedCount(index)
-                                    speeds.size -> stateViewModel.patm = newValue
-                                    speeds.size + 1 -> stateViewModel.plsr = newValue
-                                    speeds.size + 2 -> stateViewModel.tsr = newValue
-                                    speeds.size + 3 -> stateViewModel.tasp = newValue
-                                    speeds.size + 4 -> stateViewModel.preom = newValue
-                                }
-                            },
-                            label = field.second,
-                            imeAction = if (index == inputFields.size - 1) ImeAction.Done else ImeAction.Next,
+                            value = speed,
+                            onValueChange = { stateViewModel.speeds[index] = it },
+                            label = "Введите V${index + 1} (м/с)",
+                            imeAction = if (index == speeds.size - 1) ImeAction.Done else ImeAction.Next,
                             onImeAction = {
-                                if (index == inputFields.size - 1) {
+                                if (index == speeds.size - 1) {
                                     focusManager.clearFocus()
                                 } else {
                                     focusManager.moveFocus(FocusDirection.Down)
                                 }
                             }
                         )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Log.d("CalculationScreen", "Добавлено поле для ввода скорости V${index + 1}")
                     }
                 }
+
                 item {
                     Button(
                         onClick = {
                             calculationViewModel.calculateResult(
                                 stateViewModel.patm.toDoubleOrNull(),
-                                stateViewModel.speeds.value?.map { it.toDoubleOrNull() } ?: emptyList(),
+                                stateViewModel.speeds.map { it.toDoubleOrNull() ?: 0.0 },
                                 stateViewModel.plsr.toDoubleOrNull(),
                                 stateViewModel.tsr.toDoubleOrNull(),
                                 stateViewModel.tasp.toDoubleOrNull(),
@@ -180,30 +213,23 @@ fun CalculationScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        inputFields.forEachIndexed { index, field ->
+                        speeds.forEachIndexed { index, speed ->
                             item {
                                 CustomOutlinedTextField(
-                                    value = field.first,
-                                    onValueChange = { newValue ->
-                                        when (index) {
-                                            in speeds.indices -> stateViewModel.setSpeedCount(index)
-                                            speeds.size -> stateViewModel.patm = newValue
-                                            speeds.size + 1 -> stateViewModel.plsr = newValue
-                                            speeds.size + 2 -> stateViewModel.tsr = newValue
-                                            speeds.size + 3 -> stateViewModel.tasp = newValue
-                                            speeds.size + 4 -> stateViewModel.preom = newValue
-                                        }
-                                    },
-                                    label = field.second,
-                                    imeAction = if (index == inputFields.size - 1) ImeAction.Done else ImeAction.Next,
+                                    value = speed,
+                                    onValueChange = { stateViewModel.speeds[index] = it },
+                                    label = "Введите V${index + 1} (м/с)",
+                                    imeAction = if (index == speeds.size - 1) ImeAction.Done else ImeAction.Next,
                                     onImeAction = {
-                                        if (index == inputFields.size - 1) {
+                                        if (index == speeds.size - 1) {
                                             focusManager.clearFocus()
                                         } else {
                                             focusManager.moveFocus(FocusDirection.Down)
                                         }
                                     }
                                 )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Log.d("CalculationScreen", "Добавлено поле для ввода скорости V${index + 1}")
                             }
                         }
                     }
@@ -257,7 +283,7 @@ fun CalculationScreen(
                             if (selectedDiameter != null) {
                                 calculationViewModel.calculateResult(
                                     stateViewModel.patm.toDoubleOrNull(),
-                                    stateViewModel.speeds.value?.map { it.toDoubleOrNull() } ?: emptyList(),
+                                    stateViewModel.speeds.map { it.toDoubleOrNull() ?: 0.0 },
                                     stateViewModel.plsr.toDoubleOrNull(),
                                     stateViewModel.tsr.toDoubleOrNull(),
                                     stateViewModel.tasp.toDoubleOrNull(),
@@ -285,4 +311,6 @@ fun CalculationScreen(
         }
     }
 }
+
+
 

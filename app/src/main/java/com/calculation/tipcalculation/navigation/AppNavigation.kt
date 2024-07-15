@@ -77,9 +77,9 @@ fun AppNavigation() {
                 composable(NavigationDestination.CalculationsScreenDestination.destination) {
                     CalculationScreen(navController = navController, calculationViewModel = calculationViewModel, stateViewModel = stateViewModel)
                 }
-                composable("${NavigationDestination.LastCalculationScreenDestination.destination}/{tabIndex}") { backStackEntry ->
-                    val tabIndex = backStackEntry.arguments?.getString("tabIndex")?.toInt() ?: 0
-                    ResultScreen(viewModel = stateViewModel, tabIndex = tabIndex)
+                composable("resultScreen/{index}") { backStackEntry ->
+                    val index = backStackEntry.arguments?.getString("index")?.toInt() ?: 0
+                    ResultScreen(viewModel = stateViewModel, tabIndex = index)
                 }
                 composable(NavigationDestination.HistoryScreenDestination.destination) {
                     HistoryScreen()
@@ -94,7 +94,7 @@ fun AppNavigation() {
                     ExternalFilterTipsScreen()
                 }
                 composable(NavigationDestination.MeasurementCountScreenDestination.destination) {
-                    MeasurementCountScreen()
+                    MeasurementCountScreen(stateViewModel = stateViewModel)
                 }
                 composable(NavigationDestination.AdvancedSettingsScreenDestination.destination) {
                     AdvancedSettingsScreen()
