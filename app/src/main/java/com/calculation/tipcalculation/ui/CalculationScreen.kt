@@ -113,12 +113,12 @@ fun CalculationScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 if (countOfSpeeds != null) {
-                    for (index in 1..<countOfSpeeds.value) {
+                    stateViewModel.setSpeedCount(countOfSpeeds.value)
+                    for (index in 0..<countOfSpeeds.value) {
                         item {  CustomOutlinedTextField(
                             value = inputFields[index].first,
                             onValueChange = { newValue ->
                                 when (index) {
-                                    in speeds.indices -> stateViewModel.setSpeedCount(index)
                                     speeds.size -> stateViewModel.patm = newValue
                                     speeds.size + 1 -> stateViewModel.plsr = newValue
                                     speeds.size + 2 -> stateViewModel.tsr = newValue
