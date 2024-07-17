@@ -1,9 +1,12 @@
 package com.calculation.tipcalculation.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.lifecycle.ViewModel
+import com.calculation.tipcalculation.db_Main.SettingsViewModel
 import com.calculation.tipcalculation.db_Main.externalFilter.ExternalFilterTip
 import com.calculation.tipcalculation.db_Main.internalFilter.FilterTip
+import com.calculation.tipcalculation.model.CalculationData
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.round
@@ -31,29 +34,30 @@ class CalculationViewModel : ViewModel() {
         tsr: Double?,
         tasp: Double?,
         preom: Double?,
-        stateViewModel: StateViewModel
+        settingsViewModel: SettingsViewModel
     ) {
-        stateViewModel.resetValues()
+        settingsViewModel.resetValues()
 
+        val data = settingsViewModel.data
         val nonNullSpeeds = speeds.filterNotNull()
         val (patmValue, plsrValue, tsrValue, taspValue, preomValue) = listOf(
             patm ?: 0.0, plsr ?: 0.0, tsr ?: 0.0, tasp ?: 0.0, preom ?: 0.0
         )
 
-        stateViewModel.srznach = nonNullSpeeds.average()
-        stateViewModel.average = if (nonNullSpeeds.isNotEmpty()) 24 / sqrt(stateViewModel.srznach) else 0.0
-        stateViewModel.sigma = calculateSigma(nonNullSpeeds, stateViewModel.srznach)
+        data.srznach.value = nonNullSpeeds.average()
+        data.average.value = if (nonNullSpeeds.isNotEmpty()) 24 / sqrt(data.srznach.value) else 0.0
+        data.sigma.value = calculateSigma(nonNullSpeeds, data.srznach.value)
 
-        calculateDiameters(diameters, patmValue, plsrValue, tsrValue, taspValue, preomValue, stateViewModel)
-        calculateAspUsl(patmValue, plsrValue, tsrValue, taspValue, stateViewModel)
-        calculateResultValue(patmValue, plsrValue, tsrValue, taspValue, stateViewModel)
+        calculateDiameters(diameters, patmValue, plsrValue, tsrValue, taspValue, preomValue, data)
+        calculateAspUsl(patmValue, plsrValue, tsrValue, taspValue, data)
+        calculateResultValue(patmValue, plsrValue, tsrValue, taspValue, data)
 
         Log.d("CalculationViewModel", "P атм в Па: $patmValue")
-        Log.d("CalculationViewModel", "Идеальный наконечник: ${stateViewModel.average}")
-        Log.d("CalculationViewModel", "Ближайший наконечник: ${stateViewModel.closestDiameter}")
-        Log.d("CalculationViewModel", "Самый первый ближайший подходящий наконечник: ${stateViewModel.firstSuitableDiameter}")
-        Log.d("CalculationViewModel", "Подходящие наконечники: ${stateViewModel.suitableDiameters.joinToString()}")
-        Log.d("CalculationViewModel", "Неподходящие наконечники: ${stateViewModel.unsuitableDiameters.joinToString()}")
+        Log.d("CalculationViewModel", "Идеальный наконечник: ${data.average.value}")
+        Log.d("CalculationViewModel", "Ближайший наконечник: ${data.closestDiameter.value}")
+        Log.d("CalculationViewModel", "Самый первый ближайший подходящий наконечник: ${data.firstSuitableDiameter.value}")
+        Log.d("CalculationViewModel", "Подходящие наконечники: ${data.suitableDiameters.joinToString { it.value.toString() }}")
+        Log.d("CalculationViewModel", "Неподходящие наконечники: ${data.unsuitableDiameters.joinToString { it.value.toString() }}")
     }
 
     private fun calculateSigma(values: List<Double>, srznach: Double): Double {
@@ -70,23 +74,23 @@ class CalculationViewModel : ViewModel() {
         tsrValue: Double,
         taspValue: Double,
         preomValue: Double,
-        stateViewModel: StateViewModel
+        data: CalculationData
     ) {
-        stateViewModel.suitableDiameters.clear()
-        stateViewModel.unsuitableDiameters.clear()
-        stateViewModel.checkedDiametersList.clear()
+        data.suitableDiameters.clear()
+        data.unsuitableDiameters.clear()
+        data.checkedDiametersList.clear()
 
-        stateViewModel.closestDiameter = diameters.minByOrNull { abs(it - stateViewModel.average) } ?: 0.0
-        val closestIndex = diameters.indexOf(stateViewModel.closestDiameter)
+        data.closestDiameter.value = diameters.minByOrNull { abs(it - data.average.value) } ?: 0.0
+        val closestIndex = diameters.indexOf(data.closestDiameter.value)
         val checkedDiameters = mutableSetOf<Double>()
-        stateViewModel.firstSuitableDiameter = 0.0
+        data.firstSuitableDiameter.value = 0.0
 
         for (step in diameters.indices) {
-            checkDiameter(closestIndex + step, checkedDiameters, diameters, patmValue, plsrValue, tsrValue, taspValue, preomValue, stateViewModel)
-            checkDiameter(closestIndex - step, checkedDiameters, diameters, patmValue, plsrValue, tsrValue, taspValue, preomValue, stateViewModel)
+            checkDiameter(closestIndex + step, checkedDiameters, diameters, patmValue, plsrValue, tsrValue, taspValue, preomValue, data)
+            checkDiameter(closestIndex - step, checkedDiameters, diameters, patmValue, plsrValue, tsrValue, taspValue, preomValue, data)
         }
 
-        calculateTipSize(stateViewModel)
+        calculateTipSize(data)
     }
 
     private fun checkDiameter(
@@ -98,21 +102,21 @@ class CalculationViewModel : ViewModel() {
         tsrValue: Double,
         taspValue: Double,
         preomValue: Double,
-        stateViewModel: StateViewModel
+        data: CalculationData
     ) {
         if (index in diameters.indices) {
             val currentDiameter = diameters[index]
             if (currentDiameter !in checkedDiameters) {
-                val vp = calculateVp(currentDiameter, patmValue, plsrValue, tsrValue, taspValue, preomValue, stateViewModel.srznach)
-                stateViewModel.checkedDiametersList.add(currentDiameter to vp)
+                val vp = calculateVp(currentDiameter, patmValue, plsrValue, tsrValue, taspValue, preomValue, data.srznach.value)
+                data.checkedDiametersList.add(mutableDoubleStateOf(currentDiameter) to mutableDoubleStateOf(vp))
                 if (vp <= 20) {
-                    stateViewModel.suitableDiameters.add(currentDiameter)
-                    if (stateViewModel.firstSuitableDiameter == 0.0) {
-                        stateViewModel.firstSuitableDiameter = currentDiameter
-                        stateViewModel.selectedVp = vp
+                    data.suitableDiameters.add(mutableDoubleStateOf(currentDiameter))
+                    if (data.firstSuitableDiameter.value == 0.0) {
+                        data.firstSuitableDiameter.value = currentDiameter
+                        data.selectedVp.value = vp
                     }
                 } else {
-                    stateViewModel.unsuitableDiameters.add(currentDiameter)
+                    data.unsuitableDiameters.add(mutableDoubleStateOf(currentDiameter))
                 }
                 checkedDiameters.add(currentDiameter)
                 Log.d("CalculationViewModel", "Проверка диаметра: $currentDiameter, vp: $vp")
@@ -135,25 +139,25 @@ class CalculationViewModel : ViewModel() {
         } else 0.0
     }
 
-    private fun calculateTipSize(stateViewModel: StateViewModel) {
-        stateViewModel.calculatedTip = when {
-            stateViewModel.average > 5.05 -> 5.3
-            stateViewModel.average > 4.55 -> 4.8
-            stateViewModel.average > 4.25 -> 4.3
-            stateViewModel.average > 4.1 -> 4.2
+    private fun calculateTipSize(data: CalculationData) {
+        data.calculatedTip.value = when {
+            data.average.value > 5.05 -> 5.3
+            data.average.value > 4.55 -> 4.8
+            data.average.value > 4.25 -> 4.3
+            data.average.value > 4.1 -> 4.2
             else -> 4.0
         }
 
-        stateViewModel.tipSize = when {
-            stateViewModel.average > 12 -> 13.0
-            stateViewModel.average > 10.7 -> 11.0
-            stateViewModel.average > 10.35 -> 10.4
-            stateViewModel.average > 9.35 -> 10.3
-            stateViewModel.average > 7.35 -> 8.4
-            stateViewModel.average > 6.15 -> 6.3
-            stateViewModel.average > 5.95 -> 6.0
-            stateViewModel.average > 5.6 -> 5.9
-            else -> stateViewModel.calculatedTip
+        data.tipSize.value = when {
+            data.average.value > 12 -> 13.0
+            data.average.value > 10.7 -> 11.0
+            data.average.value > 10.35 -> 10.4
+            data.average.value > 9.35 -> 10.3
+            data.average.value > 7.35 -> 8.4
+            data.average.value > 6.15 -> 6.3
+            data.average.value > 5.95 -> 6.0
+            data.average.value > 5.6 -> 5.9
+            else -> data.calculatedTip.value
         }
     }
 
@@ -162,10 +166,10 @@ class CalculationViewModel : ViewModel() {
         plsrValue: Double,
         tsrValue: Double,
         taspValue: Double,
-        stateViewModel: StateViewModel
+        data: CalculationData
     ) {
-        stateViewModel.aspUsl = if (stateViewModel.srznach > 0) {
-            val value = 0.00245 * stateViewModel.tipSize.pow(2) * stateViewModel.srznach * (patmValue * 133.3 + plsrValue * 9.807) / (273 + tsrValue) *
+        data.aspUsl.value = if (data.srznach.value > 0) {
+            val value = 0.00245 * data.tipSize.value.pow(2) * data.srznach.value * (patmValue * 133.3 + plsrValue * 9.807) / (273 + tsrValue) *
                     sqrt((273 + taspValue) / (patmValue * 133.3 + plsrValue * 9.807))
             when {
                 value >= 20 -> 20.0
@@ -180,14 +184,14 @@ class CalculationViewModel : ViewModel() {
         plsrValue: Double,
         tsrValue: Double,
         taspValue: Double,
-        stateViewModel: StateViewModel
+        data: CalculationData
     ) {
-        val paspmm = if (stateViewModel.srznach > 0) round((0.327 * stateViewModel.aspUsl.pow(2) + 2.35 * stateViewModel.aspUsl + 5.951) * 10) / 10.0 else 0.0
-        stateViewModel.result = if (stateViewModel.srznach > 0) round((plsrValue - paspmm) * 10) / 10.0 else 0.0
+        val paspmm = if (data.srznach.value > 0) round((0.327 * data.aspUsl.value.pow(2) + 2.35 * data.aspUsl.value + 5.951) * 10) / 10.0 else 0.0
+        data.result.value = if (data.srznach.value > 0) round((plsrValue - paspmm) * 10) / 10.0 else 0.0
 
-        stateViewModel.aspUsl1 = if (stateViewModel.srznach > 0) {
-            val value = 0.00245 * stateViewModel.tipSize.pow(2) * stateViewModel.srznach * (patmValue * 133.3 + plsrValue * 9.807) / (273 + tsrValue) *
-                    sqrt((273 + taspValue) / (patmValue * 133.3 + stateViewModel.result * 9.807))
+        data.aspUsl1.value = if (data.srznach.value > 0) {
+            val value = 0.00245 * data.tipSize.value.pow(2) * data.srznach.value * (patmValue * 133.3 + plsrValue * 9.807) / (273 + tsrValue) *
+                    sqrt((273 + taspValue) / (patmValue * 133.3 + data.result.value * 9.807))
             when {
                 value >= 20 -> 20.0
                 value > 1 -> round(value)
@@ -195,32 +199,32 @@ class CalculationViewModel : ViewModel() {
             }
         } else 0.0
 
-        stateViewModel.duslov1 = if (stateViewModel.srznach > 0) sqrt(stateViewModel.aspUsl1 / 0.00245 / stateViewModel.srznach / (patmValue * 133.3 + plsrValue * 9.807) * (273 + tsrValue) /
-                sqrt((273 + taspValue) / (patmValue * 133.3 + stateViewModel.result * 9.807))) else 0.0
+        data.duslov1.value = if (data.srznach.value > 0) sqrt(data.aspUsl1.value / 0.00245 / data.srznach.value / (patmValue * 133.3 + plsrValue * 9.807) * (273 + tsrValue) /
+                sqrt((273 + taspValue) / (patmValue * 133.3 + data.result.value * 9.807))) else 0.0
 
-        stateViewModel.vibrNak = when {
-            stateViewModel.duslov1 > 5.05 -> 5.3
-            stateViewModel.duslov1 > 4.55 -> 4.8
-            stateViewModel.duslov1 > 4.25 -> 4.3
-            stateViewModel.duslov1 > 4.1 -> 4.2
+        data.vibrNak.value = when {
+            data.duslov1.value > 5.05 -> 5.3
+            data.duslov1.value > 4.55 -> 4.8
+            data.duslov1.value > 4.25 -> 4.3
+            data.duslov1.value > 4.1 -> 4.2
             else -> 4.0
         }
 
-        stateViewModel.dreal = when {
-            stateViewModel.duslov1 > 12 -> 13.0
-            stateViewModel.duslov1 > 10.7 -> 11.0
-            stateViewModel.duslov1 > 10.35 -> 10.4
-            stateViewModel.duslov1 > 9.35 -> 10.3
-            stateViewModel.duslov1 > 7.35 -> 8.4
-            stateViewModel.duslov1 > 6.15 -> 6.3
-            stateViewModel.duslov1 > 5.95 -> 6.0
-            stateViewModel.duslov1 > 5.6 -> 5.9
-            else -> stateViewModel.vibrNak
+        data.dreal.value = when {
+            data.duslov1.value > 12 -> 13.0
+            data.duslov1.value > 10.7 -> 11.0
+            data.duslov1.value > 10.35 -> 10.4
+            data.duslov1.value > 9.35 -> 10.3
+            data.duslov1.value > 7.35 -> 8.4
+            data.duslov1.value > 6.15 -> 6.3
+            data.duslov1.value > 5.95 -> 6.0
+            data.duslov1.value > 5.6 -> 5.9
+            else -> data.vibrNak.value
         }
 
-        stateViewModel.vsp2 = if (stateViewModel.srznach > 0) {
-            val value = 0.00245 * stateViewModel.dreal.pow(2) * stateViewModel.srznach * (patmValue * 133.3 + plsrValue * 9.807) / (273.2 + tsrValue) *
-                    sqrt((273.2 + taspValue) / (patmValue * 133.3 + stateViewModel.result * 9.807))
+        data.vsp2.value = if (data.srznach.value > 0) {
+            val value = 0.00245 * data.dreal.value.pow(2) * data.srznach.value * (patmValue * 133.3 + plsrValue * 9.807) / (273.2 + tsrValue) *
+                    sqrt((273.2 + taspValue) / (patmValue * 133.3 + data.result.value * 9.807))
             when {
                 value >= 20 -> 20.0
                 value > 1 -> round(value)
@@ -236,8 +240,9 @@ class CalculationViewModel : ViewModel() {
         tsr: Double?,
         tasp: Double?,
         preom: Double?,
-        stateViewModel: StateViewModel
+        settingsViewModel: SettingsViewModel
     ) {
+        val data = settingsViewModel.data
         val patmValue = (patm ?: 0.0) * 133.32
         val plsrValue = plsr ?: 0.0
         val tsrValue = tsr ?: 0.0
@@ -251,18 +256,19 @@ class CalculationViewModel : ViewModel() {
         Log.d("CalculationViewModel", "T среды: $tsrValue")
         Log.d("CalculationViewModel", "T асп: $taspValue")
         Log.d("CalculationViewModel", "P реом: $preomValue")
-        Log.d("CalculationViewModel", "Средняя скорость: ${stateViewModel.srznach}")
+        Log.d("CalculationViewModel", "Средняя скорость: ${data.srznach.value}")
 
         val vp = if (patmValue > 0) {
-            0.00245 * selectedDiameter.pow(2) * stateViewModel.srznach * ((patmValue + plsrValue) / (273 + tsrValue)) *
+            0.00245 * selectedDiameter.pow(2) * data.srznach.value * ((patmValue + plsrValue) / (273 + tsrValue)) *
                     sqrt((1.293 * (273 + taspValue)) / (1.293 * (patmValue - preomValue)))
         } else 0.0
 
-        stateViewModel.selectedDiameter = selectedDiameter
-        stateViewModel.vpOfSelectedDiameter = vp
+        data.selectedDiameter.value = selectedDiameter
+        data.vpOfSelectedDiameter.value = vp
 
-        Log.d("CalculationViewModel", "vp выбранного наконечника: $vp")
+        Log.d("CalculationViewModel", "vp выбранного наконечника: ${data.vpOfSelectedDiameter.value}")
     }
 }
+
 
 

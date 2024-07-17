@@ -42,7 +42,6 @@ import androidx.navigation.NavController
 import com.calculation.tipcalculation.db_Main.SettingsViewModel
 import com.calculation.tipcalculation.screen_comp.CustomOutlinedTextField
 import com.calculation.tipcalculation.viewmodel.CalculationViewModel
-import com.calculation.tipcalculation.viewmodel.StateViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,11 +49,11 @@ import com.calculation.tipcalculation.viewmodel.StateViewModel
 fun CalculationScreen(
     navController: NavController,
     calculationViewModel: CalculationViewModel,
-    stateViewModel: StateViewModel,
     settingsViewModel: SettingsViewModel = viewModel()
 ) {
     val focusManager = LocalFocusManager.current
-    val speeds = stateViewModel.speeds
+    val speeds = settingsViewModel.speeds
+    val data = settingsViewModel.data
 
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     val tabTitles = listOf("Внешняя фильтрация", "Внутренняя фильтрация")
@@ -84,7 +83,7 @@ fun CalculationScreen(
                     selected = selectedTabIndex == index,
                     onClick = {
                         selectedTabIndex = index
-                        stateViewModel.isButtonVisible = selectedTabIndex == 0 || selectedItemIndex >= 0
+                        data.isButtonVisible.value = selectedTabIndex == 0 || selectedItemIndex >= 0
                     },
                     text = { Text(title) }
                 )
@@ -104,8 +103,11 @@ fun CalculationScreen(
             ) {
                 item {
                     CustomOutlinedTextField(
-                        value = stateViewModel.patm,
-                        onValueChange = { stateViewModel.patm = it },
+                        value = data.patm.value,
+                        onValueChange = {
+                            data.patm.value = it
+                            Log.d("CalculationScreen", "Добавлено значение P атм: $it")
+                        },
                         label = "Введите P атм. (мм. рт. ст.)",
                         imeAction = ImeAction.Next,
                         onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
@@ -113,8 +115,11 @@ fun CalculationScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     CustomOutlinedTextField(
-                        value = stateViewModel.plsr,
-                        onValueChange = { stateViewModel.plsr = it },
+                        value = data.plsr.value,
+                        onValueChange = {
+                            data.plsr.value = it
+                            Log.d("CalculationScreen", "Добавлено значение Р среды: $it")
+                        },
                         label = "Введите Р среды (мм.вод.ст.)",
                         imeAction = ImeAction.Next,
                         onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
@@ -122,8 +127,11 @@ fun CalculationScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     CustomOutlinedTextField(
-                        value = stateViewModel.tsr,
-                        onValueChange = { stateViewModel.tsr = it },
+                        value = data.tsr.value,
+                        onValueChange = {
+                            data.tsr.value = it
+                            Log.d("CalculationScreen", "Добавлено значение t среды: $it")
+                        },
                         label = "Введите t среды (оС)",
                         imeAction = ImeAction.Next,
                         onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
@@ -131,8 +139,11 @@ fun CalculationScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     CustomOutlinedTextField(
-                        value = stateViewModel.tasp,
-                        onValueChange = { stateViewModel.tasp = it },
+                        value = data.tasp.value,
+                        onValueChange = {
+                            data.tasp.value = it
+                            Log.d("CalculationScreen", "Добавлено значение t асп: $it")
+                        },
                         label = "Введите t асп (оС)",
                         imeAction = ImeAction.Next,
                         onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
@@ -140,8 +151,11 @@ fun CalculationScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     CustomOutlinedTextField(
-                        value = stateViewModel.preom,
-                        onValueChange = { stateViewModel.preom = it },
+                        value = data.preom.value,
+                        onValueChange = {
+                            data.preom.value = it
+                            Log.d("CalculationScreen", "Добавлено значение P реом: $it")
+                        },
                         label = "Введите P реом (мм. рт. ст.)",
                         imeAction = ImeAction.Next,
                         onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
@@ -153,7 +167,10 @@ fun CalculationScreen(
                     item {
                         CustomOutlinedTextField(
                             value = speed,
-                            onValueChange = { stateViewModel.speeds[index] = it },
+                            onValueChange = {
+                                settingsViewModel.speeds[index] = it
+                                Log.d("CalculationScreen", "Добавлено значение скорости V${index + 1}: $it")
+                            },
                             label = "Введите V${index + 1} (м/с)",
                             imeAction = if (index == speeds.size - 1) ImeAction.Done else ImeAction.Next,
                             onImeAction = {
@@ -165,7 +182,6 @@ fun CalculationScreen(
                             }
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Log.d("CalculationScreen", "Добавлено поле для ввода скорости V${index + 1}")
                     }
                 }
 
@@ -173,13 +189,13 @@ fun CalculationScreen(
                     Button(
                         onClick = {
                             calculationViewModel.calculateResult(
-                                stateViewModel.patm.toDoubleOrNull(),
-                                stateViewModel.speeds.map { it.toDoubleOrNull() ?: 0.0 },
-                                stateViewModel.plsr.toDoubleOrNull(),
-                                stateViewModel.tsr.toDoubleOrNull(),
-                                stateViewModel.tasp.toDoubleOrNull(),
-                                stateViewModel.preom.toDoubleOrNull(),
-                                stateViewModel
+                                data.patm.value.toDoubleOrNull(),
+                                settingsViewModel.speeds.map { it.toDoubleOrNull() ?: 0.0 },
+                                data.plsr.value.toDoubleOrNull(),
+                                data.tsr.value.toDoubleOrNull(),
+                                data.tasp.value.toDoubleOrNull(),
+                                data.preom.value.toDoubleOrNull(),
+                                settingsViewModel
                             )
                             navController.navigate("resultScreen/0")
                         },
@@ -213,11 +229,75 @@ fun CalculationScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
+                        item {
+                            CustomOutlinedTextField(
+                                value = data.patm.value,
+                                onValueChange = {
+                                    data.patm.value = it
+                                    Log.d("CalculationScreen", "Добавлено значение P атм: $it")
+                                },
+                                label = "Введите P атм. (мм. рт. ст.)",
+                                imeAction = ImeAction.Next,
+                                onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            CustomOutlinedTextField(
+                                value = data.plsr.value,
+                                onValueChange = {
+                                    data.plsr.value = it
+                                    Log.d("CalculationScreen", "Добавлено значение Р среды: $it")
+                                },
+                                label = "Введите Р среды (мм.вод.ст.)",
+                                imeAction = ImeAction.Next,
+                                onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            CustomOutlinedTextField(
+                                value = data.tsr.value,
+                                onValueChange = {
+                                    data.tsr.value = it
+                                    Log.d("CalculationScreen", "Добавлено значение t среды: $it")
+                                },
+                                label = "Введите t среды (оС)",
+                                imeAction = ImeAction.Next,
+                                onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            CustomOutlinedTextField(
+                                value = data.tasp.value,
+                                onValueChange = {
+                                    data.tasp.value = it
+                                    Log.d("CalculationScreen", "Добавлено значение t асп: $it")
+                                },
+                                label = "Введите t асп (оС)",
+                                imeAction = ImeAction.Next,
+                                onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            CustomOutlinedTextField(
+                                value = data.preom.value,
+                                onValueChange = {
+                                    data.preom.value = it
+                                    Log.d("CalculationScreen", "Добавлено значение P реом: $it")
+                                },
+                                label = "Введите P реом (мм. рт. ст.)",
+                                imeAction = ImeAction.Next,
+                                onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
                         speeds.forEachIndexed { index, speed ->
                             item {
                                 CustomOutlinedTextField(
                                     value = speed,
-                                    onValueChange = { stateViewModel.speeds[index] = it },
+                                    onValueChange = {
+                                        settingsViewModel.speeds[index] = it
+                                        Log.d("CalculationScreen", "Добавлено значение скорости V${index + 1}: $it")
+                                    },
                                     label = "Введите V${index + 1} (м/с)",
                                     imeAction = if (index == speeds.size - 1) ImeAction.Done else ImeAction.Next,
                                     onImeAction = {
@@ -229,7 +309,6 @@ fun CalculationScreen(
                                     }
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Log.d("CalculationScreen", "Добавлено поле для ввода скорости V${index + 1}")
                             }
                         }
                     }
@@ -266,9 +345,10 @@ fun CalculationScreen(
                                 },
                                 onClick = {
                                     selectedItemIndex = index
-                                    stateViewModel.selectedInnerTip = item.value.toString()
+                                    data.selectedInnerTip.value = item.value.toString()
                                     expanded = false
-                                    stateViewModel.isButtonVisible = true
+                                    data.isButtonVisible.value = true
+                                    Log.d("CalculationScreen", "Выбранный наконечник: ${data.selectedInnerTip.value}")
                                 }
                             )
                         }
@@ -276,28 +356,28 @@ fun CalculationScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                AnimatedVisibility(visible = stateViewModel.isButtonVisible) {
+                AnimatedVisibility(visible = data.isButtonVisible.value) {
                     Button(
                         onClick = {
-                            val selectedDiameter = stateViewModel.selectedInnerTip.toDoubleOrNull()
+                            val selectedDiameter = data.selectedInnerTip.value.toDoubleOrNull()
                             if (selectedDiameter != null) {
                                 calculationViewModel.calculateResult(
-                                    stateViewModel.patm.toDoubleOrNull(),
-                                    stateViewModel.speeds.map { it.toDoubleOrNull() ?: 0.0 },
-                                    stateViewModel.plsr.toDoubleOrNull(),
-                                    stateViewModel.tsr.toDoubleOrNull(),
-                                    stateViewModel.tasp.toDoubleOrNull(),
-                                    stateViewModel.preom.toDoubleOrNull(),
-                                    stateViewModel
+                                    data.patm.value.toDoubleOrNull(),
+                                    settingsViewModel.speeds.map { it.toDoubleOrNull() ?: 0.0 },
+                                    data.plsr.value.toDoubleOrNull(),
+                                    data.tsr.value.toDoubleOrNull(),
+                                    data.tasp.value.toDoubleOrNull(),
+                                    data.preom.value.toDoubleOrNull(),
+                                    settingsViewModel
                                 )
                                 calculationViewModel.calculateInnerTipVp(
                                     selectedDiameter,
-                                    stateViewModel.patm.toDoubleOrNull(),
-                                    stateViewModel.plsr.toDoubleOrNull(),
-                                    stateViewModel.tsr.toDoubleOrNull(),
-                                    stateViewModel.tasp.toDoubleOrNull(),
-                                    stateViewModel.preom.toDoubleOrNull(),
-                                    stateViewModel
+                                    data.patm.value.toDoubleOrNull(),
+                                    data.plsr.value.toDoubleOrNull(),
+                                    data.tsr.value.toDoubleOrNull(),
+                                    data.tasp.value.toDoubleOrNull(),
+                                    data.preom.value.toDoubleOrNull(),
+                                    settingsViewModel
                                 )
                                 navController.navigate("resultScreen/1")
                             }
@@ -311,6 +391,7 @@ fun CalculationScreen(
         }
     }
 }
+
 
 
 

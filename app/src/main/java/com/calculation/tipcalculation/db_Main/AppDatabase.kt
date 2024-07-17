@@ -8,14 +8,14 @@ import com.calculation.tipcalculation.db_Main.externalFilter.ExternalFilterTip
 import com.calculation.tipcalculation.db_Main.externalFilter.ExternalFilterTipDao
 import com.calculation.tipcalculation.db_Main.internalFilter.FilterTip
 import com.calculation.tipcalculation.db_Main.internalFilter.FilterTipDao
-import com.calculation.tipcalculation.db_Main.measurementCount.MeasurementCount
-import com.calculation.tipcalculation.db_Main.measurementCount.MeasurementCountDao
+import com.calculation.tipcalculation.db_Main.speedCount.SpeedCount
+import com.calculation.tipcalculation.db_Main.speedCount.SpeedDao
 
-@Database(entities = [FilterTip::class, ExternalFilterTip::class, MeasurementCount::class], version = 1)
+@Database(entities = [FilterTip::class, ExternalFilterTip::class, SpeedCount::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun filterTipDao(): FilterTipDao
     abstract fun externalFilterTipDao(): ExternalFilterTipDao
-    abstract fun measurementCountDao(): MeasurementCountDao
+    abstract fun speedDao(): SpeedDao
 
     companion object {
         @Volatile

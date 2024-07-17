@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.calculation.tipcalculation.db_Main.SettingsViewModel
 import com.calculation.tipcalculation.screen_comp.CustomBottomBar
 import com.calculation.tipcalculation.ui.AdvancedSettingsScreen
 import com.calculation.tipcalculation.ui.CalculationScreen
@@ -24,14 +25,13 @@ import com.calculation.tipcalculation.ui.MeasurementCountScreen
 import com.calculation.tipcalculation.ui.ResultScreen
 import com.calculation.tipcalculation.ui.SettingsScreen
 import com.calculation.tipcalculation.viewmodel.CalculationViewModel
-import com.calculation.tipcalculation.viewmodel.StateViewModel
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
     var selectedTab by remember { mutableIntStateOf(0) }
     val calculationViewModel: CalculationViewModel = viewModel()
-    val stateViewModel: StateViewModel = viewModel()
+    val settingsViewModel: SettingsViewModel = viewModel()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     navBackStackEntry?.destination?.route?.let { route ->
@@ -75,11 +75,11 @@ fun AppNavigation() {
                 startDestination = NavigationDestination.CalculationsScreenDestination.destination
             ) {
                 composable(NavigationDestination.CalculationsScreenDestination.destination) {
-                    CalculationScreen(navController = navController, calculationViewModel = calculationViewModel, stateViewModel = stateViewModel)
+                    CalculationScreen(navController = navController, calculationViewModel = calculationViewModel, settingsViewModel = settingsViewModel)
                 }
                 composable("resultScreen/{index}") { backStackEntry ->
                     val index = backStackEntry.arguments?.getString("index")?.toInt() ?: 0
-                    ResultScreen(viewModel = stateViewModel, tabIndex = index)
+                    ResultScreen(settingsViewModel = settingsViewModel, tabIndex = index)
                 }
                 composable(NavigationDestination.HistoryScreenDestination.destination) {
                     HistoryScreen()
@@ -94,7 +94,7 @@ fun AppNavigation() {
                     ExternalFilterTipsScreen()
                 }
                 composable(NavigationDestination.MeasurementCountScreenDestination.destination) {
-                    MeasurementCountScreen(stateViewModel = stateViewModel)
+                    MeasurementCountScreen(settingsViewModel = settingsViewModel)
                 }
                 composable(NavigationDestination.AdvancedSettingsScreenDestination.destination) {
                     AdvancedSettingsScreen()
