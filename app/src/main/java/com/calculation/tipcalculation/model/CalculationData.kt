@@ -2,14 +2,9 @@ package com.calculation.tipcalculation.model
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableStateOf
 
 data class CalculationData(
-    var patm: MutableState<String> = mutableStateOf(""),
-    var plsr: MutableState<String> = mutableStateOf(""),
-    var tsr: MutableState<String> = mutableStateOf(""),
-    var tasp: MutableState<String> = mutableStateOf(""),
-    var preom: MutableState<String> = mutableStateOf(""),
+    var patm: MutableState<Double> = mutableDoubleStateOf(0.0),
     var srznach: MutableState<Double> = mutableDoubleStateOf(0.0),
     var sigma: MutableState<Double> = mutableDoubleStateOf(0.0),
     var average: MutableState<Double> = mutableDoubleStateOf(0.0),
@@ -27,8 +22,6 @@ data class CalculationData(
     var suitableDiameters: MutableList<MutableState<Double>> = mutableListOf(),
     var unsuitableDiameters: MutableList<MutableState<Double>> = mutableListOf(),
     var selectedVp: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var selectedInnerTip: MutableState<String> = mutableStateOf(""),
-    var isButtonVisible: MutableState<Boolean> = mutableStateOf(false),
     var checkedDiametersList: MutableList<Pair<MutableState<Double>, MutableState<Double>>> = mutableListOf(),
     var selectedDiameter: MutableState<Double> = mutableDoubleStateOf(0.0),
     var vpOfSelectedDiameter: MutableState<Double> = mutableDoubleStateOf(0.0)

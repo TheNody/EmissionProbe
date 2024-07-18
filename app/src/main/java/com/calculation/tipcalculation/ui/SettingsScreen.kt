@@ -21,6 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.calculation.tipcalculation.utils.ADVANCED_SETTINS_SCREEN
+import com.calculation.tipcalculation.utils.EXTERNAL_FILTER_SCREEN
+import com.calculation.tipcalculation.utils.INTERNAL_FILTER_SCREEN
+import com.calculation.tipcalculation.utils.MEASUREMENT_COUNT_SCREEN
 
 @Composable
 fun SettingsScreen(navController: NavController) {
@@ -42,22 +46,22 @@ fun SettingsScreen(navController: NavController) {
         }
 
         SettingTab(title = "Наконечники для внутренней фильтрации") {
-            navController.navigate("internalFilterTipsScreen")
+            navController.navigate(INTERNAL_FILTER_SCREEN)
         }
         HorizontalDivider(color = Color.Black, thickness = 1.dp)
 
         SettingTab(title = "Наконечники для внешней фильтрации") {
-            navController.navigate("externalFilterTipsScreen")
+            navController.navigate(EXTERNAL_FILTER_SCREEN)
         }
         HorizontalDivider(color = Color.Black, thickness = 1.dp)
 
         SettingTab(title = "Количество измерений(скоростей)") {
-            navController.navigate("measurementCountScreen")
+            navController.navigate(MEASUREMENT_COUNT_SCREEN)
         }
         HorizontalDivider(color = Color.Black, thickness = 1.dp)
 
         SettingTab(title = "Продвинутые настройки") {
-            navController.navigate("advancedSettingsScreen")
+            navController.navigate(ADVANCED_SETTINS_SCREEN)
         }
         HorizontalDivider(color = Color.Black, thickness = 1.dp)
     }

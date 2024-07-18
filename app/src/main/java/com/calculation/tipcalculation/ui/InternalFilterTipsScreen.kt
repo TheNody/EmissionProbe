@@ -42,6 +42,8 @@ fun InternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel())
     var inputValue by remember { mutableStateOf("") }
     val valuesList by settingsViewModel.allFilterTips.observeAsState(listOf())
 
+    val sortedValuesList = valuesList.sortedBy { it.value }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -89,7 +91,7 @@ fun InternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel())
                 .padding(bottom = 16.dp)
         )
 
-        if (valuesList.isNotEmpty()) {
+        if (sortedValuesList.isNotEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,7 +102,7 @@ fun InternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel())
                     .padding(16.dp)
             ) {
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    itemsIndexed(valuesList) { _, value ->
+                    itemsIndexed(sortedValuesList) { _, value ->
                         ValueItem(value = value.value.toString(), onDelete = {
                             settingsViewModel.deleteFilterTip(value)
                         })

@@ -66,7 +66,7 @@ fun ResultScreen(settingsViewModel: SettingsViewModel, tabIndex: Int) {
                             TableRow("Vср. (м/с)", "${String.format(Locale.getDefault(), "%.2f", data.srznach.value)} ± ${String.format(Locale.getDefault(), "%.2f", data.sigma.value)}")
                             TableRow("d идеальный", String.format(Locale.getDefault(), "%.2f", data.average.value))
                             TableRow("d реал", String.format(Locale.getDefault(), "%.2f", data.tipSize.value))
-                            TableRow("P атм", data.patm.value)
+                            TableRow("P атм", String.format(Locale.getDefault(), "%.2f", data.patm.value))
                             TableRow("V aсп усл", String.format(Locale.getDefault(), "%.2f", data.aspUsl.value))
                             TableRow("P асп, мм вод.ст. ВП-20", String.format(Locale.getDefault(), "%.2f", data.result.value))
                             TableRow("V aсп усл1", String.format(Locale.getDefault(), "%.2f", data.aspUsl1.value))
@@ -113,3 +113,4 @@ fun ResultScreen(settingsViewModel: SettingsViewModel, tabIndex: Int) {
         }
     }
 }
+

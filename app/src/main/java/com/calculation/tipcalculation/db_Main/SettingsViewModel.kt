@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.calculation.tipcalculation.db_Main.externalFilter.ExternalFilterTip
 import com.calculation.tipcalculation.db_Main.externalFilter.ExternalFilterTipRepository
@@ -27,6 +28,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     val allExternalFilterTips: LiveData<List<ExternalFilterTip>>
     val allFilterTips: LiveData<List<FilterTip>>
+    private val speedCount: LiveData<SpeedCount?>
 
     val speeds = mutableStateListOf<String>()
     var data by mutableStateOf(CalculationData())
@@ -40,6 +42,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         filterTipRepository = FilterTipRepository(database.filterTipDao())
 
         // Получение данных из репозиториев
+        speedCount = speedCountRepository.measurementCount.asLiveData()
         allExternalFilterTips = externalFilterTipRepository.allExternalFilterTips
         allFilterTips = filterTipRepository.allFilterTips
 

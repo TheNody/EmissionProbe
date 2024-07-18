@@ -1,105 +1,132 @@
 package com.calculation.tipcalculation.navigation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseOutCubic
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.calculation.tipcalculation.db_Main.SettingsViewModel
-import com.calculation.tipcalculation.screen_comp.CustomBottomBar
 import com.calculation.tipcalculation.ui.AdvancedSettingsScreen
-import com.calculation.tipcalculation.ui.CalculationScreen
+import com.calculation.tipcalculation.ui.ExternalCalculationScreen
 import com.calculation.tipcalculation.ui.ExternalFilterTipsScreen
+import com.calculation.tipcalculation.ui.ExternalResultScreen
 import com.calculation.tipcalculation.ui.HistoryScreen
+import com.calculation.tipcalculation.ui.InternalCalculationScreen
 import com.calculation.tipcalculation.ui.InternalFilterTipsScreen
+import com.calculation.tipcalculation.ui.InternalResultScreen
+import com.calculation.tipcalculation.ui.MainScreen
 import com.calculation.tipcalculation.ui.MeasurementCountScreen
-import com.calculation.tipcalculation.ui.ResultScreen
 import com.calculation.tipcalculation.ui.SettingsScreen
 import com.calculation.tipcalculation.viewmodel.CalculationViewModel
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    var selectedTab by remember { mutableIntStateOf(0) }
     val calculationViewModel: CalculationViewModel = viewModel()
     val settingsViewModel: SettingsViewModel = viewModel()
 
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    navBackStackEntry?.destination?.route?.let { route ->
-        selectedTab = when (route) {
-            NavigationDestination.CalculationsScreenDestination.destination -> 0
-            "resultScreen/0" -> 1
-            "resultScreen/1" -> 1
-            NavigationDestination.HistoryScreenDestination.destination -> 2
-            NavigationDestination.SettingsScreenDestination.destination -> 3
-            else -> selectedTab
-        }
-    }
-
-    Scaffold(
-        bottomBar = {
-            CustomBottomBar(
-                selectedTab = selectedTab,
-                onTabSelected = { tabIndex ->
-                    selectedTab = tabIndex
-                    when (tabIndex) {
-                        0 -> navController.navigate(NavigationDestination.CalculationsScreenDestination.destination) {
-                            launchSingleTop = true
-                        }
-                        1 -> navController.navigate("resultScreen/0") {
-                            launchSingleTop = true
-                        }
-                        2 -> navController.navigate(NavigationDestination.HistoryScreenDestination.destination) {
-                            launchSingleTop = true
-                        }
-                        3 -> navController.navigate(NavigationDestination.SettingsScreenDestination.destination) {
-                            launchSingleTop = true
-                        }
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = navController,
-                startDestination = NavigationDestination.CalculationsScreenDestination.destination
+                startDestination = NavigationDestination.MainScreenDestination.destination
             ) {
-                composable(NavigationDestination.CalculationsScreenDestination.destination) {
-                    CalculationScreen(navController = navController, calculationViewModel = calculationViewModel, settingsViewModel = settingsViewModel)
+                composable(NavigationDestination.MainScreenDestination.destination) {
+                    MainScreen(navController = navController)
                 }
-                composable("resultScreen/{index}") { backStackEntry ->
-                    val index = backStackEntry.arguments?.getString("index")?.toInt() ?: 0
-                    ResultScreen(settingsViewModel = settingsViewModel, tabIndex = index)
+                composable(NavigationDestination.ExternalCalculationScreenDestination.destination) {
+                    OverlayScreen {
+                        ExternalCalculationScreen(
+                            navController = navController,
+                            calculationViewModel = calculationViewModel,
+                            settingsViewModel = settingsViewModel
+                        )
+                    }
+                }
+                composable(NavigationDestination.InternalCalculationScreenDestination.destination) {
+                    OverlayScreen {
+                        InternalCalculationScreen(
+                            navController = navController,
+                            calculationViewModel = calculationViewModel,
+                            settingsViewModel = settingsViewModel
+                        )
+                    }
+                }
+                composable(NavigationDestination.ExternalResultScreenDestination.destination) {
+                    OverlayScreen {
+                        ExternalResultScreen(settingsViewModel = settingsViewModel)
+                    }
+                }
+                composable(NavigationDestination.InternalResultScreenDestination.destination) {
+                    OverlayScreen {
+                        InternalResultScreen(settingsViewModel = settingsViewModel)
+                    }
                 }
                 composable(NavigationDestination.HistoryScreenDestination.destination) {
-                    HistoryScreen()
+                    OverlayScreen {
+                        HistoryScreen()
+                    }
                 }
                 composable(NavigationDestination.SettingsScreenDestination.destination) {
-                    SettingsScreen(navController = navController)
+                    OverlayScreen {
+                        SettingsScreen(navController = navController)
+                    }
                 }
                 composable(NavigationDestination.InternalFilterTipsScreenDestination.destination) {
-                    InternalFilterTipsScreen()
+                    OverlayScreen {
+                        InternalFilterTipsScreen()
+                    }
                 }
                 composable(NavigationDestination.ExternalFilterTipsScreenDestination.destination) {
-                    ExternalFilterTipsScreen()
+                    OverlayScreen {
+                        ExternalFilterTipsScreen()
+                    }
                 }
                 composable(NavigationDestination.MeasurementCountScreenDestination.destination) {
-                    MeasurementCountScreen(settingsViewModel = settingsViewModel)
+                    OverlayScreen {
+                        MeasurementCountScreen(settingsViewModel = settingsViewModel)
+                    }
                 }
                 composable(NavigationDestination.AdvancedSettingsScreenDestination.destination) {
-                    AdvancedSettingsScreen()
+                    OverlayScreen {
+                        AdvancedSettingsScreen()
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun OverlayScreen(content: @Composable () -> Unit) {
+    val transitionState = remember { MutableTransitionState(false) }
+    LaunchedEffect(transitionState) {
+        transitionState.targetState = true
+    }
+
+    AnimatedVisibility(
+        visibleState = transitionState,
+        enter = slideInVertically(
+            initialOffsetY = { it },
+            animationSpec = tween(durationMillis = 700, easing = EaseOutCubic)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it },
+            animationSpec = tween(durationMillis = 700, easing = EaseOutCubic)
+        )
+    ) {
+        content()
     }
 }

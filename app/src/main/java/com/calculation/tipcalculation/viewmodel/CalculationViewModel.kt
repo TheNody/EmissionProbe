@@ -1,18 +1,29 @@
 package com.calculation.tipcalculation.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.calculation.tipcalculation.db_Main.SettingsViewModel
 import com.calculation.tipcalculation.db_Main.externalFilter.ExternalFilterTip
 import com.calculation.tipcalculation.db_Main.internalFilter.FilterTip
 import com.calculation.tipcalculation.model.CalculationData
+import com.calculation.tipcalculation.model.CalculationState
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
 
 class CalculationViewModel : ViewModel() {
+    var patm: MutableState<String> = mutableStateOf("")
+    var plsr: MutableState<String> = mutableStateOf("")
+    var tsr: MutableState<String> = mutableStateOf("")
+    var tasp: MutableState<String> = mutableStateOf("")
+    var preom: MutableState<String> = mutableStateOf("")
+    var selectedInnerTip: MutableState<String> = mutableStateOf("")
+    var isButtonVisible: MutableState<Boolean> = mutableStateOf(false)
+    var calculationState: MutableState<CalculationState> = mutableStateOf(CalculationState())
 
     private var diameters: List<Double> = emptyList()
     private var externalDiameters: List<Double> = emptyList()
@@ -44,6 +55,7 @@ class CalculationViewModel : ViewModel() {
             patm ?: 0.0, plsr ?: 0.0, tsr ?: 0.0, tasp ?: 0.0, preom ?: 0.0
         )
 
+        data.patm.value = patmValue
         data.srznach.value = nonNullSpeeds.average()
         data.average.value = if (nonNullSpeeds.isNotEmpty()) 24 / sqrt(data.srznach.value) else 0.0
         data.sigma.value = calculateSigma(nonNullSpeeds, data.srznach.value)
@@ -91,6 +103,14 @@ class CalculationViewModel : ViewModel() {
         }
 
         calculateTipSize(data)
+
+        val firstSuitable = data.suitableDiameters
+            .map { it.value }
+            .filter { it <= 20 }
+            .minByOrNull { abs(it - data.average.value) }
+
+        data.firstSuitableDiameter.value = firstSuitable ?: 0.0
+        data.selectedVp.value = calculateVp(data.firstSuitableDiameter.value, patmValue, plsrValue, tsrValue, taspValue, preomValue, data.srznach.value)
     }
 
     private fun checkDiameter(
@@ -111,10 +131,6 @@ class CalculationViewModel : ViewModel() {
                 data.checkedDiametersList.add(mutableDoubleStateOf(currentDiameter) to mutableDoubleStateOf(vp))
                 if (vp <= 20) {
                     data.suitableDiameters.add(mutableDoubleStateOf(currentDiameter))
-                    if (data.firstSuitableDiameter.value == 0.0) {
-                        data.firstSuitableDiameter.value = currentDiameter
-                        data.selectedVp.value = vp
-                    }
                 } else {
                     data.unsuitableDiameters.add(mutableDoubleStateOf(currentDiameter))
                 }
@@ -240,14 +256,22 @@ class CalculationViewModel : ViewModel() {
         tsr: Double?,
         tasp: Double?,
         preom: Double?,
+        speeds: List<Double?>,
         settingsViewModel: SettingsViewModel
     ) {
+
+        settingsViewModel.resetValues()
+
         val data = settingsViewModel.data
-        val patmValue = (patm ?: 0.0) * 133.32
-        val plsrValue = plsr ?: 0.0
-        val tsrValue = tsr ?: 0.0
-        val taspValue = tasp ?: 0.0
-        val preomValue = preom ?: 0.0
+        val nonNullSpeeds = speeds.filterNotNull()
+        val (patmValue, plsrValue, tsrValue, taspValue, preomValue) = listOf(
+            (patm ?: 0.0) * 133.32, plsr ?: 0.0, tsr ?: 0.0, tasp ?: 0.0, preom ?: 0.0
+        )
+
+        data.patm.value = patmValue
+        data.srznach.value = nonNullSpeeds.average()
+        data.average.value = if (nonNullSpeeds.isNotEmpty()) 24 / sqrt(data.srznach.value) else 0.0
+        data.sigma.value = calculateSigma(nonNullSpeeds, data.srznach.value)
 
         Log.d("CalculationViewModel", "Начальные данные для расчета:")
         Log.d("CalculationViewModel", "Выбранный диаметр: $selectedDiameter")
@@ -269,6 +293,4 @@ class CalculationViewModel : ViewModel() {
         Log.d("CalculationViewModel", "vp выбранного наконечника: ${data.vpOfSelectedDiameter.value}")
     }
 }
-
-
 

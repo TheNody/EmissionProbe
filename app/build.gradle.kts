@@ -23,12 +23,14 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isShrinkResources = true
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+        debug {  }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -73,5 +75,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     //ROOM
-    ksp("androidx.room:room-compiler:2.6.1")
+    ksp(libs.androidx.room.compiler)
+
 }
