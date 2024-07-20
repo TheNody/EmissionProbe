@@ -292,5 +292,32 @@ class CalculationViewModel : ViewModel() {
 
         Log.d("CalculationViewModel", "vp выбранного наконечника: ${data.vpOfSelectedDiameter.value}")
     }
+
+    fun checkAllEmptyValues() : Boolean {
+
+        if(plsr.value.isNotEmpty() ){
+            return false;
+        }
+
+          if(patm.value.isNotEmpty() ){
+            return false;
+        }
+
+
+          if(tsr.value.isNotEmpty() ){
+            return false;
+        }
+
+
+          if(tasp.value.isNotEmpty() ){
+            return false;
+        }
+
+           if(preom.value.isNotEmpty() ){
+            return false;
+        }
+
+        return true
+    }
 }
 
