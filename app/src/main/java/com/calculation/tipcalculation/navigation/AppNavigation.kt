@@ -44,7 +44,9 @@ fun AppNavigation() {
                 startDestination = NavigationDestination.MainScreenDestination.destination
             ) {
                 composable(NavigationDestination.MainScreenDestination.destination) {
-                    MainScreen(navController = navController)
+                    MainScreen(navController = navController,
+                        calculationViewModel = calculationViewModel,
+                        settingsViewModel = settingsViewModel)
                 }
                 composable(NavigationDestination.ExternalCalculationScreenDestination.destination) {
                     OverlayScreen {

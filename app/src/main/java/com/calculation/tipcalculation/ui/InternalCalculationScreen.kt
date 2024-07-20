@@ -134,6 +134,11 @@ fun InternalCalculationScreen(
                 AnimatedVisibility(visible = calculationViewModel.isButtonVisible.value) {
                     Button(
                         onClick = {
+
+
+                            calculationViewModel.calculationState.value.internalCalculationDone = true
+
+
                             val selectedDiameter = calculationViewModel.selectedInnerTip.value.toDoubleOrNull()
                             if (selectedDiameter != null) {
                                 calculationViewModel.calculateInnerTipVp(

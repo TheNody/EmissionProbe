@@ -38,7 +38,7 @@ fun ExternalCalculationScreen(
     settingsViewModel: SettingsViewModel = viewModel()
 ) {
 
-    val openAlertEmptyString = remember { mutableStateOf(false) }
+    //val openAlertEmptyString = remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     val speeds = settingsViewModel.speeds
 
@@ -60,18 +60,12 @@ fun ExternalCalculationScreen(
     Log.d("ExternalCalculationScreen", "Значения из базы данных для внешней фильтрации: ${filterTips.map { it.value }}")
 
 
-     if (openAlertEmptyString.value) {
-                AlertDialog(
-                    onDismissRequest = { openAlertEmptyString.value = false},
-                    title = { Text(text = "Вы же ничего совсем не ввели") },
-                    text = { Text("Вы не ввели ни одних данных для вычислений") },
-                    confirmButton = {
-                        Button({ openAlertEmptyString.value = false }) {
-                            Text("Понятьненько", fontSize = 22.sp)
-                        }
-                    }
-                )
-            }
+//     if (openAlertEmptyString.value) {
+//
+//         DialogWithButton(onDismissRequest = {openAlertEmptyString.value = false},
+//             onConfirmation = {} , 2)
+//
+//            }
 
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -94,15 +88,16 @@ fun ExternalCalculationScreen(
                 Button(
                     onClick = {
 
-                        println(" my values == ${calculationViewModel.plsr.value}")
-                        println(" my pul value = ${calculationViewModel.patm.value}")
-
-                        if(calculationViewModel.checkAllEmptyValues()){
-                           // println(" empty Values !")
-                            openAlertEmptyString.value = true
-                        }else {
+                        calculationViewModel.calculationState.value.externalCalculationDone = true
+//                        println(" my values == ${calculationViewModel.plsr.value}")
+//                        println(" my pul value = ${calculationViewModel.patm.value}")
+//                        if(calculationViewModel.checkAllEmptyValues()){
+//                           // println(" empty Values !")
+//                            openAlertEmptyString.value = true
+//                        }else {
 
                            calculationViewModel.calculateResult(
+
                             calculationViewModel.patm.value.toDoubleOrNull(),
                             speeds.map { it.toDoubleOrNull() ?: 0.0 },
                             calculationViewModel.plsr.value.toDoubleOrNull(),
@@ -113,7 +108,7 @@ fun ExternalCalculationScreen(
                         )
                         navController.navigate(EXTERNAL_RESULT_SCREEN)
 
-                        }
+
 
                     },
                     modifier = Modifier.fillMaxWidth()

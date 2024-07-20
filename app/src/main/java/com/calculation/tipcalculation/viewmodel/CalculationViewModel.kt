@@ -25,11 +25,41 @@ class CalculationViewModel : ViewModel() {
     var isButtonVisible: MutableState<Boolean> = mutableStateOf(false)
     var calculationState: MutableState<CalculationState> = mutableStateOf(CalculationState())
 
+
+
+
     private var diameters: List<Double> = emptyList()
     private var externalDiameters: List<Double> = emptyList()
 
+
+
+    fun returnVariantNumber () : Int {
+
+        if(!calculationState.value.externalCalculationDone && !calculationState.value.internalCalculationDone){
+            return 0
+        }
+
+           if(calculationState.value.externalCalculationDone && !calculationState.value.internalCalculationDone){
+            return 1
+        }
+
+           if(!calculationState.value.externalCalculationDone && calculationState.value.internalCalculationDone){
+            return 3
+        }
+
+
+         if(calculationState.value.externalCalculationDone && calculationState.value.internalCalculationDone){
+            return 2
+        }
+
+
+        return 0
+    }
+
     fun setFilterTips(filterTips: List<ExternalFilterTip>) {
         diameters = filterTips.map { it.value }
+
+    //    calculationState.value.externalCalculationDone = true
         Log.d("CalculationViewModel", "Получены значения внешних фильтров: $diameters")
     }
 
