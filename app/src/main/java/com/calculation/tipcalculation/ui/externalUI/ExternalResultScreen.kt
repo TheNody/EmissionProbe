@@ -1,28 +1,37 @@
-package com.calculation.tipcalculation.ui
+package com.calculation.tipcalculation.ui.externalUI
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.calculation.tipcalculation.db_Main.SettingsViewModel
 import com.calculation.tipcalculation.screen_comp.ExpandableTable
 import com.calculation.tipcalculation.screen_comp.ResultCard
 import com.calculation.tipcalculation.screen_comp.Table
 import com.calculation.tipcalculation.screen_comp.TableRow
+import com.calculation.tipcalculation.utils.HISTORY_SCREEN
 import java.util.Locale
 
 @Composable
-fun ExternalResultScreen(settingsViewModel: SettingsViewModel) {
+fun ExternalResultScreen(
+    settingsViewModel: SettingsViewModel,
+    navController: NavController
+) {
     val data = settingsViewModel.data
+    val reportDataState = settingsViewModel.reportData
+    val reportData = reportDataState.value
 
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -52,7 +61,7 @@ fun ExternalResultScreen(settingsViewModel: SettingsViewModel) {
                         TableRow("d реал", String.format(Locale.getDefault(), "%.2f", data.dreal.value))
                         TableRow("V aсп усл2", String.format(Locale.getDefault(), "%.2f", data.vsp2.value))
                         TableRow("Рассчитанный нак.", String.format(Locale.getDefault(), "%.2f", data.calculatedTip.value))
-                        TableRow("Выбранный нак.", String.format(Locale.getDefault(), "%.2f", data.vibrNak.value))
+                        TableRow("СКО", String.format(Locale.getDefault(), "%.3f", reportData?.sko ?: 0.0))
                     }
                 }
             }
@@ -68,6 +77,18 @@ fun ExternalResultScreen(settingsViewModel: SettingsViewModel) {
                     }
                 }
             }
+            item {
+                Button(onClick = {
+                    reportData?.let {
+                        settingsViewModel.savePreparedReportData(it)
+                        navController.navigate(HISTORY_SCREEN)
+                    } ?: Log.e("ExternalResultScreen", "Нет данных для сохранения")
+                }) {
+                    Text("Сохранить результаты")
+                }
+            }
         }
     }
 }
+
+

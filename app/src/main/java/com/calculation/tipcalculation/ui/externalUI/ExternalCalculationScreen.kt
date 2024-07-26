@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.ui
+package com.calculation.tipcalculation.ui.externalUI
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -22,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.calculation.tipcalculation.db_Main.SettingsViewModel
 import com.calculation.tipcalculation.model.Field
+import com.calculation.tipcalculation.model.ReportData
 import com.calculation.tipcalculation.screen_comp.CustomSpeedTextFieldItem
 import com.calculation.tipcalculation.screen_comp.CustomTextFieldItem
 import com.calculation.tipcalculation.utils.EXTERNAL_RESULT_SCREEN
@@ -38,7 +40,6 @@ fun ExternalCalculationScreen(
 
     val filterTips by settingsViewModel.allExternalFilterTips.observeAsState(emptyList())
 
-
     LaunchedEffect(filterTips) {
         calculationViewModel.setFilterTips(filterTips)
     }
@@ -52,7 +53,6 @@ fun ExternalCalculationScreen(
     )
 
     Log.d("ExternalCalculationScreen", "Значения из базы данных для внешней фильтрации: ${filterTips.map { it.value }}")
-
 
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
@@ -73,15 +73,32 @@ fun ExternalCalculationScreen(
             item {
                 Button(
                     onClick = {
+                        calculationViewModel.calculationState.value.externalCalculationDone = true
+                        val reportData = ReportData(
+                            tsr = mutableDoubleStateOf(calculationViewModel.tsr.value.toDoubleOrNull() ?: 0.0),
+                            tasp = mutableDoubleStateOf(calculationViewModel.tasp.value.toDoubleOrNull() ?: 0.0),
+                            plsr = mutableDoubleStateOf(calculationViewModel.plsr.value.toDoubleOrNull() ?: 0.0),
+                            patm = calculationViewModel.patm.value.toDoubleOrNull() ?: 0.0
+                        )
+
+                        Log.d("ExternalCalculationScreen", "Переданные данные: tsr=${reportData.tsr.value}, tasp=${reportData.tasp.value}, plsr=${reportData.plsr.value}")
+
+                        val preparedData = calculationViewModel.prepareReportData(
+                            reportData,
+                            speeds.map { it.toDoubleOrNull() },
+                            settingsViewModel
+                        )
+
                         calculationViewModel.calculateResult(
-                            calculationViewModel.patm.value.toDoubleOrNull(),
+                            reportData,
                             speeds.map { it.toDoubleOrNull() ?: 0.0 },
-                            calculationViewModel.plsr.value.toDoubleOrNull(),
-                            calculationViewModel.tsr.value.toDoubleOrNull(),
-                            calculationViewModel.tasp.value.toDoubleOrNull(),
+                            calculationViewModel.patm.value.toDoubleOrNull(),
                             calculationViewModel.preom.value.toDoubleOrNull(),
                             settingsViewModel
                         )
+
+                        settingsViewModel.updateReportData(preparedData)
+
                         navController.navigate(EXTERNAL_RESULT_SCREEN)
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -92,4 +109,5 @@ fun ExternalCalculationScreen(
         }
     }
 }
+
 

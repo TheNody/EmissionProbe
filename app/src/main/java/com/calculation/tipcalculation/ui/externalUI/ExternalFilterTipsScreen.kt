@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.ui
+package com.calculation.tipcalculation.ui.externalUI
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,15 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.calculation.tipcalculation.db_Main.SettingsViewModel
-import com.calculation.tipcalculation.db_Main.internalFilter.FilterTip
+import com.calculation.tipcalculation.db_Main.externalFilter.ExternalFilterTip
 import com.calculation.tipcalculation.screen_comp.ValueItem
 
 @Composable
-fun InternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel()) {
+fun ExternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel()) {
     var inputValue by remember { mutableStateOf("") }
-    val valuesList by settingsViewModel.allFilterTips.observeAsState(listOf())
-
-    val sortedValuesList = valuesList.sortedBy { it.value }
+    val valuesList by settingsViewModel.allExternalFilterTips.observeAsState(listOf())
 
     Column(
         modifier = Modifier
@@ -50,8 +48,8 @@ fun InternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel())
             .padding(16.dp)
     ) {
         Text(
-            text = "Введите наконечники для внутренней фильтрации",
-            fontSize = 15.sp,
+            text = "Введите наконечники для внешней фильтрации",
+            fontSize = 15.7.sp,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -80,8 +78,8 @@ fun InternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel())
                         } else {
                             inputValue
                         }
-                        val filterTip = FilterTip(value = valueToAdd.toDouble())
-                        settingsViewModel.insertFilterTip(filterTip)
+                        val externalFilterTip = ExternalFilterTip(value = valueToAdd.toDouble())
+                        settingsViewModel.insertExternalFilterTip(externalFilterTip)
                         inputValue = ""
                     }
                 }
@@ -91,7 +89,7 @@ fun InternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel())
                 .padding(bottom = 16.dp)
         )
 
-        if (sortedValuesList.isNotEmpty()) {
+        if (valuesList.isNotEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -102,9 +100,9 @@ fun InternalFilterTipsScreen(settingsViewModel: SettingsViewModel = viewModel())
                     .padding(16.dp)
             ) {
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    itemsIndexed(sortedValuesList) { _, value ->
+                    itemsIndexed(valuesList) { _, value ->
                         ValueItem(value = value.value.toString(), onDelete = {
-                            settingsViewModel.deleteFilterTip(value)
+                            settingsViewModel.deleteExternalFilterTip(value)
                         })
                         Spacer(modifier = Modifier.height(8.dp))
                     }

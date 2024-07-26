@@ -2,6 +2,11 @@ package com.calculation.tipcalculation.screen_comp
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.EaseOutCubic
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,6 +29,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -32,6 +38,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,8 +56,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
 import com.calculation.tipcalculation.db_Main.SettingsViewModel
 import com.calculation.tipcalculation.model.Field
+import com.calculation.tipcalculation.utils.EXTERNAL_RESULT_SCREEN
+import com.calculation.tipcalculation.utils.INTERNAL_RESULT_SCREEN
 
 //region Calculation Screen Comp
 
@@ -260,9 +271,9 @@ fun TableRow(title: String, value: String) {
 //region Main Screen Comp
 
 @Composable
-fun IconBox(icon: ImageVector, label: String, onClick: () -> Unit) {
+fun IconBox(icon: ImageVector, label: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .border(1.5.dp, Color.Black, shape = RoundedCornerShape(16.dp))
             .size(100.dp)
@@ -295,6 +306,136 @@ fun IconBox(icon: ImageVector, label: String, onClick: () -> Unit) {
                     style = TextStyle(color = Color.Black, fontSize = 14.sp),
                     textAlign = TextAlign.Center
                 )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun OverlayScreen(content: @Composable () -> Unit) {
+    val transitionState = remember { MutableTransitionState(false) }
+    LaunchedEffect(transitionState) {
+        transitionState.targetState = true
+    }
+
+    AnimatedVisibility(
+        visibleState = transitionState,
+        enter = slideInVertically(
+            initialOffsetY = { it },
+            animationSpec = tween(durationMillis = 700, easing = EaseOutCubic)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it },
+            animationSpec = tween(durationMillis = 700, easing = EaseOutCubic)
+        )
+    ) {
+        content()
+    }
+}
+
+@Composable
+fun DialogWithButton (
+    onDismissRequest: () -> Unit,
+    navController: NavController,
+    whatSeeButton: Int
+) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        val whatSeeEmpty = remember { mutableStateOf(false) }
+        val whatSeeOne = remember { mutableStateOf(false) }
+        val whatSeeTwo = remember { mutableStateOf(false) }
+        val whatSeeThree = remember { mutableStateOf(false) }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(220.dp)
+                .padding(horizontal = 20.dp),
+            shape = RoundedCornerShape(18.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                when (whatSeeButton) {
+                    0 -> { whatSeeEmpty.value = true }
+                    1 -> whatSeeOne.value = true
+                    2 -> { whatSeeTwo.value = true }
+                    3 -> { whatSeeThree.value = true }
+                }
+
+                if (whatSeeEmpty.value) {
+                    Text(
+                        text = "Вы не ввели ни одних данных для вычислений",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                }
+
+                if (whatSeeOne.value) {
+                    Text(
+                        text = "Посмотреть Internal результаты",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                    Button(
+                        onClick = {
+                            navController.navigate(INTERNAL_RESULT_SCREEN)
+                        }
+                    ) {
+                        Text(text = "Результатам Internal")
+                    }
+                }
+
+                if (whatSeeThree.value) {
+                    Text(
+                        text = "Посмотреть EXternal результаты",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                    Button(
+                        onClick = {
+                            navController.navigate(EXTERNAL_RESULT_SCREEN)
+                        }
+                    ) {
+                        Text(text = "Результатам EXternal")
+                    }
+                }
+
+                if (whatSeeTwo.value) {
+                    Text(
+                        text = "Выберите какие результаты хотите посмотреть",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                    Button(
+                        onClick = {
+                            navController.navigate(INTERNAL_RESULT_SCREEN)
+                        }
+                    ) {
+                        Text(text = "Перейти к результатам Internal")
+                    }
+
+                    Spacer(modifier = Modifier.padding(top = 20.dp))
+
+                    Button(
+                        onClick = {
+                            navController.navigate(EXTERNAL_RESULT_SCREEN)
+                        }
+                    ) {
+                        Text(text = "Перейти к результатам External")
+                    }
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.calculation.tipcalculation.model
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collection.mutableVectorOf
 import androidx.compose.runtime.mutableDoubleStateOf
 
 data class CalculationData(
@@ -24,5 +25,6 @@ data class CalculationData(
     var selectedVp: MutableState<Double> = mutableDoubleStateOf(0.0),
     var checkedDiametersList: MutableList<Pair<MutableState<Double>, MutableState<Double>>> = mutableListOf(),
     var selectedDiameter: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var vpOfSelectedDiameter: MutableState<Double> = mutableDoubleStateOf(0.0)
+    var vpOfSelectedDiameter: MutableState<Double> = mutableDoubleStateOf(0.0),
+    var sko: MutableState<Double> = mutableDoubleStateOf(0.0)
 )

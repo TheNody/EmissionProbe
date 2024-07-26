@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.ui
+package com.calculation.tipcalculation.ui.internalUI
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,6 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.calculation.tipcalculation.db_Main.SettingsViewModel
 import com.calculation.tipcalculation.model.Field
+import com.calculation.tipcalculation.model.ReportData
 import com.calculation.tipcalculation.screen_comp.CustomSpeedTextFieldItem
 import com.calculation.tipcalculation.screen_comp.CustomTextFieldItem
 import com.calculation.tipcalculation.utils.INTERNAL_RESULT_SCREEN
@@ -134,8 +136,23 @@ fun InternalCalculationScreen(
                 AnimatedVisibility(visible = calculationViewModel.isButtonVisible.value) {
                     Button(
                         onClick = {
+                            calculationViewModel.calculationState.value.internalCalculationDone = true
+                            val reportData = ReportData(
+                                patm = calculationViewModel.patm.value.toDoubleOrNull() ?: 0.0,
+                                tsr = mutableDoubleStateOf(calculationViewModel.tsr.value.toDoubleOrNull() ?: 0.0),
+                                tasp = mutableDoubleStateOf(calculationViewModel.tasp.value.toDoubleOrNull() ?: 0.0),
+                                plsr = mutableDoubleStateOf(calculationViewModel.plsr.value.toDoubleOrNull() ?: 0.0)
+                            )
+
                             val selectedDiameter = calculationViewModel.selectedInnerTip.value.toDoubleOrNull()
+
+                            Log.d("InternalCalculationScreen", "Переданные данные: tsr=${reportData.tsr.value}, tasp=${reportData.tasp.value}, plsr=${reportData.plsr.value}")
                             if (selectedDiameter != null) {
+                                val preparedData = calculationViewModel.prepareReportData(
+                                    reportData,
+                                    speeds.map { it.toDoubleOrNull() },
+                                    settingsViewModel
+                                )
                                 calculationViewModel.calculateInnerTipVp(
                                     selectedDiameter,
                                     calculationViewModel.patm.value.toDoubleOrNull(),
@@ -146,6 +163,9 @@ fun InternalCalculationScreen(
                                     speeds.map { it.toDoubleOrNull() ?: 0.0 },
                                     settingsViewModel
                                 )
+
+                                settingsViewModel.updateReportData(preparedData)
+
                                 navController.navigate(INTERNAL_RESULT_SCREEN)
                             }
                         },

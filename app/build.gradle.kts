@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.calculation.tipcalculation"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -76,5 +76,9 @@ dependencies {
 
     //ROOM
     ksp(libs.androidx.room.compiler)
+
+    //JXL
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
 
 }
