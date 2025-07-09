@@ -1,0 +1,108 @@
+package com.calculation.tipcalculation.presentation.navigation
+
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.runtime.*
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.calculation.tipcalculation.presentation.ui.calculator_screen.CalculatorScreen
+import com.calculation.tipcalculation.presentation.ui.external_screen.ExternalCalcScreen
+import com.calculation.tipcalculation.presentation.ui.internal_screen.InternalCalcScreen
+import com.calculation.tipcalculation.presentation.ui.main_screen.MainScreen
+import com.calculation.tipcalculation.presentation.ui.screens.*
+import com.calculation.tipcalculation.presentation.ui.settings_screen.SettingsScreen
+import com.calculation.tipcalculation.presentation.ui.speed_screen.SpeedCountScreen
+
+@Composable
+fun AppEntryPoint() {
+    val navController = rememberNavController()
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
+
+    AppNavigation(
+        navController = navController,
+        selectedTabIndex = selectedTabIndex,
+        onTabSelected = { index ->
+            selectedTabIndex = index
+            when (index) {
+                0 -> navController.navigate(Screen.Main.route)
+                1 -> navController.navigate(Screen.History.route)
+                2 -> navController.navigate(Screen.Measurement.route)
+                3 -> navController.navigate(Screen.Settings.route)
+            }
+        }
+    )
+}
+
+@Composable
+fun AppNavigation(
+    navController: NavHostController,
+    selectedTabIndex: Int,
+    onTabSelected: (Int) -> Unit
+) {
+    fun defaultEnter() = slideInHorizontally(
+        initialOffsetX = { 1000 },
+        animationSpec = tween(300)
+    )
+
+    fun defaultExit() = slideOutHorizontally(
+        targetOffsetX = { -1000 },
+        animationSpec = tween(300)
+    )
+
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Main.route
+    ) {
+        composable(Screen.Main.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            MainScreen(
+                navController = navController,
+                selectedIndex = selectedTabIndex,
+                onTabSelected = onTabSelected
+            )
+        }
+        composable(Screen.ExternalCalc.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            ExternalCalcScreen(navController = navController)
+        }
+        composable(Screen.InternalCalc.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            InternalCalcScreen(navController = navController)
+        }
+        composable(Screen.ExternalResult.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            ExternalResultScreen()
+        }
+        composable(Screen.InternalResult.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            InternalResultScreen()
+        }
+        composable(Screen.ExternalTips.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            ExternalTipsScreen()
+        }
+        composable(Screen.InternalTips.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            InternalTipsScreen()
+        }
+        composable(Screen.History.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            HistoryScreen()
+        }
+        composable(Screen.Settings.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            SettingsScreen(
+                navController = navController,
+                selectedIndex = selectedTabIndex,
+                onTabSelected = onTabSelected
+            )
+        }
+        composable(Screen.Measurement.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            MeasurementScreen()
+        }
+        composable(Screen.AdvancedSettings.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            AdvancedSettingsScreen()
+        }
+        composable(Screen.Calculator.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            CalculatorScreen()
+        }
+
+        composable(Screen.SpeedCount.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            SpeedCountScreen(navController = navController)
+        }
+    }
+}

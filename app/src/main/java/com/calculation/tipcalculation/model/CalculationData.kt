@@ -1,30 +1,28 @@
 package com.calculation.tipcalculation.model
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collection.mutableVectorOf
-import androidx.compose.runtime.mutableDoubleStateOf
-
 data class CalculationData(
-    var patm: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var srznach: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var sigma: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var average: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var tipSize: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var aspUsl: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var result: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var aspUsl1: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var duslov1: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var vibrNak: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var dreal: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var vsp2: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var calculatedTip: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var closestDiameter: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var firstSuitableDiameter: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var suitableDiameters: MutableList<MutableState<Double>> = mutableListOf(),
-    var unsuitableDiameters: MutableList<MutableState<Double>> = mutableListOf(),
-    var selectedVp: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var checkedDiametersList: MutableList<Pair<MutableState<Double>, MutableState<Double>>> = mutableListOf(),
-    var selectedDiameter: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var vpOfSelectedDiameter: MutableState<Double> = mutableDoubleStateOf(0.0),
-    var sko: MutableState<Double> = mutableDoubleStateOf(0.0)
+    val patm: Double = 0.0,
+    val srznach: Double = 0.0,
+    val sigma: Double = 0.0,
+    val average: Double = 0.0,
+    val tipSize: Double = 0.0,
+    val aspUsl: Double = 0.0,
+    val result: Double = 0.0,
+    val aspUsl1: Double = 0.0,
+    val duslov1: Double = 0.0,
+    val vibrNak: Double = 0.0,
+    val dreal: Double = 0.0,
+    val vsp2: Double = 0.0,
+    val calculatedTip: Double = 0.0,
+    val closestDiameter: Double = 0.0,
+    val firstSuitableDiameter: Double = 0.0,
+
+    val suitableDiameters: List<Double> = emptyList(),
+    val unsuitableDiameters: List<Double> = emptyList(),
+    val checkedDiametersList: List<Pair<Double, Double>> = emptyList(),
+
+    val selectedVp: Double = 0.0,
+    val selectedDiameter: Double = 0.0,
+
+    val sko: Double = 0.0
 )
