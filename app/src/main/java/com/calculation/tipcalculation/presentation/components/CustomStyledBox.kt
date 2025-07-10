@@ -374,3 +374,88 @@ fun ValuesListCard(
         }
     }
 }
+
+@Composable
+fun InnerShadowBoxWithNegative(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    height: Dp = 60.dp,
+    cornerRadius: Dp = 8.dp,
+    placeholder: String = "",
+    onDone: () -> Unit
+) {
+    val shape = RoundedCornerShape(cornerRadius)
+
+    val strokeBrush = Brush.linearGradient(
+        colors = listOf(
+            Color.White.copy(alpha = 0.2f),
+            Color.Black.copy(alpha = 0.2f)
+        ),
+        start = Offset.Zero,
+        end = Offset.Infinite
+    )
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(height)
+            .border(BorderStroke(0.5.dp, strokeBrush), shape = shape)
+            .shadow(
+                elevation = 10.dp,
+                shape = shape,
+                ambientColor = DropShadowColor,
+                spotColor = DropShadowColor
+            )
+            .background(DarkFill, shape)
+            .innerShadow(
+                shape = shape,
+                color = InnerShadowColor,
+                offsetX = 4.dp,
+                offsetY = 10.dp,
+                blur = 30.dp
+            )
+            .padding(horizontal = 16.dp)
+    ) {
+        TextField(
+            value = value,
+            onValueChange = {
+                val newValue = it.replace(',', '.')
+                if (newValue.matches(Regex("^-?\\d*\\.?\\d*$"))) {
+                    onValueChange(newValue)
+                }
+            },
+            modifier = Modifier.fillMaxSize(),
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    color = Color.LightGray,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    onDone()
+                }
+            ),
+            singleLine = true,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+            colors = TextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                cursorColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                focusedPlaceholderColor = Color.LightGray,
+                unfocusedPlaceholderColor = Color.LightGray
+            )
+        )
+    }
+}

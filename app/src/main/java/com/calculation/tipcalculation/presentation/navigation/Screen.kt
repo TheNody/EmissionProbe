@@ -14,4 +14,5 @@ sealed class Screen(val route: String) {
     object AdvancedSettings : Screen("advanced_settings")
     object Calculator : Screen("calculator")
     object SpeedCount : Screen("speed_count")
+    object InternalFilterCalc : Screen("internal_filter_calc")
 }

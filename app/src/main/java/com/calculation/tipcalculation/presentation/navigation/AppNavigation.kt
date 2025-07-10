@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.calculation.tipcalculation.presentation.ui.calculator_screen.CalculatorScreen
 import com.calculation.tipcalculation.presentation.ui.external_screen.ExternalCalcScreen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.InternalCalcScreen
+import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_calc.InternalFilterCalcScreen
 import com.calculation.tipcalculation.presentation.ui.main_screen.MainScreen
 import com.calculation.tipcalculation.presentation.ui.screens.*
 import com.calculation.tipcalculation.presentation.ui.settings_screen.SettingsScreen
@@ -100,9 +101,11 @@ fun AppNavigation(
         composable(Screen.Calculator.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             CalculatorScreen()
         }
-
         composable(Screen.SpeedCount.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             SpeedCountScreen(navController = navController)
+        }
+        composable(Screen.InternalFilterCalc.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            InternalFilterCalcScreen(navController = navController)
         }
     }
 }

@@ -21,15 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.calculation.tipcalculation.R
 import com.calculation.tipcalculation.presentation.components.CustomBackground
+import com.calculation.tipcalculation.presentation.components.CustomGradientButton
 import com.calculation.tipcalculation.presentation.components.InnerShadowBox
 import com.calculation.tipcalculation.presentation.components.TopBarWithDescription
 import com.calculation.tipcalculation.presentation.components.ValuesListCard
+import com.calculation.tipcalculation.presentation.navigation.Screen
 import com.calculation.tipcalculation.presentation.ui.theme.Typography
 import com.calculation.tipcalculation.presentation.view_model.internal_screen.InternalFilterViewModel
 
@@ -53,10 +54,13 @@ fun InternalCalcScreen(
             ) {
                 Spacer(modifier = Modifier.height(70.dp))
 
-                Text(
-                    text = "Здесь будет экран расчёта внутренней фильтрации",
-                    color = Color.White,
-                    fontSize = 16.sp
+                CustomGradientButton(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = "Новый расчёт",
+                    onClick = {
+                        navController.navigate(Screen.InternalFilterCalc.route)
+                    }
                 )
             }
 
