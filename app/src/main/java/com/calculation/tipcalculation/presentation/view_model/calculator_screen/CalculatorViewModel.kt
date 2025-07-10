@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.presentation.viewmodel.calculator_screen
+package com.calculation.tipcalculation.presentation.view_model.calculator_screen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

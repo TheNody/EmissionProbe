@@ -34,7 +34,7 @@ import com.calculation.tipcalculation.R
 import com.calculation.tipcalculation.presentation.components.CalculatorIconButton
 import com.calculation.tipcalculation.presentation.components.CalculatorKeyButton
 import com.calculation.tipcalculation.presentation.components.CustomBackground2
-import com.calculation.tipcalculation.presentation.viewmodel.calculator_screen.CalculatorViewModel
+import com.calculation.tipcalculation.presentation.view_model.calculator_screen.CalculatorViewModel
 import com.calculation.tipcalculation.utils.ErrorMessageMapper
 
 @Composable

@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.presentation.viewmodel.speed_count
+package com.calculation.tipcalculation.presentation.view_model.speed_count
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -19,7 +19,7 @@ import com.calculation.tipcalculation.R
 import com.calculation.tipcalculation.presentation.components.CustomBackground2
 import com.calculation.tipcalculation.presentation.components.InnerShadowBoxWithButton
 import com.calculation.tipcalculation.presentation.components.MainTopBarWithBackArrowAndCustomIcon
-import com.calculation.tipcalculation.presentation.viewmodel.speed_count.SpeedCountViewModel
+import com.calculation.tipcalculation.presentation.view_model.speed_count.SpeedCountViewModel
 
 @Composable
 fun SpeedCountScreen(

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.calculation.tipcalculation.presentation.ui.theme.Typography
@@ -21,10 +22,10 @@ import com.calculation.tipcalculation.presentation.ui.theme.Typography
 fun TopBarWithDescription(
     title: String,
     descriptionTitle: String,
-    descriptionText: String,
     onBackClick: () -> Unit,
     iconResId: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    descriptionContent: @Composable () -> Unit
 ) {
     var showDescription by remember { mutableStateOf(false) }
 
@@ -103,15 +104,14 @@ fun TopBarWithDescription(
 
                 Text(
                     text = descriptionTitle,
-                    style = Typography.titleLarge
+                    style = Typography.titleLarge,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = descriptionText,
-                    style = Typography.bodyLarge
-                )
+                descriptionContent()
             }
         }
     }
