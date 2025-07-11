@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.calculation.tipcalculation.data.local.AppDatabase
 import com.calculation.tipcalculation.data.local.dao.*
+import com.calculation.tipcalculation.data.local.migration.MIGRATION_1_2
 import com.calculation.tipcalculation.data.repository.*
 import com.calculation.tipcalculation.domain.repository.*
 import dagger.Module
@@ -26,13 +27,15 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "app_database"
-        ).build()
+        )
+            .build()
     }
 
     @Provides fun provideFilterTipDao(db: AppDatabase): FilterTipDao = db.filterTipDao()
     @Provides fun provideExternalFilterTipDao(db: AppDatabase): ExternalFilterTipDao = db.externalFilterTipDao()
     @Provides fun provideSpeedDao(db: AppDatabase): SpeedDao = db.speedDao()
     @Provides fun provideReportDataDao(db: AppDatabase): ReportDataDao = db.reportDataDao()
+    @Provides fun provideInternalResultDao(db: AppDatabase): InternalResultDao = db.internalResultDao()
 
     @Provides
     fun provideFilterTipRepository(dao: FilterTipDao): FilterTipRepository =
@@ -49,4 +52,9 @@ object DatabaseModule {
     @Provides
     fun provideReportDataRepository(dao: ReportDataDao): ReportDataRepository =
         ReportDataRepositoryImpl(dao)
+
+    @Provides
+    fun provideInternalResultHistoryRepository(
+        dao: InternalResultDao
+    ): InternalResultHistoryRepository = InternalResultHistoryRepositoryImpl(dao)
 }

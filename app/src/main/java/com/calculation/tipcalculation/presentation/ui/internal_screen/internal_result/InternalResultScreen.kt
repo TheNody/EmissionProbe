@@ -89,13 +89,12 @@ fun InternalResultScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(12.dp))
-
                     GradientConfirmButton2(
                         modifier = Modifier.fillMaxWidth(),
                         text = "Сохранить результат",
                         onClick = {
-                            navController.navigate(Screen.History.route)
+                            viewModel.saveResultToHistory()
+                            navController.navigate(Screen.InternalCalc.route)
                         }
                     )
                 }

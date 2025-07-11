@@ -4,7 +4,10 @@ import com.calculation.tipcalculation.domain.repository.*
 import com.calculation.tipcalculation.domain.usecase.external_filter.*
 import com.calculation.tipcalculation.domain.usecase.internal_filter.*
 import com.calculation.tipcalculation.domain.usecase.internal_result.ClearInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal_result.internal_result_history.DeleteInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal_result.internal_result_history.GetInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal_result.GetInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal_result.SetInternalResultUseCase
 import com.calculation.tipcalculation.domain.usecase.report_data.*
 import com.calculation.tipcalculation.domain.usecase.speed_count.*
@@ -130,4 +133,23 @@ object UseCaseModule {
     fun provideClearInternalResultUseCase(
         repository: InternalResultRepository
     ): ClearInternalResultUseCase = ClearInternalResultUseCase(repository)
+
+    //Result Internal UseCases
+    @Provides
+    @Singleton
+    fun provideInsertInternalResultHistoryUseCase(
+        repository: InternalResultHistoryRepository
+    ): InsertInternalResultHistoryUseCase = InsertInternalResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetInternalResultHistoryUseCase(
+        repository: InternalResultHistoryRepository
+    ): GetInternalResultHistoryUseCase = GetInternalResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteInternalResultHistoryUseCase(
+        repository: InternalResultHistoryRepository
+    ): DeleteInternalResultHistoryUseCase = DeleteInternalResultHistoryUseCase(repository)
 }
