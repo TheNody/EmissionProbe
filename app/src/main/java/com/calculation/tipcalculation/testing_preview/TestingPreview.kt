@@ -2,6 +2,7 @@ package com.calculation.tipcalculation.testing_preview
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,10 +28,13 @@ import androidx.compose.ui.unit.dp
 import com.calculation.tipcalculation.presentation.components.BoxCard
 import com.calculation.tipcalculation.presentation.components.CustomBackground
 import com.calculation.tipcalculation.presentation.components.CustomGradientButton
+import com.calculation.tipcalculation.presentation.components.ExpandableBoxCard
 import com.calculation.tipcalculation.presentation.components.FilterTipDropDownMenu
 import com.calculation.tipcalculation.presentation.components.GradientConfirmButton
 import com.calculation.tipcalculation.presentation.components.InnerShadowBoxWithButton
+import com.calculation.tipcalculation.presentation.components.ResultText
 import com.calculation.tipcalculation.presentation.components.SearchButton
+import com.calculation.tipcalculation.presentation.components.ShadowedCard
 import com.calculation.tipcalculation.presentation.ui.theme.Typography
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -140,6 +144,41 @@ fun FilterTipDropDownMenuPreview() {
                 selectedTip = selectedTip,
                 onTipSelected = { selectedTip = it }
             )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ShadowedCardPreview() {
+    Surface(color = Color(0xFF1E1E1E), modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.padding(32.dp)) {
+            ShadowedCard {
+                Text(
+                    text = "Пример карточки",
+                    color = Color.White,
+                    style = Typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Здесь можно разместить любой контент",
+                    color = Color.LightGray,
+                    style = Typography.bodyMedium
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ExpandableBoxCardPreview() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        ExpandableBoxCard(dateText = "11.07.2025 14:32") {
+            ResultText(title = "P атм", value = "765 мм рт. ст.")
+            ResultText(title = "t среды", value = "25 °C")
+            ResultText(title = "t асп.", value = "28 °C")
+            ResultText(title = "Vp", value = "3.45 м/с")
         }
     }
 }

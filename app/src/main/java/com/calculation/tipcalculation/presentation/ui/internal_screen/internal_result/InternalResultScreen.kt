@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -56,7 +57,8 @@ fun InternalResultScreen(
                         BoxCard(modifier = Modifier.fillMaxWidth()) {
                             Text(
                                 text = "Исходные данные",
-                                style = Typography.headlineSmall
+                                style = Typography.headlineSmall,
+                                color = Color(0xFF1A1B20)
                             )
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -72,7 +74,8 @@ fun InternalResultScreen(
 
                             Text(
                                 text = "Результат вычисления",
-                                style = Typography.headlineSmall
+                                style = Typography.headlineSmall,
+                                color = Color(0xFF1A1B20)
                             )
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -90,7 +93,9 @@ fun InternalResultScreen(
 
                 item {
                     GradientConfirmButton2(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding(),
                         text = "Сохранить результат",
                         onClick = {
                             viewModel.saveResultToHistory()

@@ -13,7 +13,7 @@ import com.calculation.tipcalculation.data.local.entity.*
         ReportDataEntity::class,
         InternalResultEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

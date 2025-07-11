@@ -152,4 +152,17 @@ object UseCaseModule {
     fun provideDeleteInternalResultHistoryUseCase(
         repository: InternalResultHistoryRepository
     ): DeleteInternalResultHistoryUseCase = DeleteInternalResultHistoryUseCase(repository)
+
+    //Validation Calculate UseCases
+    @Provides
+    @Singleton
+    fun provideValidateInternalCalculationUseCase(
+        getSpeedUseCase: GetSpeedUseCase,
+        getFilterTipsSyncUseCase: GetFilterTipsSyncUseCase
+    ): ValidateInternalCalculationUseCase {
+        return ValidateInternalCalculationUseCase(
+            getSpeedUseCase = getSpeedUseCase,
+            getFilterTipsSyncUseCase = getFilterTipsSyncUseCase
+        )
+    }
 }

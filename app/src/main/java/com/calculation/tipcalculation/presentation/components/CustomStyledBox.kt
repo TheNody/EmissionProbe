@@ -1,8 +1,10 @@
 package com.calculation.tipcalculation.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -313,6 +315,60 @@ fun BoxCard(
     ) {
         Column {
             content()
+        }
+    }
+}
+
+@Composable
+fun ExpandableBoxCard(
+    dateText: String,
+    modifier: Modifier = Modifier,
+    expandedContent: @Composable ColumnScope.() -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFF363E51),
+                        Color(0xFF4C5770)
+                    )
+                )
+            )
+            .border(
+                width = 1.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color.White.copy(alpha = 0.2f),
+                        Color.Black.copy(alpha = 0.2f)
+                    )
+                ),
+                shape = RoundedCornerShape(20.dp)
+            )
+            .shadow(
+                elevation = 10.dp,
+                spotColor = Color(0x33667BA5),
+                ambientColor = Color(0x33667BA5)
+            )
+            .clickable { expanded = !expanded }
+            .padding(16.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "Дата расчёта: $dateText",
+                style = Typography.titleMedium,
+                color = Color.White
+            )
+
+            AnimatedVisibility(visible = expanded) {
+                Column(
+                    modifier = Modifier.padding(top = 12.dp),
+                    content = expandedContent
+                )
+            }
         }
     }
 }

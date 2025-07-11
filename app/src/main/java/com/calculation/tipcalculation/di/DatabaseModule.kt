@@ -3,10 +3,21 @@ package com.calculation.tipcalculation.di
 import android.content.Context
 import androidx.room.Room
 import com.calculation.tipcalculation.data.local.AppDatabase
-import com.calculation.tipcalculation.data.local.dao.*
-import com.calculation.tipcalculation.data.local.migration.MIGRATION_1_2
-import com.calculation.tipcalculation.data.repository.*
-import com.calculation.tipcalculation.domain.repository.*
+import com.calculation.tipcalculation.data.local.dao.ExternalFilterTipDao
+import com.calculation.tipcalculation.data.local.dao.FilterTipDao
+import com.calculation.tipcalculation.data.local.dao.InternalResultDao
+import com.calculation.tipcalculation.data.local.dao.ReportDataDao
+import com.calculation.tipcalculation.data.local.dao.SpeedDao
+import com.calculation.tipcalculation.data.repository.ExternalFilterTipRepositoryImpl
+import com.calculation.tipcalculation.data.repository.FilterTipRepositoryImpl
+import com.calculation.tipcalculation.data.repository.InternalResultHistoryRepositoryImpl
+import com.calculation.tipcalculation.data.repository.ReportDataRepositoryImpl
+import com.calculation.tipcalculation.data.repository.SpeedCountRepositoryImpl
+import com.calculation.tipcalculation.domain.repository.ExternalFilterTipRepository
+import com.calculation.tipcalculation.domain.repository.FilterTipRepository
+import com.calculation.tipcalculation.domain.repository.InternalResultHistoryRepository
+import com.calculation.tipcalculation.domain.repository.ReportDataRepository
+import com.calculation.tipcalculation.domain.repository.SpeedCountRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +39,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "app_database"
         )
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 
