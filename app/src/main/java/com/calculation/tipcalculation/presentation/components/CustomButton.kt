@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.calculation.tipcalculation.presentation.ui.theme.Typography
 
 @Composable
 fun SearchButton(
@@ -127,6 +129,40 @@ fun GradientConfirmButton(
         Text(
             text = buttonText,
             style = MaterialTheme.typography.bodyLarge,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+fun GradientConfirmButton2(
+    modifier: Modifier = Modifier,
+    text: String = "Подтвердить",
+    onClick: () -> Unit
+) {
+    val shape = RoundedCornerShape(12.dp)
+
+    val borderGradient = Brush.linearGradient(
+        colors = listOf(Color(0xFF4E4AF2), Color(0xFF34C8E8))
+    )
+
+    val colorfulBackground = Brush.linearGradient(
+        colors = listOf(Color(0xFF4E4AF2), Color(0xFF34C8E8))
+    )
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .border(BorderStroke(1.dp, borderGradient), shape)
+            .background(brush = colorfulBackground, shape = shape)
+            .clip(shape)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            style = Typography.bodyLarge.copy(fontSize = 22.sp),
             color = Color.White
         )
     }

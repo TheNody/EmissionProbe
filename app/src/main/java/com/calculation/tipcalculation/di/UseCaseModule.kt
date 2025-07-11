@@ -3,6 +3,9 @@ package com.calculation.tipcalculation.di
 import com.calculation.tipcalculation.domain.repository.*
 import com.calculation.tipcalculation.domain.usecase.external_filter.*
 import com.calculation.tipcalculation.domain.usecase.internal_filter.*
+import com.calculation.tipcalculation.domain.usecase.internal_result.ClearInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal_result.GetInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal_result.SetInternalResultUseCase
 import com.calculation.tipcalculation.domain.usecase.report_data.*
 import com.calculation.tipcalculation.domain.usecase.speed_count.*
 import dagger.Module
@@ -108,4 +111,23 @@ object UseCaseModule {
     fun provideUpdateSpeedUseCase(
         repository: SpeedCountRepository
     ): UpdateSpeedUseCase = UpdateSpeedUseCase(repository)
+
+    //Data UseCases
+    @Provides
+    @Singleton
+    fun provideSetInternalResultUseCase(
+        repository: InternalResultRepository
+    ): SetInternalResultUseCase = SetInternalResultUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetInternalResultUseCase(
+        repository: InternalResultRepository
+    ): GetInternalResultUseCase = GetInternalResultUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideClearInternalResultUseCase(
+        repository: InternalResultRepository
+    ): ClearInternalResultUseCase = ClearInternalResultUseCase(repository)
 }

@@ -1,5 +1,6 @@
 package com.calculation.tipcalculation.testing_preview
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.calculation.tipcalculation.presentation.components.BoxCard
 import com.calculation.tipcalculation.presentation.components.CustomBackground
 import com.calculation.tipcalculation.presentation.components.CustomGradientButton
+import com.calculation.tipcalculation.presentation.components.FilterTipDropDownMenu
 import com.calculation.tipcalculation.presentation.components.GradientConfirmButton
 import com.calculation.tipcalculation.presentation.components.InnerShadowBoxWithButton
 import com.calculation.tipcalculation.presentation.components.SearchButton
@@ -117,5 +119,27 @@ fun BoxCardPreview() {
             text = "The LR01 uses the same design as the most iconic bikes from PEUGEOT Cycles’ 130-year history...",
             style = Typography.bodyLarge.copy(color = Color.White)
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FilterTipDropDownMenuPreview() {
+    MaterialTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF121212))
+                .padding(16.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            var selectedTip by remember { mutableStateOf<Double?>(null) }
+
+            FilterTipDropDownMenu(
+                tips = listOf(1.2, 2.5, 3.0, 4.75),
+                selectedTip = selectedTip,
+                onTipSelected = { selectedTip = it }
+            )
+        }
     }
 }

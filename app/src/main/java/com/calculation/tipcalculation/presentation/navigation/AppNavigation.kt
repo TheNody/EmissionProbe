@@ -12,6 +12,7 @@ import com.calculation.tipcalculation.presentation.ui.calculator_screen.Calculat
 import com.calculation.tipcalculation.presentation.ui.external_screen.ExternalCalcScreen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.InternalCalcScreen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_calc.InternalFilterCalcScreen
+import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_result.InternalResultScreen
 import com.calculation.tipcalculation.presentation.ui.main_screen.MainScreen
 import com.calculation.tipcalculation.presentation.ui.screens.*
 import com.calculation.tipcalculation.presentation.ui.settings_screen.SettingsScreen
@@ -74,7 +75,7 @@ fun AppNavigation(
             ExternalResultScreen()
         }
         composable(Screen.InternalResult.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
-            InternalResultScreen()
+            InternalResultScreen(navController = navController)
         }
         composable(Screen.ExternalTips.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             ExternalTipsScreen()
