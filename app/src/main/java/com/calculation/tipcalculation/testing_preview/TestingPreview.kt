@@ -35,7 +35,7 @@ import com.calculation.tipcalculation.presentation.components.InnerShadowBoxWith
 import com.calculation.tipcalculation.presentation.components.ResultText
 import com.calculation.tipcalculation.presentation.components.SearchButton
 import com.calculation.tipcalculation.presentation.components.ShadowedCard
-import com.calculation.tipcalculation.presentation.ui.theme.Typography
+import com.calculation.tipcalculation.presentation.theme.Typography
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

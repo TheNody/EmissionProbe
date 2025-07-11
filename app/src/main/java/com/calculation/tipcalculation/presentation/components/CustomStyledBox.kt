@@ -29,7 +29,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -55,7 +54,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.calculation.tipcalculation.presentation.ui.theme.Typography
+import com.calculation.tipcalculation.presentation.theme.Typography
 
 val DarkFill = Color(0xFF242C3B)
 val InnerShadowColor = Color(0xFF191E29)
@@ -120,7 +119,7 @@ fun InnerShadowBox(
                 Text(
                     text = placeholder,
                     color = Color.LightGray,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = Typography.bodyLarge
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -133,7 +132,7 @@ fun InnerShadowBox(
                 }
             ),
             singleLine = true,
-            textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+            textStyle = Typography.bodyLarge.copy(color = Color.White),
             colors = TextFieldDefaults.colors(
                 focusedTextColor = Color.White,
                 unfocusedTextColor = Color.White,
@@ -225,7 +224,7 @@ fun InnerShadowBoxWithButton(
                     Text(
                         text = placeholder,
                         color = Color.LightGray,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = Typography.bodyLarge
                     )
                 },
                 keyboardOptions = KeyboardOptions(
@@ -241,7 +240,7 @@ fun InnerShadowBoxWithButton(
                     }
                 ),
                 singleLine = true,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+                textStyle = Typography.bodyLarge.copy(color = Color.White),
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
@@ -486,7 +485,7 @@ fun InnerShadowBoxWithNegative(
                 Text(
                     text = placeholder,
                     color = Color.LightGray,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = Typography.bodyLarge
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -499,7 +498,7 @@ fun InnerShadowBoxWithNegative(
                 }
             ),
             singleLine = true,
-            textStyle = MaterialTheme.typography.bodyLarge.copy(color = Color.White),
+            textStyle = Typography.bodyLarge.copy(color = Color.White),
             colors = TextFieldDefaults.colors(
                 focusedTextColor = Color.White,
                 unfocusedTextColor = Color.White,

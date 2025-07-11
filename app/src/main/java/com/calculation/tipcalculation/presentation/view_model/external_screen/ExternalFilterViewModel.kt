@@ -1,12 +1,16 @@
 package com.calculation.tipcalculation.presentation.view_model.external_screen
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.calculation.tipcalculation.domain.model.ExternalFilterTip
+import com.calculation.tipcalculation.domain.model.ValidationResult
 import com.calculation.tipcalculation.domain.usecase.external_filter.DeleteExternalTipUseCase
 import com.calculation.tipcalculation.domain.usecase.external_filter.GetExternalTipsUseCase
 import com.calculation.tipcalculation.domain.usecase.external_filter.InsertExternalTipUseCase
+import com.calculation.tipcalculation.domain.usecase.external_filter.ValidateExternalCalculationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,10 +19,28 @@ import javax.inject.Inject
 class ExternalFilterViewModel @Inject constructor(
     private val insertExternalTipUseCase: InsertExternalTipUseCase,
     private val deleteExternalTipUseCase: DeleteExternalTipUseCase,
-    private val getExternalTipsUseCase: GetExternalTipsUseCase
+    private val getExternalTipsUseCase: GetExternalTipsUseCase,
+//    private val getExternalResultHistoryUseCase: GetExternalResultHistoryUseCase,
+    private val validateExternalCalculationUseCase: ValidateExternalCalculationUseCase
 ) : ViewModel() {
 
     val tips: LiveData<List<ExternalFilterTip>> = getExternalTipsUseCase()
+
+//    private val _history = mutableStateOf<List<ExternalResultHistory>>(emptyList())
+//    val history: State<List<ExternalResultHistory>> = _history
+
+    private val _validationResult = mutableStateOf<ValidationResult?>(null)
+    val validationResult: State<ValidationResult?> = _validationResult
+
+//    init {
+//        loadHistory()
+//    }
+
+//    fun loadHistory() {
+//        viewModelScope.launch {
+//            _history.value = getExternalResultHistoryUseCase()
+//        }
+//    }
 
     fun insertTip(value: String) {
         val doubleValue = value.toDoubleOrNull() ?: return
@@ -32,5 +54,17 @@ class ExternalFilterViewModel @Inject constructor(
             deleteExternalTipUseCase(tip)
         }
     }
-}
 
+    fun validateBeforeCalculation(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            when (val result = validateExternalCalculationUseCase()) {
+                is ValidationResult.Valid -> onSuccess()
+                else -> _validationResult.value = result
+            }
+        }
+    }
+
+    fun dismissValidationDialog() {
+        _validationResult.value = null
+    }
+}

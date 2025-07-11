@@ -40,6 +40,12 @@ object UseCaseModule {
         repository: ExternalFilterTipRepository
     ): GetExternalTipsUseCase = GetExternalTipsUseCase(repository)
 
+    @Provides
+    @Singleton
+    fun provideGetExternalTipsSyncUseCase(
+        repository: ExternalFilterTipRepository
+    ): GetExternalTipsSyncUseCase = GetExternalTipsSyncUseCase(repository)
+
     // Internal Filter UseCases
     @Provides
     @Singleton
@@ -163,6 +169,18 @@ object UseCaseModule {
         return ValidateInternalCalculationUseCase(
             getSpeedUseCase = getSpeedUseCase,
             getFilterTipsSyncUseCase = getFilterTipsSyncUseCase
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidateExternalCalculationUseCase(
+        getSpeedUseCase: GetSpeedUseCase,
+        getExternalTipsSyncUseCase: GetExternalTipsSyncUseCase
+    ): ValidateExternalCalculationUseCase {
+        return ValidateExternalCalculationUseCase(
+            getSpeedUseCase = getSpeedUseCase,
+            getExternalTipsSyncUseCase = getExternalTipsSyncUseCase
         )
     }
 }

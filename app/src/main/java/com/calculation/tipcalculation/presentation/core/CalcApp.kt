@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.calculation.tipcalculation.presentation.navigation.AppEntryPoint
-import com.calculation.tipcalculation.presentation.ui.theme.TipcalculationTheme
+import com.calculation.tipcalculation.presentation.theme.TipcalculationTheme
 
 @Composable
 fun CalcApp() {

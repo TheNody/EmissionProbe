@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 import com.calculation.tipcalculation.R
 import com.calculation.tipcalculation.presentation.components.*
 import com.calculation.tipcalculation.presentation.navigation.Screen
-import com.calculation.tipcalculation.presentation.ui.theme.Typography
+import com.calculation.tipcalculation.presentation.theme.Typography
 import com.calculation.tipcalculation.presentation.view_model.internal_screen.internal_result_screen.InternalResultViewModel
 
 @Composable

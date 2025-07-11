@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.calculation.tipcalculation.presentation.ui.theme.Typography
+import com.calculation.tipcalculation.presentation.theme.Typography
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

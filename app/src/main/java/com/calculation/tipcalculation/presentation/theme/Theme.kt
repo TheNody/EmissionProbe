@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.presentation.ui.theme
+package com.calculation.tipcalculation.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.calculation.tipcalculation.presentation.ui.theme.Typography
+import com.calculation.tipcalculation.presentation.theme.Typography
 
 @Composable
 fun SearchButton(
@@ -128,7 +128,7 @@ fun GradientConfirmButton(
     ) {
         Text(
             text = buttonText,
-            style = MaterialTheme.typography.bodyLarge,
+            style = Typography.bodyLarge,
             color = Color.White
         )
     }

@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.presentation.ui.theme
+package com.calculation.tipcalculation.presentation.theme
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily

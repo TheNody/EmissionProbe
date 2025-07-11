@@ -41,7 +41,7 @@ import com.calculation.tipcalculation.presentation.components.ShadowedCard
 import com.calculation.tipcalculation.presentation.components.TopBarWithDescription
 import com.calculation.tipcalculation.presentation.components.ValuesListCard
 import com.calculation.tipcalculation.presentation.navigation.Screen
-import com.calculation.tipcalculation.presentation.ui.theme.Typography
+import com.calculation.tipcalculation.presentation.theme.Typography
 import com.calculation.tipcalculation.presentation.view_model.internal_screen.InternalFilterViewModel
 
 @Composable
@@ -243,4 +243,3 @@ fun InternalCalcScreen(
         }
     }
 }
-

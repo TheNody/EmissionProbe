@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.calculation.tipcalculation.presentation.theme.Typography
 
 @Composable
 fun StubScreen(title: String) {
@@ -18,7 +19,7 @@ fun StubScreen(title: String) {
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.headlineMedium
+                style = Typography.headlineMedium
             )
         }
     }

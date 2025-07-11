@@ -17,6 +17,10 @@ class ExternalFilterTipRepositoryImpl(
         }
     }
 
+    override suspend fun getAllSync(): List<ExternalFilterTip> {
+        return dao.getAllSync().map { ExternalFilterTip(it.id, it.value) }
+    }
+
     override suspend fun insert(tip: ExternalFilterTip) {
         dao.insert(ExternalFilterTipEntity(tip.id, tip.value))
     }
