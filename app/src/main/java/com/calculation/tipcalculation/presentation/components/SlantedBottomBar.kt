@@ -28,11 +28,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+
+sealed class BottomBarIcon {
+    data class ResourceIcon(val resId: Int) : BottomBarIcon()
+    data class PainterIcon(val painter: Painter) : BottomBarIcon()
+}
 
 @Composable
 fun SlantedBottomBar(
-    icons: List<Painter>,
+    icons: List<BottomBarIcon>,
     selectedIndex: Int,
     onItemSelected: (Int) -> Unit
 ) {
@@ -86,7 +92,7 @@ fun SlantedBottomBar(
 
 @Composable
 fun SlantedBarItem(
-    icon: Painter,
+    icon: BottomBarIcon,
     selected: Boolean,
     onClick: () -> Unit
 ) {
@@ -104,7 +110,10 @@ fun SlantedBarItem(
         )
     } else {
         Icon(
-            painter = icon,
+            painter = when (icon) {
+                is BottomBarIcon.PainterIcon -> icon.painter
+                is BottomBarIcon.ResourceIcon -> painterResource(id = icon.resId)
+            },
             contentDescription = null,
             tint = Color.LightGray,
             modifier = Modifier
@@ -118,7 +127,7 @@ fun SlantedBarItem(
 @Composable
 fun SlantedButton(
     modifier: Modifier = Modifier,
-    icon: Painter,
+    icon: BottomBarIcon,
     onClick: () -> Unit = {}
 ) {
     Box(
@@ -136,7 +145,10 @@ fun SlantedButton(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = icon,
+            painter = when (icon) {
+                is BottomBarIcon.PainterIcon -> icon.painter
+                is BottomBarIcon.ResourceIcon -> painterResource(id = icon.resId)
+            },
             contentDescription = null,
             tint = Color.White
         )

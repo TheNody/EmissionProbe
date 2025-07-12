@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -19,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.calculation.tipcalculation.R
 
 @Composable
 fun AppScaffold(
@@ -28,10 +27,10 @@ fun AppScaffold(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val bottomIcons = listOf(
-        rememberVectorPainter(Icons.Default.Done),
-        rememberVectorPainter(Icons.Default.ShoppingCart),
-        rememberVectorPainter(Icons.Default.Person),
-        rememberVectorPainter(Icons.Default.Settings)
+        BottomBarIcon.ResourceIcon(R.drawable.ic_main),
+        BottomBarIcon.ResourceIcon(R.drawable.ic_history),
+        BottomBarIcon.PainterIcon(rememberVectorPainter(Icons.Default.Person)),
+        BottomBarIcon.PainterIcon(rememberVectorPainter(Icons.Default.Settings))
     )
 
     Surface(
