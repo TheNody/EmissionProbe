@@ -1,5 +1,6 @@
 package com.calculation.tipcalculation.presentation.ui.external_screen.external_result
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -22,6 +23,10 @@ fun ExternalResultScreen(
 ) {
     val result = viewModel.savedResult.collectAsState().value
     val showExitDialog = remember { mutableStateOf(false) }
+
+    BackHandler(enabled = true) {
+        showExitDialog.value = true
+    }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -130,7 +135,11 @@ fun ExternalResultScreen(
                         text = "Сохранить результат",
                         onClick = {
                             viewModel.saveResultToHistory()
-                            navController.navigate(Screen.ExternalCalc.route)
+                            navController.navigate(Screen.ExternalCalc.route) {
+                                popUpTo(Screen.ExternalFilterCalc.route)
+                                { inclusive = true }
+                                launchSingleTop = true
+                            }
                         }
                     )
                 }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.calculation.tipcalculation.presentation.ui.calculator_screen.CalculatorScreen
 import com.calculation.tipcalculation.presentation.ui.external_screen.ExternalCalcScreen
@@ -24,6 +25,17 @@ import com.calculation.tipcalculation.presentation.ui.speed_screen.SpeedCountScr
 fun AppEntryPoint() {
     val navController = rememberNavController()
     var selectedTabIndex by remember { mutableIntStateOf(0) }
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    LaunchedEffect(navBackStackEntry) {
+        when (navBackStackEntry?.destination?.route) {
+            Screen.Main.route -> selectedTabIndex = 0
+            Screen.History.route -> selectedTabIndex = 1
+            Screen.Measurement.route -> selectedTabIndex = 2
+            Screen.Settings.route -> selectedTabIndex = 3
+        }
+    }
 
     AppNavigation(
         navController = navController,

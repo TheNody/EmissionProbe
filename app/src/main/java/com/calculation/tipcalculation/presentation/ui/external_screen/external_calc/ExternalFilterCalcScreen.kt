@@ -1,5 +1,6 @@
 package com.calculation.tipcalculation.presentation.ui.external_screen.external_calc
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -25,6 +26,10 @@ fun ExternalFilterCalcScreen(
     val speedCount by viewModel.speedCount.collectAsState()
     val focusManager = LocalFocusManager.current
     val showExitDialog = remember { mutableStateOf(false) }
+
+    BackHandler(enabled = true) {
+        showExitDialog.value = true
+    }
 
     val fields = remember {
         listOf(

@@ -1,5 +1,6 @@
 package com.calculation.tipcalculation.presentation.ui.internal_screen.internal_calc
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,6 +49,10 @@ fun InternalFilterCalcScreen(
 
     var selectedTip by remember {
         mutableStateOf(savedResult?.selectedTip)
+    }
+
+    BackHandler(enabled = true) {
+        showExitDialog.value = true
     }
 
     val fields = remember {

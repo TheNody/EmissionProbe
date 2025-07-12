@@ -1,5 +1,6 @@
 package com.calculation.tipcalculation.presentation.ui.internal_screen.internal_result
 
+import androidx.activity.compose.BackHandler
 import com.calculation.tipcalculation.presentation.components.ResultText
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +29,10 @@ fun InternalResultScreen(
     val result = viewModel.result.collectAsState().value
 
     val showDialog = remember { mutableStateOf(false) }
+
+    BackHandler(enabled = true) {
+        showDialog.value = true
+    }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -99,7 +104,12 @@ fun InternalResultScreen(
                         text = "Сохранить результат",
                         onClick = {
                             viewModel.saveResultToHistory()
-                            navController.navigate(Screen.InternalCalc.route)
+                            navController.navigate(Screen.InternalCalc.route) {
+                                popUpTo(Screen.InternalFilterCalc.route) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
                         }
                     )
                 }
