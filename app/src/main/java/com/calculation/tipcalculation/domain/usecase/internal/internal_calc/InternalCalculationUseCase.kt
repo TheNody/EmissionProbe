@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.domain.usecase.internal_calc
+package com.calculation.tipcalculation.domain.usecase.internal.internal_calc
 
 import com.calculation.tipcalculation.domain.usecase.common.CalculationCommon
 import javax.inject.Inject

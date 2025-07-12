@@ -1,14 +1,29 @@
 package com.calculation.tipcalculation.di
 
 import com.calculation.tipcalculation.domain.repository.*
-import com.calculation.tipcalculation.domain.usecase.external_filter.*
-import com.calculation.tipcalculation.domain.usecase.internal_filter.*
-import com.calculation.tipcalculation.domain.usecase.internal_result.ClearInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.internal_result_history.DeleteInternalResultHistoryUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.internal_result_history.GetInternalResultHistoryUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.GetInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.SetInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_filter.DeleteExternalTipUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_filter.GetExternalTipsSyncUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_filter.GetExternalTipsUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_filter.InsertExternalTipUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_filter.ValidateExternalCalculationUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_result.ClearExternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_result.GetExternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_result.SetExternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_result.external_result_history.DeleteAllExternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_result.external_result_history.DeleteExternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_result.external_result_history.GetExternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_result.external_result_history.InsertExternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.DeleteFilterTipUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.GetFilterTipsSyncUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.GetFilterTipsUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.InsertFilterTipUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.ValidateInternalCalculationUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.ClearInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.DeleteInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.GetInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.GetInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.SetInternalResultUseCase
 import com.calculation.tipcalculation.domain.usecase.report_data.*
 import com.calculation.tipcalculation.domain.usecase.speed_count.*
 import dagger.Module
@@ -158,6 +173,50 @@ object UseCaseModule {
     fun provideDeleteInternalResultHistoryUseCase(
         repository: InternalResultHistoryRepository
     ): DeleteInternalResultHistoryUseCase = DeleteInternalResultHistoryUseCase(repository)
+
+    // External Result UseCases
+    @Provides
+    @Singleton
+    fun provideSetExternalResultUseCase(
+        repository: ExternalResultRepository
+    ): SetExternalResultUseCase = SetExternalResultUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetExternalResultUseCase(
+        repository: ExternalResultRepository
+    ): GetExternalResultUseCase = GetExternalResultUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideClearExternalResultUseCase(
+        repository: ExternalResultRepository
+    ): ClearExternalResultUseCase = ClearExternalResultUseCase(repository)
+
+    // External Result History UseCases
+    @Provides
+    @Singleton
+    fun provideInsertExternalResultHistoryUseCase(
+        repository: ExternalResultHistoryRepository
+    ): InsertExternalResultHistoryUseCase = InsertExternalResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetExternalResultHistoryUseCase(
+        repository: ExternalResultHistoryRepository
+    ): GetExternalResultHistoryUseCase = GetExternalResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteExternalResultHistoryUseCase(
+        repository: ExternalResultHistoryRepository
+    ): DeleteExternalResultHistoryUseCase = DeleteExternalResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteAllExternalResultHistoryUseCase(
+        repository: ExternalResultHistoryRepository
+    ): DeleteAllExternalResultHistoryUseCase = DeleteAllExternalResultHistoryUseCase(repository)
 
     //Validation Calculate UseCases
     @Provides

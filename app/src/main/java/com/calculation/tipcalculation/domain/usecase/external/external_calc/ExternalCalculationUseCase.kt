@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.domain.usecase.external_calc
+package com.calculation.tipcalculation.domain.usecase.external.external_calc
 
 import android.util.Log
 import com.calculation.tipcalculation.domain.model.DiameterAnalysisResult

@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.calculation.tipcalculation.domain.model.InternalResultData
 import com.calculation.tipcalculation.domain.model.InternalResultHistory
-import com.calculation.tipcalculation.domain.usecase.internal_result.ClearInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.GetInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.ClearInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.GetInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

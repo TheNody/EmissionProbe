@@ -4,16 +4,19 @@ import android.content.Context
 import androidx.room.Room
 import com.calculation.tipcalculation.data.local.AppDatabase
 import com.calculation.tipcalculation.data.local.dao.ExternalFilterTipDao
+import com.calculation.tipcalculation.data.local.dao.ExternalResultDao
 import com.calculation.tipcalculation.data.local.dao.FilterTipDao
 import com.calculation.tipcalculation.data.local.dao.InternalResultDao
 import com.calculation.tipcalculation.data.local.dao.ReportDataDao
 import com.calculation.tipcalculation.data.local.dao.SpeedDao
 import com.calculation.tipcalculation.data.repository.ExternalFilterTipRepositoryImpl
+import com.calculation.tipcalculation.data.repository.ExternalResultHistoryRepositoryImpl
 import com.calculation.tipcalculation.data.repository.FilterTipRepositoryImpl
 import com.calculation.tipcalculation.data.repository.InternalResultHistoryRepositoryImpl
 import com.calculation.tipcalculation.data.repository.ReportDataRepositoryImpl
 import com.calculation.tipcalculation.data.repository.SpeedCountRepositoryImpl
 import com.calculation.tipcalculation.domain.repository.ExternalFilterTipRepository
+import com.calculation.tipcalculation.domain.repository.ExternalResultHistoryRepository
 import com.calculation.tipcalculation.domain.repository.FilterTipRepository
 import com.calculation.tipcalculation.domain.repository.InternalResultHistoryRepository
 import com.calculation.tipcalculation.domain.repository.ReportDataRepository
@@ -48,6 +51,7 @@ object DatabaseModule {
     @Provides fun provideSpeedDao(db: AppDatabase): SpeedDao = db.speedDao()
     @Provides fun provideReportDataDao(db: AppDatabase): ReportDataDao = db.reportDataDao()
     @Provides fun provideInternalResultDao(db: AppDatabase): InternalResultDao = db.internalResultDao()
+    @Provides fun provideExternalResultDao(db: AppDatabase): ExternalResultDao = db.externalResultDao()
 
     @Provides
     fun provideFilterTipRepository(dao: FilterTipDao): FilterTipRepository =
@@ -69,4 +73,9 @@ object DatabaseModule {
     fun provideInternalResultHistoryRepository(
         dao: InternalResultDao
     ): InternalResultHistoryRepository = InternalResultHistoryRepositoryImpl(dao)
+
+    @Provides
+    fun provideExternalResultHistoryRepository(
+        dao: ExternalResultDao
+    ): ExternalResultHistoryRepository = ExternalResultHistoryRepositoryImpl(dao)
 }

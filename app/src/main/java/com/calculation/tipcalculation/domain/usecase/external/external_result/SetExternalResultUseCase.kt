@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.domain.usecase.external_result
+package com.calculation.tipcalculation.domain.usecase.external.external_result
 
 import com.calculation.tipcalculation.domain.model.ExternalResultData
 import com.calculation.tipcalculation.domain.repository.ExternalResultRepository

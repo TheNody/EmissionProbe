@@ -22,7 +22,9 @@ import com.calculation.tipcalculation.domain.model.ValidationResult
 import com.calculation.tipcalculation.presentation.components.CustomAlertDialog
 import com.calculation.tipcalculation.presentation.components.CustomBackground
 import com.calculation.tipcalculation.presentation.components.CustomGradientButton
+import com.calculation.tipcalculation.presentation.components.ExpandableBoxCard
 import com.calculation.tipcalculation.presentation.components.InnerShadowBox
+import com.calculation.tipcalculation.presentation.components.ResultText
 import com.calculation.tipcalculation.presentation.components.ShadowedCard
 import com.calculation.tipcalculation.presentation.components.TopBarWithDescription
 import com.calculation.tipcalculation.presentation.components.ValuesListCard
@@ -37,7 +39,7 @@ fun ExternalCalcScreen(
 ) {
     var input by remember { mutableStateOf("") }
     val tips by viewModel.tips.observeAsState(emptyList())
-//    val history = viewModel.history.value
+    val history = viewModel.history.value
     val scrollState = rememberScrollState()
     val validationResult by viewModel.validationResult
 
@@ -119,7 +121,7 @@ fun ExternalCalcScreen(
                     text = "Новый расчёт",
                     onClick = {
                         viewModel.validateBeforeCalculation {
-//                            navController.navigate(Screen.ExternalFilterCalc.route)
+                            navController.navigate(Screen.ExternalFilterCalc.route)
                         }
                     }
                 )
@@ -149,52 +151,81 @@ fun ExternalCalcScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-//                    if (history.isEmpty()) {
-//                        Text(
-//                            text = "Нет сохранённых данных",
-//                            style = Typography.bodyLarge,
-//                            modifier = Modifier.align(Alignment.CenterHorizontally)
-//                        )
-//                    } else {
-//                        history.forEach { item ->
-//                            ExpandableBoxCard(
-//                                dateText = item.timestamp,
-//                                modifier = Modifier
-//                                    .fillMaxWidth()
-//                                    .padding(vertical = 6.dp)
-//                            ) {
-//                                Text(
-//                                    text = "Исходные данные",
-//                                    style = Typography.headlineSmall,
-//                                    color = Color(0xFF1A1B20)
-//                                )
-//
-//                                Spacer(modifier = Modifier.height(16.dp))
-//
-//                                ResultText("P атм", "${item.patm} мм рт. ст.")
-//                                ResultText("t среды", "${item.tsr} °C")
-//                                ResultText("t асп.", "${item.tasp} °C")
-//                                ResultText("P ср.", "${item.plsr} мм вод. ст.")
-//                                ResultText("P реом.", "${item.preom} мм рт. ст.")
-//                                ResultText("Скорости", item.speeds.joinToString("; ") { v -> "%.2f".format(v) })
-//                                ResultText("Выбранный диаметр", "%.4f".format(item.selectedTip))
-//
-//                                Spacer(modifier = Modifier.height(24.dp))
-//
-//                                Text(
-//                                    text = "Результат вычисления",
-//                                    style = Typography.headlineSmall,
-//                                    color = Color(0xFF1A1B20)
-//                                )
-//
-//                                Spacer(modifier = Modifier.height(16.dp))
-//
-//                                ResultText("Средняя скорость", "%.4f м/с".format(item.averageSpeed))
-//                                ResultText("Идеальный наконечник", "%.4f".format(item.averageTip))
-//                                ResultText("Vp выбранного наконечника", "%.4f м/с".format(item.vp))
-//                            }
-//                        }
-//                    }
+                    if (history.isEmpty()) {
+                        Text(
+                            text = "Нет сохранённых данных",
+                            style = Typography.bodyLarge,
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        )
+                    } else {
+                        history.forEach { item ->
+                            ExpandableBoxCard(
+                                dateText = item.timestamp,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 6.dp)
+                            ) {
+                                Text(
+                                    text = "Исходные данные",
+                                    style = Typography.headlineSmall,
+                                    color = Color(0xFF1A1B20)
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                ResultText("P атм", "%.2f мм рт. ст.".format(item.patm))
+                                ResultText("P ср.", "%.2f мм вод. ст.".format(item.plsr))
+                                ResultText("P реом.", "%.2f мм рт. ст.".format(item.preom))
+                                ResultText("t среды", "%.2f °C".format(item.tsr))
+                                ResultText("t асп.", "%.2f °C".format(item.tasp))
+                                ResultText("Скорости", item.speeds.joinToString("; ") { "%.2f".format(it) })
+
+                                Spacer(modifier = Modifier.height(24.dp))
+
+                                Text(
+                                    text = "Результат вычисления",
+                                    style = Typography.headlineSmall,
+                                    color = Color(0xFF1A1B20)
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                ResultText("Средняя скорость", "%.2f м/с".format(item.srznach))
+                                ResultText("Σ отклонений", "%.2f".format(item.sigma))
+                                ResultText("СКО", "%.3f".format(item.sko))
+                                ResultText("Идеальный d", "%.2f".format(item.average))
+                                ResultText("Рассчитанный наконечник", "%.2f".format(item.calculatedTip))
+                                ResultText("Размер наконечника", "%.2f".format(item.tipSize))
+                                ResultText("Vp выбранного", "%.2f".format(item.selectedVp))
+                                ResultText("Vp усл.", "%.2f".format(item.aspUsl))
+                                ResultText("P асп, мм вод. ст. ВП-20", "%.2f".format(item.result))
+                                ResultText("Vp усл. 1", "%.2f".format(item.aspUsl1))
+                                ResultText("d усл. 2", "%.2f".format(item.duslov1))
+                                ResultText("Выбранный наконечник", "%.2f".format(item.vibrNak))
+                                ResultText("d реальный", "%.2f".format(item.dreal))
+                                ResultText("Vp усл. 2", "%.2f".format(item.vsp2))
+                                ResultText("Ближайший к идеальному", "%.2f".format(item.closestDiameter))
+                                ResultText("Первый подходящий", "%.2f".format(item.firstSuitableDiameter))
+
+                                Spacer(modifier = Modifier.height(24.dp))
+
+                                Text(
+                                    text = "Проверенные диаметры и Vp",
+                                    style = Typography.headlineSmall,
+                                    color = Color(0xFF1A1B20)
+                                )
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                item.checkedDiametersList.forEach { (d, vp) ->
+                                    ResultText(
+                                        "Диаметр: %.2f".format(d),
+                                        "Vp: %.2f".format(vp)
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

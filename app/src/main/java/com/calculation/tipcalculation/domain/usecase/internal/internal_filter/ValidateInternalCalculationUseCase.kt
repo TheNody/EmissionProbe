@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.domain.usecase.internal_filter
+package com.calculation.tipcalculation.domain.usecase.internal.internal_filter
 
 import com.calculation.tipcalculation.domain.model.ValidationResult
 import com.calculation.tipcalculation.domain.usecase.speed_count.GetSpeedUseCase

@@ -1,4 +1,4 @@
-package com.calculation.tipcalculation.domain.usecase.external_filter
+package com.calculation.tipcalculation.domain.usecase.external.external_filter
 
 import com.calculation.tipcalculation.domain.model.ValidationResult
 import com.calculation.tipcalculation.domain.usecase.speed_count.GetSpeedUseCase

@@ -15,4 +15,5 @@ sealed class Screen(val route: String) {
     object Calculator : Screen("calculator")
     object SpeedCount : Screen("speed_count")
     object InternalFilterCalc : Screen("internal_filter_calc")
+    object ExternalFilterCalc : Screen("external_filter_calc")
 }

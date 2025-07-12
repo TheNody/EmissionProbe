@@ -1,7 +1,9 @@
 package com.calculation.tipcalculation.di
 
 import com.calculation.tipcalculation.data.repository.InternalResultRepositoryImpl
+import com.calculation.tipcalculation.data.repository.ExternalResultRepositoryImpl
 import com.calculation.tipcalculation.domain.repository.InternalResultRepository
+import com.calculation.tipcalculation.domain.repository.ExternalResultRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindInternalResultRepository(
         impl: InternalResultRepositoryImpl
     ): InternalResultRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindExternalResultRepository(
+        impl: ExternalResultRepositoryImpl
+    ): ExternalResultRepository
 }

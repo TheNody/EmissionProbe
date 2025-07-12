@@ -8,11 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.calculation.tipcalculation.domain.model.FilterTip
 import com.calculation.tipcalculation.domain.model.InternalResultHistory
 import com.calculation.tipcalculation.domain.model.ValidationResult
-import com.calculation.tipcalculation.domain.usecase.internal_filter.DeleteFilterTipUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_filter.GetFilterTipsUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_filter.InsertFilterTipUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_filter.ValidateInternalCalculationUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.internal_result_history.GetInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.DeleteFilterTipUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.GetFilterTipsUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.InsertFilterTipUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.ValidateInternalCalculationUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.GetInternalResultHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

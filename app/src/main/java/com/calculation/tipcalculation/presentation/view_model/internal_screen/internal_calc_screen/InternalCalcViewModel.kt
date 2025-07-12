@@ -6,11 +6,11 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.calculation.tipcalculation.domain.model.FilterTip
 import com.calculation.tipcalculation.domain.model.InternalResultData
-import com.calculation.tipcalculation.domain.usecase.internal_calc.InternalCalculationUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_filter.GetFilterTipsUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.ClearInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.GetInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.internal_result.SetInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_calc.InternalCalculationUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.GetFilterTipsUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.ClearInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.GetInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.SetInternalResultUseCase
 import com.calculation.tipcalculation.domain.usecase.speed_count.GetSpeedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
