@@ -76,7 +76,7 @@ fun HistoryScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp, horizontal = 16.dp)
+                            .padding(vertical = 8.dp)
                     ) {
                         when (item.type) {
                             HistoryType.INTERNAL -> item.internalData?.let { InternalHistoryCard(it) }
