@@ -16,6 +16,7 @@ import com.calculation.tipcalculation.presentation.components.AppScaffold
 import com.calculation.tipcalculation.presentation.components.CustomGradientButton
 import com.calculation.tipcalculation.presentation.components.MainTopBar
 import com.calculation.tipcalculation.presentation.navigation.Screen
+import com.calculation.tipcalculation.utils.navigateSingleTopTo
 
 @Composable
 fun MainScreen(
@@ -49,7 +50,7 @@ fun MainScreen(
                     .padding(end = 8.dp),
                 text = "Внешняя фильтрация",
                 onClick = {
-                    navController.navigate(Screen.ExternalCalc.route)
+                    navController.navigateSingleTopTo(Screen.ExternalCalc.route)
                 }
             )
 
@@ -59,7 +60,7 @@ fun MainScreen(
                     .padding(start = 8.dp),
                 text = "Внутренняя фильтрация",
                 onClick = {
-                    navController.navigate(Screen.InternalCalc.route)
+                    navController.navigateSingleTopTo(Screen.InternalCalc.route)
                 }
             )
         }
@@ -72,7 +73,7 @@ fun MainScreen(
                 .padding(top = 8.dp),
             text = "Калькулятор",
             onClick = {
-                navController.navigate(Screen.Calculator.route)
+                navController.navigateSingleTopTo(Screen.Calculator.route)
             }
         )
 

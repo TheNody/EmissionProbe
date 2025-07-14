@@ -13,6 +13,7 @@ import com.calculation.tipcalculation.presentation.ui.calculator_screen.Calculat
 import com.calculation.tipcalculation.presentation.ui.external_screen.ExternalCalcScreen
 import com.calculation.tipcalculation.presentation.ui.external_screen.external_calc.ExternalFilterCalcScreen
 import com.calculation.tipcalculation.presentation.ui.external_screen.external_result.ExternalResultScreen
+import com.calculation.tipcalculation.presentation.ui.history_screen.HistoryScreen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.InternalCalcScreen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_calc.InternalFilterCalcScreen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_result.InternalResultScreen
@@ -20,6 +21,7 @@ import com.calculation.tipcalculation.presentation.ui.main_screen.MainScreen
 import com.calculation.tipcalculation.presentation.ui.screens.*
 import com.calculation.tipcalculation.presentation.ui.settings_screen.SettingsScreen
 import com.calculation.tipcalculation.presentation.ui.speed_screen.SpeedCountScreen
+import com.calculation.tipcalculation.utils.navigateSingleTopTo
 
 @Composable
 fun AppEntryPoint() {
@@ -43,10 +45,10 @@ fun AppEntryPoint() {
         onTabSelected = { index ->
             selectedTabIndex = index
             when (index) {
-                0 -> navController.navigate(Screen.Main.route)
-                1 -> navController.navigate(Screen.History.route)
-                2 -> navController.navigate(Screen.Measurement.route)
-                3 -> navController.navigate(Screen.Settings.route)
+                0 -> navController.navigateSingleTopTo(Screen.Main.route)
+                1 -> navController.navigateSingleTopTo(Screen.History.route)
+                2 -> navController.navigateSingleTopTo(Screen.Measurement.route)
+                3 -> navController.navigateSingleTopTo(Screen.Settings.route)
             }
         }
     )
@@ -91,14 +93,12 @@ fun AppNavigation(
         composable(Screen.InternalResult.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             InternalResultScreen(navController = navController)
         }
-        composable(Screen.ExternalTips.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
-            ExternalTipsScreen()
-        }
-        composable(Screen.InternalTips.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
-            InternalTipsScreen()
-        }
         composable(Screen.History.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
-            HistoryScreen()
+            HistoryScreen(
+                navController = navController,
+                selectedIndex = selectedTabIndex,
+                onTabSelected = onTabSelected
+            )
         }
         composable(Screen.Settings.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             SettingsScreen(

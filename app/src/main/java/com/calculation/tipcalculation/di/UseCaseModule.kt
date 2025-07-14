@@ -1,6 +1,12 @@
 package com.calculation.tipcalculation.di
 
 import com.calculation.tipcalculation.domain.repository.*
+import com.calculation.tipcalculation.domain.usecase.external.export_excel.AddExportedReportUseCase
+import com.calculation.tipcalculation.domain.usecase.external.export_excel.ExportExternalResultToExcelUseCase
+import com.calculation.tipcalculation.domain.usecase.external.export_excel.ExternalExcelExporter
+import com.calculation.tipcalculation.domain.usecase.external.export_excel.GetExportedReportsUseCase
+import com.calculation.tipcalculation.domain.usecase.external.export_excel.InvalidateExportedReportsUseCase
+import com.calculation.tipcalculation.domain.usecase.external.export_excel.RemoveExportedReportUseCase
 import com.calculation.tipcalculation.domain.usecase.external.external_filter.DeleteExternalTipUseCase
 import com.calculation.tipcalculation.domain.usecase.external.external_filter.GetExternalTipsSyncUseCase
 import com.calculation.tipcalculation.domain.usecase.external.external_filter.GetExternalTipsUseCase
@@ -24,7 +30,6 @@ import com.calculation.tipcalculation.domain.usecase.internal.internal_result.in
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.GetInternalResultUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.SetInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.report_data.*
 import com.calculation.tipcalculation.domain.usecase.speed_count.*
 import dagger.Module
 import dagger.Provides
@@ -85,31 +90,6 @@ object UseCaseModule {
     fun provideGetFilterTipsSyncUseCase(
         repository: FilterTipRepository
     ): GetFilterTipsSyncUseCase = GetFilterTipsSyncUseCase(repository)
-
-    // Report Data UseCases
-    @Provides
-    @Singleton
-    fun provideInsertReportUseCase(
-        repository: ReportDataRepository
-    ): InsertReportUseCase = InsertReportUseCase(repository)
-
-    @Provides
-    @Singleton
-    fun provideDeleteReportUseCase(
-        repository: ReportDataRepository
-    ): DeleteReportUseCase = DeleteReportUseCase(repository)
-
-    @Provides
-    @Singleton
-    fun provideGetAllReportsUseCase(
-        repository: ReportDataRepository
-    ): GetAllReportsUseCase = GetAllReportsUseCase(repository)
-
-    @Provides
-    @Singleton
-    fun provideFindReportUseCase(
-        repository: ReportDataRepository
-    ): FindReportUseCase = FindReportUseCase(repository)
 
     // Speed Count UseCases
     @Provides
@@ -242,4 +222,39 @@ object UseCaseModule {
             getExternalTipsSyncUseCase = getExternalTipsSyncUseCase
         )
     }
+
+    // Excel Export UseCases
+    @Provides
+    @Singleton
+    fun provideExternalExcelExporter(): ExternalExcelExporter = ExternalExcelExporter()
+
+    @Provides
+    @Singleton
+    fun provideExportExternalResultToExcelUseCase(
+        exporter: ExternalExcelExporter
+    ): ExportExternalResultToExcelUseCase = ExportExternalResultToExcelUseCase(exporter)
+
+    @Provides
+    @Singleton
+    fun provideAddExportedReportUseCase(
+        repository: ExportedReportRepository
+    ): AddExportedReportUseCase = AddExportedReportUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideRemoveExportedReportUseCase(
+        repository: ExportedReportRepository
+    ): RemoveExportedReportUseCase = RemoveExportedReportUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetExportedReportsUseCase(
+        repository: ExportedReportRepository
+    ): GetExportedReportsUseCase = GetExportedReportsUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideInvalidateExportedReportsUseCase(
+        repository: ExportedReportRepository
+    ): InvalidateExportedReportsUseCase = InvalidateExportedReportsUseCase(repository)
 }

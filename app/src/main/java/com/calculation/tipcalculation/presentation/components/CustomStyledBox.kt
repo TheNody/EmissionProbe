@@ -49,11 +49,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.calculation.tipcalculation.R
 import com.calculation.tipcalculation.presentation.theme.Typography
 
 val DarkFill = Color(0xFF242C3B)
@@ -512,5 +514,104 @@ fun InnerShadowBoxWithNegative(
                 unfocusedPlaceholderColor = Color.LightGray
             )
         )
+    }
+}
+
+@Composable
+fun ExpandableBoxCardWithTypeAndDate(
+    timestamp: String,
+    typeLabel: String,
+    modifier: Modifier = Modifier,
+    isExternal: Boolean = false,
+    isSaved: Boolean = false,
+    onSaveClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+    onOpenClick: () -> Unit = {},
+    expandedContent: @Composable ColumnScope.() -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(
+                brush = Brush.linearGradient(
+                    listOf(Color(0xFF363E51), Color(0xFF4C5770))
+                )
+            )
+            .border(
+                width = 1.dp,
+                brush = Brush.linearGradient(
+                    listOf(
+                        Color.White.copy(alpha = 0.2f),
+                        Color.Black.copy(alpha = 0.2f)
+                    )
+                ),
+                shape = RoundedCornerShape(20.dp)
+            )
+            .shadow(10.dp, spotColor = Color(0x33667BA5), ambientColor = Color(0x33667BA5))
+            .clickable { expanded = !expanded }
+            .padding(16.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Дата расчёта: $timestamp",
+                    style = Typography.titleMedium,
+                    color = Color.White
+                )
+
+                if (!expanded && isExternal) {
+                    Row {
+                        if (isSaved) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_eye),
+                                contentDescription = "Открыть отчёт",
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .padding(end = 12.dp)
+                                    .size(20.dp)
+                                    .clickable { onOpenClick() }
+                            )
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_delete),
+                                contentDescription = "Удалить отчёт",
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable { onDeleteClick() }
+                            )
+                        } else {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_save),
+                                contentDescription = "Сохранить",
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable { onSaveClick() }
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = typeLabel,
+                style = Typography.bodyLarge,
+                color = Color.White
+            )
+
+            AnimatedVisibility(visible = expanded) {
+                Column(modifier = Modifier.padding(top = 12.dp)) {
+                    expandedContent()
+                }
+            }
+        }
     }
 }

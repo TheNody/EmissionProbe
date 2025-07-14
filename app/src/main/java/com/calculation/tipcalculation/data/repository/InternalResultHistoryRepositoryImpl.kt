@@ -4,6 +4,8 @@ import com.calculation.tipcalculation.data.local.dao.InternalResultDao
 import com.calculation.tipcalculation.data.local.entity.InternalResultEntity
 import com.calculation.tipcalculation.domain.model.InternalResultHistory
 import com.calculation.tipcalculation.domain.repository.InternalResultHistoryRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class InternalResultHistoryRepositoryImpl(
     private val dao: InternalResultDao
@@ -13,8 +15,10 @@ class InternalResultHistoryRepositoryImpl(
         dao.insert(result.toEntity())
     }
 
-    override suspend fun getAll(): List<InternalResultHistory> {
-        return dao.getAll().map { it.toDomain() }
+    override fun getAllFlow(): Flow<List<InternalResultHistory>> {
+        return dao.getAllFlow().map { list ->
+            list.map { it.toDomain() }
+        }
     }
 
     override suspend fun delete(result: InternalResultHistory) {

@@ -14,6 +14,9 @@ import com.calculation.tipcalculation.domain.usecase.external.external_filter.In
 import com.calculation.tipcalculation.domain.usecase.external.external_filter.ValidateExternalCalculationUseCase
 import com.calculation.tipcalculation.domain.usecase.external.external_result.external_result_history.GetExternalResultHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,27 +25,22 @@ class ExternalFilterViewModel @Inject constructor(
     private val insertExternalTipUseCase: InsertExternalTipUseCase,
     private val deleteExternalTipUseCase: DeleteExternalTipUseCase,
     private val getExternalTipsUseCase: GetExternalTipsUseCase,
-    private val getExternalResultHistoryUseCase: GetExternalResultHistoryUseCase,
+    getExternalResultHistoryUseCase: GetExternalResultHistoryUseCase,
     private val validateExternalCalculationUseCase: ValidateExternalCalculationUseCase
 ) : ViewModel() {
 
     val tips: LiveData<List<ExternalFilterTip>> = getExternalTipsUseCase()
 
-    private val _history = mutableStateOf<List<ExternalResultHistory>>(emptyList())
-    val history: State<List<ExternalResultHistory>> = _history
+    val history: StateFlow<List<ExternalResultHistory>> =
+        getExternalResultHistoryUseCase()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                emptyList()
+            )
 
     private val _validationResult = mutableStateOf<ValidationResult?>(null)
     val validationResult: State<ValidationResult?> = _validationResult
-
-    init {
-        loadHistory()
-    }
-
-    fun loadHistory() {
-        viewModelScope.launch {
-            _history.value = getExternalResultHistoryUseCase()
-        }
-    }
 
     fun insertTip(value: String) {
         val doubleValue = value.toDoubleOrNull() ?: return

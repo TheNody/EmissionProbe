@@ -7,19 +7,16 @@ import com.calculation.tipcalculation.data.local.dao.ExternalFilterTipDao
 import com.calculation.tipcalculation.data.local.dao.ExternalResultDao
 import com.calculation.tipcalculation.data.local.dao.FilterTipDao
 import com.calculation.tipcalculation.data.local.dao.InternalResultDao
-import com.calculation.tipcalculation.data.local.dao.ReportDataDao
 import com.calculation.tipcalculation.data.local.dao.SpeedDao
 import com.calculation.tipcalculation.data.repository.ExternalFilterTipRepositoryImpl
 import com.calculation.tipcalculation.data.repository.ExternalResultHistoryRepositoryImpl
 import com.calculation.tipcalculation.data.repository.FilterTipRepositoryImpl
 import com.calculation.tipcalculation.data.repository.InternalResultHistoryRepositoryImpl
-import com.calculation.tipcalculation.data.repository.ReportDataRepositoryImpl
 import com.calculation.tipcalculation.data.repository.SpeedCountRepositoryImpl
 import com.calculation.tipcalculation.domain.repository.ExternalFilterTipRepository
 import com.calculation.tipcalculation.domain.repository.ExternalResultHistoryRepository
 import com.calculation.tipcalculation.domain.repository.FilterTipRepository
 import com.calculation.tipcalculation.domain.repository.InternalResultHistoryRepository
-import com.calculation.tipcalculation.domain.repository.ReportDataRepository
 import com.calculation.tipcalculation.domain.repository.SpeedCountRepository
 import dagger.Module
 import dagger.Provides
@@ -49,7 +46,6 @@ object DatabaseModule {
     @Provides fun provideFilterTipDao(db: AppDatabase): FilterTipDao = db.filterTipDao()
     @Provides fun provideExternalFilterTipDao(db: AppDatabase): ExternalFilterTipDao = db.externalFilterTipDao()
     @Provides fun provideSpeedDao(db: AppDatabase): SpeedDao = db.speedDao()
-    @Provides fun provideReportDataDao(db: AppDatabase): ReportDataDao = db.reportDataDao()
     @Provides fun provideInternalResultDao(db: AppDatabase): InternalResultDao = db.internalResultDao()
     @Provides fun provideExternalResultDao(db: AppDatabase): ExternalResultDao = db.externalResultDao()
 
@@ -64,10 +60,6 @@ object DatabaseModule {
     @Provides
     fun provideSpeedCountRepository(dao: SpeedDao): SpeedCountRepository =
         SpeedCountRepositoryImpl(dao)
-
-    @Provides
-    fun provideReportDataRepository(dao: ReportDataDao): ReportDataRepository =
-        ReportDataRepositoryImpl(dao)
 
     @Provides
     fun provideInternalResultHistoryRepository(

@@ -2,6 +2,7 @@ package com.calculation.tipcalculation.data.local.dao
 
 import androidx.room.*
 import com.calculation.tipcalculation.data.local.entity.ExternalResultEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExternalResultDao {
@@ -10,7 +11,7 @@ interface ExternalResultDao {
     suspend fun insert(result: ExternalResultEntity)
 
     @Query("SELECT * FROM external_result_history ORDER BY timestamp DESC")
-    suspend fun getAll(): List<ExternalResultEntity>
+    fun getAllFlow(): Flow<List<ExternalResultEntity>>
 
     @Delete
     suspend fun delete(result: ExternalResultEntity)

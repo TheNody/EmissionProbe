@@ -30,6 +30,7 @@ import com.calculation.tipcalculation.presentation.components.CustomBackground2
 import com.calculation.tipcalculation.presentation.components.FilterTipDropDownMenu
 import com.calculation.tipcalculation.presentation.components.GradientConfirmButton2
 import com.calculation.tipcalculation.presentation.components.InputFieldWithSpacer
+import com.calculation.tipcalculation.presentation.components.InputFieldWithSpacerPositiveOnly
 import com.calculation.tipcalculation.presentation.components.MainTopBarWithBackArrowAndCustomIcon
 import com.calculation.tipcalculation.presentation.navigation.Screen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.model.InputFieldState
@@ -129,7 +130,7 @@ fun InternalFilterCalcScreen(
 
                 items(speedValues.size) { index ->
                     val globalIndex = fields.size + index
-                    InputFieldWithSpacer(
+                    InputFieldWithSpacerPositiveOnly(
                         value = speedValues[index],
                         onValueChange = { speedValues[index] = it },
                         placeholder = "Введите V${index + 1} (м/с)",

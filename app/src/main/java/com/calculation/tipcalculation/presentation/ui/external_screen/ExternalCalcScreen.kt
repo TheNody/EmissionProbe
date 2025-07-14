@@ -39,7 +39,7 @@ fun ExternalCalcScreen(
 ) {
     var input by remember { mutableStateOf("") }
     val tips by viewModel.tips.observeAsState(emptyList())
-    val history = viewModel.history.value
+    val history by viewModel.history.collectAsState()
     val scrollState = rememberScrollState()
     val validationResult by viewModel.validationResult
 

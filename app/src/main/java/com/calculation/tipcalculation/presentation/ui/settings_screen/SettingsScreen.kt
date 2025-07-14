@@ -14,6 +14,7 @@ import com.calculation.tipcalculation.presentation.components.AppScaffold
 import com.calculation.tipcalculation.presentation.components.CustomGradientButton
 import com.calculation.tipcalculation.presentation.components.MainTopBar
 import com.calculation.tipcalculation.presentation.navigation.Screen
+import com.calculation.tipcalculation.utils.navigateSingleTopTo
 
 @Composable
 fun SettingsScreen(
@@ -41,7 +42,7 @@ fun SettingsScreen(
                 .padding(top = 8.dp),
             text = "Количество измерений",
             onClick = {
-                navController.navigate(Screen.SpeedCount.route)
+                navController.navigateSingleTopTo(Screen.SpeedCount.route)
             }
         )
     }

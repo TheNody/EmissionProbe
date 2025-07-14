@@ -14,6 +14,9 @@ import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.In
 import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.ValidateInternalCalculationUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.GetInternalResultHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,28 +24,23 @@ import javax.inject.Inject
 class InternalFilterViewModel @Inject constructor(
     private val insertFilterTipUseCase: InsertFilterTipUseCase,
     private val deleteFilterTipUseCase: DeleteFilterTipUseCase,
-    private val getFilterTipsUseCase: GetFilterTipsUseCase,
-    private val getInternalResultHistoryUseCase: GetInternalResultHistoryUseCase,
+    getFilterTipsUseCase: GetFilterTipsUseCase,
+    getInternalResultHistoryUseCase: GetInternalResultHistoryUseCase,
     private val validateInternalCalculationUseCase: ValidateInternalCalculationUseCase
 ) : ViewModel() {
 
     val tips: LiveData<List<FilterTip>> = getFilterTipsUseCase()
 
-    private val _history = mutableStateOf<List<InternalResultHistory>>(emptyList())
-    val history: State<List<InternalResultHistory>> = _history
+    val history: StateFlow<List<InternalResultHistory>> =
+        getInternalResultHistoryUseCase()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                emptyList()
+            )
 
     private val _validationResult = mutableStateOf<ValidationResult?>(null)
     val validationResult: State<ValidationResult?> = _validationResult
-
-    init {
-        loadHistory()
-    }
-
-    private fun loadHistory() {
-        viewModelScope.launch {
-            _history.value = getInternalResultHistoryUseCase()
-        }
-    }
 
     fun insertTip(value: String) {
         val doubleValue = value.toDoubleOrNull() ?: return

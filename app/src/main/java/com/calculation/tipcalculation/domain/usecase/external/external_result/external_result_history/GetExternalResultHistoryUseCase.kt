@@ -2,11 +2,12 @@ package com.calculation.tipcalculation.domain.usecase.external.external_result.e
 
 import com.calculation.tipcalculation.domain.model.ExternalResultHistory
 import com.calculation.tipcalculation.domain.repository.ExternalResultHistoryRepository
+import kotlinx.coroutines.flow.Flow
 
 class GetExternalResultHistoryUseCase(
     private val repository: ExternalResultHistoryRepository
 ) {
-    suspend operator fun invoke(): List<ExternalResultHistory> {
-        return repository.getAll()
+    operator fun invoke(): Flow<List<ExternalResultHistory>> {
+        return repository.getAllFlow()
     }
 }

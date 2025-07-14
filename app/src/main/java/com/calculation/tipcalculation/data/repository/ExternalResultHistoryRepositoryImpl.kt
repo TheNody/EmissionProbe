@@ -4,6 +4,8 @@ import com.calculation.tipcalculation.data.local.dao.ExternalResultDao
 import com.calculation.tipcalculation.data.local.entity.ExternalResultEntity
 import com.calculation.tipcalculation.domain.model.ExternalResultHistory
 import com.calculation.tipcalculation.domain.repository.ExternalResultHistoryRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class ExternalResultHistoryRepositoryImpl(
     private val dao: ExternalResultDao
@@ -13,8 +15,10 @@ class ExternalResultHistoryRepositoryImpl(
         dao.insert(result.toEntity())
     }
 
-    override suspend fun getAll(): List<ExternalResultHistory> {
-        return dao.getAll().map { it.toDomain() }
+    override fun getAllFlow(): Flow<List<ExternalResultHistory>> {
+        return dao.getAllFlow().map { list ->
+            list.map { it.toDomain() }
+        }
     }
 
     override suspend fun delete(result: ExternalResultHistory) {

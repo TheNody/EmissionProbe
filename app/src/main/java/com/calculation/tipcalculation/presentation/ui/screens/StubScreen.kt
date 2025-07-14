@@ -24,8 +24,5 @@ fun StubScreen(title: String) {
         }
     }
 }
-@Composable fun ExternalTipsScreen() = StubScreen("External Tips")
-@Composable fun InternalTipsScreen() = StubScreen("Internal Tips")
-@Composable fun HistoryScreen() = StubScreen("History")
 @Composable fun MeasurementScreen() = StubScreen("Measurement")
 @Composable fun AdvancedSettingsScreen() = StubScreen("Advanced Settings")

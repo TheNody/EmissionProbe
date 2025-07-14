@@ -3,6 +3,7 @@ package com.calculation.tipcalculation.presentation.components
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -100,27 +102,40 @@ fun SlantedBarItem(
         targetValue = if (selected) 1.15f else 1f,
         label = "scaleAnimation"
     )
+    val interactionSource = remember { MutableInteractionSource() }
 
     if (selected) {
         SlantedButton(
             icon = icon,
             modifier = Modifier
                 .scale(scale)
-                .clickable { onClick() }
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ) { onClick() }
         )
     } else {
-        Icon(
-            painter = when (icon) {
-                is BottomBarIcon.PainterIcon -> icon.painter
-                is BottomBarIcon.ResourceIcon -> painterResource(id = icon.resId)
-            },
-            contentDescription = null,
-            tint = Color.LightGray,
+        Box(
             modifier = Modifier
-                .scale(scale)
-                .size(24.dp)
-                .clickable { onClick() }
-        )
+                .size(48.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ) { onClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = when (icon) {
+                    is BottomBarIcon.PainterIcon -> icon.painter
+                    is BottomBarIcon.ResourceIcon -> painterResource(id = icon.resId)
+                },
+                contentDescription = null,
+                tint = Color.LightGray,
+                modifier = Modifier
+                    .scale(scale)
+                    .size(24.dp)
+            )
+        }
     }
 }
 
@@ -130,6 +145,8 @@ fun SlantedButton(
     icon: BottomBarIcon,
     onClick: () -> Unit = {}
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     Box(
         modifier = modifier
             .size(width = 60.dp, height = 40.dp)
@@ -141,7 +158,10 @@ fun SlantedButton(
                 ),
                 shape = RoundedCornerShape(10.dp)
             )
-            .clickable { onClick() },
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource
+            ) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Icon(

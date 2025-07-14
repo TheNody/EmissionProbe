@@ -19,7 +19,6 @@ import com.calculation.tipcalculation.R
 import com.calculation.tipcalculation.presentation.components.CustomBackground2
 import com.calculation.tipcalculation.presentation.components.InnerShadowBoxWithButton
 import com.calculation.tipcalculation.presentation.components.MainTopBarWithBackArrowAndCustomIcon
-import com.calculation.tipcalculation.presentation.navigation.Screen
 import com.calculation.tipcalculation.presentation.view_model.speed_count.SpeedCountViewModel
 
 @Composable
@@ -44,10 +43,7 @@ fun SpeedCountScreen(
                     title = "Количество измерений",
                     iconResId = R.drawable.speed_count,
                     onBackClick = {
-                        navController.navigate(Screen.Settings.route) {
-                            popUpTo(Screen.SpeedCount.route) { inclusive = true }
-                            launchSingleTop = true
-                        }
+                        navController.popBackStack()
                     },
                     onCustomIconClick = { }
                 )

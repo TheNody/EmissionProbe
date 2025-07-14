@@ -102,7 +102,7 @@ fun ExternalFilterCalcScreen(
 
                 items(speedValues.size) { index ->
                     val globalIndex = fields.size + index
-                    InputFieldWithSpacer(
+                    InputFieldWithSpacerPositiveOnly(
                         value = speedValues[index],
                         onValueChange = { speedValues[index] = it },
                         placeholder = "Введите V${index + 1} (м/с)",

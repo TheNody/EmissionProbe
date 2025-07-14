@@ -25,3 +25,21 @@ fun InputFieldWithSpacer(
     )
     Spacer(modifier = Modifier.height(12.dp))
 }
+
+@Composable
+fun InputFieldWithSpacerPositiveOnly(
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    focusRequester: FocusRequester,
+    onDone: () -> Unit
+) {
+    InnerShadowBox(
+        value = value,
+        onValueChange = onValueChange,
+        placeholder = placeholder,
+        modifier = Modifier.focusRequester(focusRequester),
+        onDone = onDone
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+}

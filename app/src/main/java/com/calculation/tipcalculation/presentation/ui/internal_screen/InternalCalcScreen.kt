@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -52,7 +53,7 @@ fun InternalCalcScreen(
 ) {
     var input by remember { mutableStateOf("") }
     val tips by viewModel.tips.observeAsState(emptyList())
-    val history = viewModel.history.value
+    val history by viewModel.history.collectAsState()
     val scrollState = rememberScrollState()
     val validationResult by viewModel.validationResult
 

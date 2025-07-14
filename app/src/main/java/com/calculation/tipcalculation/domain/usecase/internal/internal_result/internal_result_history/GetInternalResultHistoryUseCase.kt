@@ -2,11 +2,12 @@ package com.calculation.tipcalculation.domain.usecase.internal.internal_result.i
 
 import com.calculation.tipcalculation.domain.model.InternalResultHistory
 import com.calculation.tipcalculation.domain.repository.InternalResultHistoryRepository
+import kotlinx.coroutines.flow.Flow
 
 class GetInternalResultHistoryUseCase(
     private val repository: InternalResultHistoryRepository
 ) {
-    suspend operator fun invoke(): List<InternalResultHistory> {
-        return repository.getAll()
+    operator fun invoke(): Flow<List<InternalResultHistory>> {
+        return repository.getAllFlow()
     }
 }

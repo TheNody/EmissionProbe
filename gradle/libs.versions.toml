@@ -1,6 +1,6 @@
 [versions]
 agp = "8.11.1"
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 coreKtx = "1.16.0"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
@@ -14,9 +14,9 @@ roomCommon = "2.7.2"
 roomCompiler = "2.7.2"
 roomKtx = "2.7.2"
 runtimeLivedata = "1.8.3"
-poi = "5.2.3"
-poiOoxml = "5.2.3"
-hilt = "2.55"
+poi = "5.4.1"
+poiOoxml = "5.4.1"
+hilt = "2.56.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

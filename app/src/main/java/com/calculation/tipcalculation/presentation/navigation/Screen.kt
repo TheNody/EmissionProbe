@@ -6,8 +6,6 @@ sealed class Screen(val route: String) {
     object InternalCalc : Screen("internal_calculation")
     object ExternalResult : Screen("external_result")
     object InternalResult : Screen("internal_result")
-    object ExternalTips : Screen("external_tips")
-    object InternalTips : Screen("internal_tips")
     object History : Screen("history")
     object Settings : Screen("settings")
     object Measurement : Screen("measurement")
