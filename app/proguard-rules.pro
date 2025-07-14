@@ -20,82 +20,61 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Сохранение необходимых классов и методов для шифрования
--keep class javax.crypto.** { *; }
--keep class android.util.Base64 { *; }
-
-# Обфускация всех остальных классов и методов
--keep class !com.calculation.** { *; }
--keep class !androidx.** { *; }
--keep class !android.** { *; }
-
-# Обфускация CalculationViewModel
--keep class !com.calculation.tipcalculation.viewmodel.CalculationViewModel {
-    <fields>;
-    <methods>;
+-keep class androidx.compose.** { *; }
+-keep @androidx.compose.runtime.Composable class * { *; }
+-keepclasseswithmembers class * {
+    @androidx.compose.runtime.Composable <methods>;
+}
+-keepclasseswithmembers class * {
+    @androidx.compose.ui.tooling.preview.Preview <methods>;
 }
 
-# Сохранение атрибутов, необходимых для дебага
--keepattributes SourceFile,LineNumberTable
+-keepattributes *Annotation*
+-keep class dagger.** { *; }
+-keep class javax.inject.** { *; }
+-keep class com.google.dagger.** { *; }
+-keep interface dagger.hilt.** { *; }
+-keep @dagger.hilt.android.lifecycle.HiltViewModel class * { *; }
+-keep class * extends androidx.lifecycle.ViewModel { <init>(); }
 
-# Скрытие оригинальных имен файлов исходного кода
--renamesourcefileattribute SourceFile
+-keep class org.apache.poi.** { *; }
+-keep class org.openxmlformats.schemas.** { *; }
+-keep class org.apache.xmlbeans.** { *; }
+-keepnames class org.openxmlformats.schemas.** { *; }
+-keep interface org.apache.poi.** { *; }
+-keep class com.sun.xml.internal.stream.** { *; }
+-dontwarn com.sun.xml.internal.stream.**
+-dontwarn org.apache.poi.ooxml.**
+-dontwarn org.apache.xmlbeans.**
 
-# Прочие настройки и правила
--dontwarn android.support.**
--dontwarn javax.annotation.**
--dontwarn kotlin.**
--ignorewarnings
+-keepclassmembers class * {
+    public static <fields>;
+    public static <methods>;
+}
 
-# Обфускация строковых ресурсов
 -assumenosideeffects class android.util.Log {
     public static *** d(...);
-    public static *** e(...);
+    public static *** v(...);
     public static *** i(...);
     public static *** w(...);
-    public static *** v(...);
+    public static *** e(...);
 }
 
-# Сохранение классов и методов, используемых в XML
--keepclassmembers class * {
-    @android.view.ViewDebug$ExportedProperty *;
-    @android.view.ViewDebug$CapturedViewProperty *;
-}
-
-# Сохранение классов с аннотациями
--keepattributes *Annotation*
-
-# Сохранение методов, использующихся в нативном коде
--keepclasseswithmembernames class * {
-    native <methods>;
-}
-
-# Сохранение классов для сериализации
--keepclassmembers class * implements java.io.Serializable {
-    static final long serialVersionUID;
-    private static final java.io.ObjectStreamField[] serialPersistentFields;
-    private void writeObject(java.io.ObjectOutputStream);
-    private void readObject(java.io.ObjectInputStream);
-    java.lang.Object writeReplace();
-    java.lang.Object readResolve();
-}
-
-# Сохранение методов, используемых в Java-коде через рефлексию
--keepclassmembers class * {
-    public <methods>;
-}
-
-# Сохранение классов, используемых в XML разметке
--keep public class * extends android.view.View {
-    public <init>(android.content.Context);
-    public <init>(android.content.Context, android.util.AttributeSet);
-    public <init>(android.content.Context, android.util.AttributeSet, int);
-}
-
-# Прочие настройки для повышения производительности
--optimizationpasses 5
--overloadaggressively
--dontpreverify
 -repackageclasses ''
--allowaccessmodification
--mergeinterfacesaggressively
+
+-renamesourcefileattribute SourceFile
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-overloadaggressively
+-flattenpackagehierarchy
+-useuniqueclassmembernames
+-classobfuscationdictionary obfuscation.txt
+-ignorewarnings
+
+
+
+
+
+

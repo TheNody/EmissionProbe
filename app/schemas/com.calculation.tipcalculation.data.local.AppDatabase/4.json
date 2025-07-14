@@ -1,0 +1,331 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "bb62dfca832e3c35bfab022ef6c01d30",
+    "entities": [
+      {
+        "tableName": "filter_tips",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `value` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "external_filter_tips",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `value` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "speed_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `speedCount` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speedCount",
+            "columnName": "speedCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "internal_result_history",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `patm` REAL NOT NULL, `tsr` REAL NOT NULL, `tasp` REAL NOT NULL, `plsr` REAL NOT NULL, `preom` REAL NOT NULL, `speeds` TEXT NOT NULL, `averageSpeed` REAL NOT NULL, `averageTip` REAL NOT NULL, `selectedTip` REAL NOT NULL, `vp` REAL NOT NULL, `timestamp` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patm",
+            "columnName": "patm",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tsr",
+            "columnName": "tsr",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tasp",
+            "columnName": "tasp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plsr",
+            "columnName": "plsr",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preom",
+            "columnName": "preom",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speeds",
+            "columnName": "speeds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averageSpeed",
+            "columnName": "averageSpeed",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averageTip",
+            "columnName": "averageTip",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "selectedTip",
+            "columnName": "selectedTip",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vp",
+            "columnName": "vp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "external_result_history",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `patm` REAL NOT NULL, `plsr` REAL NOT NULL, `preom` REAL NOT NULL, `tsr` REAL NOT NULL, `tasp` REAL NOT NULL, `speeds` TEXT NOT NULL, `srznach` REAL NOT NULL, `sigma` REAL NOT NULL, `sko` REAL NOT NULL, `average` REAL NOT NULL, `calculatedTip` REAL NOT NULL, `tipSize` REAL NOT NULL, `aspUsl` REAL NOT NULL, `result` REAL NOT NULL, `aspUsl1` REAL NOT NULL, `duslov1` REAL NOT NULL, `vibrNak` REAL NOT NULL, `dreal` REAL NOT NULL, `vsp2` REAL NOT NULL, `closestDiameter` REAL NOT NULL, `firstSuitableDiameter` REAL NOT NULL, `selectedVp` REAL NOT NULL, `checkedDiameters` TEXT NOT NULL, `timestamp` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "patm",
+            "columnName": "patm",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plsr",
+            "columnName": "plsr",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preom",
+            "columnName": "preom",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tsr",
+            "columnName": "tsr",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tasp",
+            "columnName": "tasp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speeds",
+            "columnName": "speeds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "srznach",
+            "columnName": "srznach",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sigma",
+            "columnName": "sigma",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sko",
+            "columnName": "sko",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "average",
+            "columnName": "average",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calculatedTip",
+            "columnName": "calculatedTip",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipSize",
+            "columnName": "tipSize",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aspUsl",
+            "columnName": "aspUsl",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "result",
+            "columnName": "result",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aspUsl1",
+            "columnName": "aspUsl1",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duslov1",
+            "columnName": "duslov1",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vibrNak",
+            "columnName": "vibrNak",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dreal",
+            "columnName": "dreal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vsp2",
+            "columnName": "vsp2",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "closestDiameter",
+            "columnName": "closestDiameter",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstSuitableDiameter",
+            "columnName": "firstSuitableDiameter",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "selectedVp",
+            "columnName": "selectedVp",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "checkedDiameters",
+            "columnName": "checkedDiameters",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bb62dfca832e3c35bfab022ef6c01d30')"
+    ]
+  }
+}

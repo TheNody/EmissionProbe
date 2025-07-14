@@ -14,7 +14,7 @@ import com.calculation.tipcalculation.data.local.entity.*
         ExternalResultEntity::class
     ],
     version = 4,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
