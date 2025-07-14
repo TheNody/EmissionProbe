@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.calculation.tipcalculation"
-        minSdk = 27
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -79,16 +79,16 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     // Apache POI
-    implementation(libs.poi)
     implementation(libs.poi.ooxml)
+    implementation(libs.poi)
 
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    testImplementation("androidx.compose.ui:ui-test-junit4:1.9.0-beta02")
+    testImplementation(libs.androidx.ui.test.junit4)
 
     //Math
-    implementation("org.mariuszgromada.math:MathParser.org-mXparser:6.1.0")
+    implementation(libs.mathparser.org.mxparser)
 
 }

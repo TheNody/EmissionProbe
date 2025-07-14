@@ -7,21 +7,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.calculation.tipcalculation.presentation.components.AppScaffold
+import com.calculation.tipcalculation.presentation.components.CustomAlertDialog
 import com.calculation.tipcalculation.presentation.components.CustomGradientButton
 import com.calculation.tipcalculation.presentation.components.MainTopBar
 import com.calculation.tipcalculation.presentation.navigation.Screen
+import com.calculation.tipcalculation.presentation.view_model.settings_screen.SettingsViewModel
 import com.calculation.tipcalculation.utils.navigateSingleTopTo
 
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
     selectedIndex: Int,
-    onTabSelected: (Int) -> Unit
+    onTabSelected: (Int) -> Unit,
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    val isDialogVisible by viewModel.isDialogVisible
+
     AppScaffold(
         navController = navController,
         selectedIndex = selectedIndex,
@@ -45,6 +52,31 @@ fun SettingsScreen(
                 navController.navigateSingleTopTo(Screen.SpeedCount.route)
             }
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        CustomGradientButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            text = "Очистить историю",
+            onClick = {
+                viewModel.onClearHistoryClick()
+            }
+        )
+
+        if (isDialogVisible) {
+            CustomAlertDialog(
+                titleText = "Очистить историю",
+                bodyText = "Будет удалена только история расчётов. Скачанные расчёты сохранятся.",
+                confirmButtonText = "Удалить",
+                cancelButtonText = "Отмена",
+                onDismissRequest = { viewModel.dismissDialog() },
+                onConfirm = { viewModel.confirmClearHistory() },
+                onCancel = { viewModel.dismissDialog() }
+            )
+        }
     }
 }
+
 

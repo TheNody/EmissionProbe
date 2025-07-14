@@ -30,6 +30,7 @@ import com.calculation.tipcalculation.domain.usecase.internal.internal_result.in
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.GetInternalResultUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.SetInternalResultUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.DeleteAllInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.speed_count.*
 import dagger.Module
 import dagger.Provides
@@ -153,6 +154,12 @@ object UseCaseModule {
     fun provideDeleteInternalResultHistoryUseCase(
         repository: InternalResultHistoryRepository
     ): DeleteInternalResultHistoryUseCase = DeleteInternalResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteAllInternalResultHistoryUseCase(
+        repository: InternalResultHistoryRepository
+    ): DeleteAllInternalResultHistoryUseCase = DeleteAllInternalResultHistoryUseCase(repository)
 
     // External Result UseCases
     @Provides
