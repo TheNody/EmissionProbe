@@ -1,6 +1,13 @@
 package com.calculation.tipcalculation.di
 
-import com.calculation.tipcalculation.domain.repository.*
+import com.calculation.tipcalculation.domain.repository.ExportedReportRepository
+import com.calculation.tipcalculation.domain.repository.ExternalFilterTipRepository
+import com.calculation.tipcalculation.domain.repository.ExternalResultHistoryRepository
+import com.calculation.tipcalculation.domain.repository.ExternalResultRepository
+import com.calculation.tipcalculation.domain.repository.FilterTipRepository
+import com.calculation.tipcalculation.domain.repository.InternalResultHistoryRepository
+import com.calculation.tipcalculation.domain.repository.InternalResultRepository
+import com.calculation.tipcalculation.domain.repository.SpeedCountRepository
 import com.calculation.tipcalculation.domain.usecase.external.export_excel.AddExportedReportUseCase
 import com.calculation.tipcalculation.domain.usecase.external.export_excel.ExportExternalResultToExcelUseCase
 import com.calculation.tipcalculation.domain.usecase.external.export_excel.ExternalExcelExporter
@@ -25,13 +32,16 @@ import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.Ge
 import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.InsertFilterTipUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.ValidateInternalCalculationUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.ClearInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.DeleteInternalResultHistoryUseCase
-import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.GetInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.GetInternalResultUseCase
-import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.SetInternalResultUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.DeleteAllInternalResultHistoryUseCase
-import com.calculation.tipcalculation.domain.usecase.speed_count.*
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.DeleteInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.GetInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.speed_count.DeleteSpeedUseCase
+import com.calculation.tipcalculation.domain.usecase.speed_count.GetSpeedUseCase
+import com.calculation.tipcalculation.domain.usecase.speed_count.InsertSpeedUseCase
+import com.calculation.tipcalculation.domain.usecase.speed_count.UpdateSpeedUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

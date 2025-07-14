@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -28,6 +29,9 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val isDialogVisible by viewModel.isDialogVisible
+    val showPathDialog by viewModel.showPathDialog
+    val reportFolderPath by viewModel.reportFolderPath
+    val context = LocalContext.current
 
     AppScaffold(
         navController = navController,
@@ -65,6 +69,18 @@ fun SettingsScreen(
             }
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        CustomGradientButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            text = "Где хранятся отчёты",
+            onClick = {
+                viewModel.showReportFolderPath(context)
+            }
+        )
+
         if (isDialogVisible) {
             CustomAlertDialog(
                 titleText = "Очистить историю",
@@ -76,7 +92,20 @@ fun SettingsScreen(
                 onCancel = { viewModel.dismissDialog() }
             )
         }
+
+        if (showPathDialog) {
+            CustomAlertDialog(
+                titleText = "Папка с отчётами",
+                bodyText = reportFolderPath,
+                confirmButtonText = "Скопировать",
+                cancelButtonText = "Закрыть",
+                onDismissRequest = { viewModel.dismissPathDialog() },
+                onConfirm = {
+                    viewModel.copyPathToClipboard(context)
+                },
+                onCancel = { viewModel.dismissPathDialog() }
+            )
+        }
     }
 }
-
 
