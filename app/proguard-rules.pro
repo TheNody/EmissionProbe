@@ -68,9 +68,6 @@
 
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 -overloadaggressively
--flattenpackagehierarchy
--useuniqueclassmembernames
--classobfuscationdictionary obfuscation.txt
 -ignorewarnings
 
 
