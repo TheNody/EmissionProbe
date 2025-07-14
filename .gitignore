@@ -18,3 +18,4 @@ local.properties
 keystorefile.jks
 /app/release/
 app/schemas/*
+!app/schemas/.gitkeep
