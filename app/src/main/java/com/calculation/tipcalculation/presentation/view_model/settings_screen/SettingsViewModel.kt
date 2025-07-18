@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
+import android.os.Environment
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -45,8 +46,8 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun showReportFolderPath(context: Context) {
-        val path = "${context.getExternalFilesDir(null)?.absolutePath}/Download/TipReports"
+    fun showReportFolderPath() {
+        val path = "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/TipReports"
         _reportFolderPath.value = path
         _showPathDialog.value = true
     }

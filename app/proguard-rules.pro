@@ -20,22 +20,34 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class androidx.compose.** { *; }
--keep @androidx.compose.runtime.Composable class * { *; }
--keepclasseswithmembers class * {
-    @androidx.compose.runtime.Composable <methods>;
-}
--keepclasseswithmembers class * {
-    @androidx.compose.ui.tooling.preview.Preview <methods>;
+-renamesourcefileattribute SourceFile
+
+-repackageclasses ''
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+
+-overloadaggressively
+
+-ignorewarnings
+
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+    public static *** w(...);
+    public static *** e(...);
 }
 
 -keepattributes *Annotation*
+
+-keep class * extends androidx.lifecycle.ViewModel { <init>(); }
+-keep @dagger.hilt.android.lifecycle.HiltViewModel class * { *; }
+
 -keep class dagger.** { *; }
 -keep class javax.inject.** { *; }
 -keep class com.google.dagger.** { *; }
 -keep interface dagger.hilt.** { *; }
--keep @dagger.hilt.android.lifecycle.HiltViewModel class * { *; }
--keep class * extends androidx.lifecycle.ViewModel { <init>(); }
 
 -keep class org.apache.poi.** { *; }
 -keep class org.openxmlformats.schemas.** { *; }
@@ -46,29 +58,6 @@
 -dontwarn com.sun.xml.internal.stream.**
 -dontwarn org.apache.poi.ooxml.**
 -dontwarn org.apache.xmlbeans.**
-
--keepclassmembers class * {
-    public static <fields>;
-    public static <methods>;
-}
-
--assumenosideeffects class android.util.Log {
-    public static *** d(...);
-    public static *** v(...);
-    public static *** i(...);
-    public static *** w(...);
-    public static *** e(...);
-}
-
--repackageclasses ''
-
--renamesourcefileattribute SourceFile
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
-
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
--overloadaggressively
--ignorewarnings
 
 
 

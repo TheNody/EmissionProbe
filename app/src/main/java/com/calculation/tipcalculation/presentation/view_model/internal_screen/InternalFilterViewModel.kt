@@ -12,6 +12,7 @@ import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.De
 import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.GetFilterTipsUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.InsertFilterTipUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_filter.ValidateInternalCalculationUseCase
+import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.DeleteInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.GetInternalResultHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -26,7 +27,8 @@ class InternalFilterViewModel @Inject constructor(
     private val deleteFilterTipUseCase: DeleteFilterTipUseCase,
     getFilterTipsUseCase: GetFilterTipsUseCase,
     getInternalResultHistoryUseCase: GetInternalResultHistoryUseCase,
-    private val validateInternalCalculationUseCase: ValidateInternalCalculationUseCase
+    private val validateInternalCalculationUseCase: ValidateInternalCalculationUseCase,
+    private val deleteInternalResultHistoryUseCase: DeleteInternalResultHistoryUseCase
 ) : ViewModel() {
 
     val tips: LiveData<List<FilterTip>> = getFilterTipsUseCase()
@@ -66,5 +68,11 @@ class InternalFilterViewModel @Inject constructor(
 
     fun dismissValidationDialog() {
         _validationResult.value = null
+    }
+
+    fun deleteResult(item: InternalResultHistory) {
+        viewModelScope.launch {
+            deleteInternalResultHistoryUseCase(item)
+        }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -324,7 +325,8 @@ fun BoxCard(
 fun ExpandableBoxCard(
     dateText: String,
     modifier: Modifier = Modifier,
-    expandedContent: @Composable ColumnScope.() -> Unit
+    expandedContent: @Composable ColumnScope.() -> Unit,
+    onDeleteClick: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -354,15 +356,57 @@ fun ExpandableBoxCard(
                 spotColor = Color(0x33667BA5),
                 ambientColor = Color(0x33667BA5)
             )
-            .clickable { expanded = !expanded }
+            .clickable {
+                if (expanded) expanded = false
+            }
             .padding(16.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = "Дата расчёта: $dateText",
-                style = Typography.titleMedium,
-                color = Color.White
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Дата расчёта: $dateText",
+                    style = Typography.titleMedium,
+                    color = Color.White,
+                    modifier = Modifier.weight(1f)
+                )
+
+                if (!expanded) {
+                    Row {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_eye),
+                            contentDescription = "Показать",
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .size(20.dp)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null
+                                ) {
+                                    expanded = true
+                                }
+                        )
+
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_delete),
+                            contentDescription = "Удалить",
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null
+                                ) {
+                                    onDeleteClick()
+                                }
+                        )
+                    }
+                }
+            }
 
             AnimatedVisibility(visible = expanded) {
                 Column(

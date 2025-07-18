@@ -77,7 +77,7 @@ fun SettingsScreen(
                 .padding(top = 8.dp),
             text = "Где хранятся отчёты",
             onClick = {
-                viewModel.showReportFolderPath(context)
+                viewModel.showReportFolderPath()
             }
         )
 

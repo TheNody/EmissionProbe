@@ -12,6 +12,7 @@ import com.calculation.tipcalculation.domain.usecase.external.external_filter.De
 import com.calculation.tipcalculation.domain.usecase.external.external_filter.GetExternalTipsUseCase
 import com.calculation.tipcalculation.domain.usecase.external.external_filter.InsertExternalTipUseCase
 import com.calculation.tipcalculation.domain.usecase.external.external_filter.ValidateExternalCalculationUseCase
+import com.calculation.tipcalculation.domain.usecase.external.external_result.external_result_history.DeleteExternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.external.external_result.external_result_history.GetExternalResultHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -26,7 +27,8 @@ class ExternalFilterViewModel @Inject constructor(
     private val deleteExternalTipUseCase: DeleteExternalTipUseCase,
     private val getExternalTipsUseCase: GetExternalTipsUseCase,
     getExternalResultHistoryUseCase: GetExternalResultHistoryUseCase,
-    private val validateExternalCalculationUseCase: ValidateExternalCalculationUseCase
+    private val validateExternalCalculationUseCase: ValidateExternalCalculationUseCase,
+    private val deleteExternalResultHistoryUseCase: DeleteExternalResultHistoryUseCase
 ) : ViewModel() {
 
     val tips: LiveData<List<ExternalFilterTip>> = getExternalTipsUseCase()
@@ -66,5 +68,11 @@ class ExternalFilterViewModel @Inject constructor(
 
     fun dismissValidationDialog() {
         _validationResult.value = null
+    }
+
+    fun deleteResult(item: ExternalResultHistory) {
+        viewModelScope.launch {
+            deleteExternalResultHistoryUseCase(item)
+        }
     }
 }

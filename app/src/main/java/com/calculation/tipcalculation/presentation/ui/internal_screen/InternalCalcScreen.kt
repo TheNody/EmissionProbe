@@ -32,6 +32,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.calculation.tipcalculation.R
+import com.calculation.tipcalculation.domain.model.InternalResultHistory
 import com.calculation.tipcalculation.domain.model.ValidationResult
 import com.calculation.tipcalculation.presentation.components.CustomAlertDialog
 import com.calculation.tipcalculation.presentation.components.CustomBackground
@@ -56,6 +57,9 @@ fun InternalCalcScreen(
     val history by viewModel.history.collectAsState()
     val scrollState = rememberScrollState()
     val validationResult by viewModel.validationResult
+
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var itemToDelete by remember { mutableStateOf<InternalResultHistory?>(null) }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -168,38 +172,43 @@ fun InternalCalcScreen(
                                 dateText = item.timestamp,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 6.dp)
-                            ) {
-                                Text(
-                                    text = "Исходные данные",
-                                    style = Typography.headlineSmall,
-                                    color = Color(0xFF1A1B20)
-                                )
+                                    .padding(vertical = 6.dp),
+                                expandedContent = {
+                                    Text(
+                                        text = "Исходные данные",
+                                        style = Typography.headlineSmall,
+                                        color = Color(0xFF1A1B20)
+                                    )
 
-                                Spacer(modifier = Modifier.height(16.dp))
+                                    Spacer(modifier = Modifier.height(16.dp))
 
-                                ResultText("P атм", "${item.patm} мм рт. ст.")
-                                ResultText("t среды", "${item.tsr} °C")
-                                ResultText("t асп.", "${item.tasp} °C")
-                                ResultText("P ср.", "${item.plsr} мм вод. ст.")
-                                ResultText("P реом.", "${item.preom} мм рт. ст.")
-                                ResultText("Скорости", item.speeds.joinToString("; ") { v -> "%.2f".format(v) })
-                                ResultText("Выбранный диаметр", "%.4f".format(item.selectedTip))
+                                    ResultText("P атм", "${item.patm} мм рт. ст.")
+                                    ResultText("t среды", "${item.tsr} °C")
+                                    ResultText("t асп.", "${item.tasp} °C")
+                                    ResultText("P ср.", "${item.plsr} мм вод. ст.")
+                                    ResultText("P реом.", "${item.preom} мм рт. ст.")
+                                    ResultText("Скорости", item.speeds.joinToString("; ") { v -> "%.2f".format(v) })
+                                    ResultText("Выбранный диаметр", "%.4f".format(item.selectedTip))
 
-                                Spacer(modifier = Modifier.height(24.dp))
+                                    Spacer(modifier = Modifier.height(24.dp))
 
-                                Text(
-                                    text = "Результат вычисления",
-                                    style = Typography.headlineSmall,
-                                    color = Color(0xFF1A1B20)
-                                )
+                                    Text(
+                                        text = "Результат вычисления",
+                                        style = Typography.headlineSmall,
+                                        color = Color(0xFF1A1B20)
+                                    )
 
-                                Spacer(modifier = Modifier.height(16.dp))
+                                    Spacer(modifier = Modifier.height(16.dp))
 
-                                ResultText("Средняя скорость", "%.4f м/с".format(item.averageSpeed))
-                                ResultText("Идеальный наконечник", "%.4f".format(item.averageTip))
-                                ResultText("Vp выбранного наконечника", "%.4f м/с".format(item.vp))
-                            }
+                                    ResultText("Средняя скорость", "%.4f м/с".format(item.averageSpeed))
+                                    ResultText("Идеальный наконечник", "%.4f".format(item.averageTip))
+                                    ResultText("Vp выбранного наконечника", "%.4f м/с".format(item.vp))
+                                },
+                                onDeleteClick = {
+                                    itemToDelete = item
+                                    showDeleteDialog = true
+                                }
+                            )
                         }
                     }
                 }
@@ -242,6 +251,28 @@ fun InternalCalcScreen(
 
                     else -> {}
                 }
+            }
+
+            if (showDeleteDialog && itemToDelete != null) {
+                CustomAlertDialog(
+                    titleText = "Удалить расчёт",
+                    bodyText = "Вы действительно хотите удалить этот расчёт? Это действие необратимо.",
+                    confirmButtonText = "Удалить",
+                    cancelButtonText = "Отмена",
+                    onDismissRequest = {
+                        showDeleteDialog = false
+                        itemToDelete = null
+                    },
+                    onConfirm = {
+                        viewModel.deleteResult(itemToDelete!!)
+                        showDeleteDialog = false
+                        itemToDelete = null
+                    },
+                    onCancel = {
+                        showDeleteDialog = false
+                        itemToDelete = null
+                    }
+                )
             }
         }
     }
