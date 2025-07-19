@@ -3,7 +3,12 @@ package com.calculation.tipcalculation.presentation.navigation
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,9 +23,11 @@ import com.calculation.tipcalculation.presentation.ui.internal_screen.InternalCa
 import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_calc.InternalFilterCalcScreen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_result.InternalResultScreen
 import com.calculation.tipcalculation.presentation.ui.main_screen.MainScreen
-import com.calculation.tipcalculation.presentation.ui.screens.*
+import com.calculation.tipcalculation.presentation.ui.measurement_check.MeasurementCheckScreen
 import com.calculation.tipcalculation.presentation.ui.settings_screen.SettingsScreen
 import com.calculation.tipcalculation.presentation.ui.speed_screen.SpeedCountScreen
+import com.calculation.tipcalculation.presentation.ui.used_documents.UsedDocumentsScreen
+import com.calculation.tipcalculation.presentation.ui.used_documents.gost_17.GOST17Screen
 import com.calculation.tipcalculation.utils.navigateSingleTopTo
 
 @Composable
@@ -34,8 +41,8 @@ fun AppEntryPoint() {
         when (navBackStackEntry?.destination?.route) {
             Screen.Main.route -> selectedTabIndex = 0
             Screen.History.route -> selectedTabIndex = 1
-            Screen.Measurement.route -> selectedTabIndex = 2
-            Screen.Settings.route -> selectedTabIndex = 3
+            Screen.Settings.route -> selectedTabIndex = 2
+            Screen.UsedDocuments.route -> selectedTabIndex = 3
         }
     }
 
@@ -47,8 +54,8 @@ fun AppEntryPoint() {
             when (index) {
                 0 -> navController.navigateSingleTopTo(Screen.Main.route)
                 1 -> navController.navigateSingleTopTo(Screen.History.route)
-                2 -> navController.navigateSingleTopTo(Screen.Measurement.route)
-                3 -> navController.navigateSingleTopTo(Screen.Settings.route)
+                2 -> navController.navigateSingleTopTo(Screen.Settings.route)
+                3 -> navController.navigateSingleTopTo(Screen.UsedDocuments.route)
             }
         }
     )
@@ -107,12 +114,6 @@ fun AppNavigation(
                 onTabSelected = onTabSelected
             )
         }
-        composable(Screen.Measurement.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
-            MeasurementScreen()
-        }
-        composable(Screen.AdvancedSettings.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
-            AdvancedSettingsScreen()
-        }
         composable(Screen.Calculator.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             CalculatorScreen()
         }
@@ -124,6 +125,19 @@ fun AppNavigation(
         }
         composable(Screen.ExternalFilterCalc.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             ExternalFilterCalcScreen(navController = navController)
+        }
+        composable(Screen.MeasurementCheck.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            MeasurementCheckScreen()
+        }
+        composable(Screen.UsedDocuments.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            UsedDocumentsScreen(
+                navController = navController,
+                selectedIndex = selectedTabIndex,
+                onTabSelected = onTabSelected
+            )
+        }
+        composable(Screen.GOST17.route) {
+            GOST17Screen(navController = navController)
         }
     }
 }

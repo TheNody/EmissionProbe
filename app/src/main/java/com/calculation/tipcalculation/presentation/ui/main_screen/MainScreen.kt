@@ -71,6 +71,18 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
+            text = "Проверка участка замера",
+            onClick = {
+                navController.navigateSingleTopTo(Screen.MeasurementCheck.route)
+            }
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        CustomGradientButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
             text = "Калькулятор",
             onClick = {
                 navController.navigateSingleTopTo(Screen.Calculator.route)

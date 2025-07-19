@@ -40,7 +40,6 @@ class ExportedReportsStore(context: Context) {
             var fileExists = false
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                // API 29+: MediaStore
                 val resolver = context.contentResolver
                 val collection = MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL)
                 val projection = arrayOf(MediaStore.Downloads.DISPLAY_NAME)

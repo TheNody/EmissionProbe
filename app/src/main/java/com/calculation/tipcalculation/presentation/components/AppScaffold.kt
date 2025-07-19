@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -29,8 +28,8 @@ fun AppScaffold(
     val bottomIcons = listOf(
         BottomBarIcon.ResourceIcon(R.drawable.ic_main),
         BottomBarIcon.ResourceIcon(R.drawable.ic_history),
-        BottomBarIcon.PainterIcon(rememberVectorPainter(Icons.Default.Person)),
-        BottomBarIcon.PainterIcon(rememberVectorPainter(Icons.Default.Settings))
+        BottomBarIcon.PainterIcon(rememberVectorPainter(Icons.Default.Settings)),
+        BottomBarIcon.ResourceIcon(R.drawable.ic_document),
     )
 
     Surface(
