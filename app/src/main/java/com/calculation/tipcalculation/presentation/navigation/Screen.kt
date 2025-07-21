@@ -12,7 +12,9 @@ sealed class Screen(val route: String) {
     object SpeedCount : Screen("speed_count")
     object InternalFilterCalc : Screen("internal_filter_calc")
     object ExternalFilterCalc : Screen("external_filter_calc")
-    object MeasurementCheck : Screen("measurement_check")
     object UsedDocuments : Screen("used_documents")
     object GOST17 : Screen("gost17")
+    object SectionTypeSelection : Screen("section_type_selection")
+    object RectangularSection : Screen("rectangular_section")
+    object RoundSection : Screen("round_section")
 }

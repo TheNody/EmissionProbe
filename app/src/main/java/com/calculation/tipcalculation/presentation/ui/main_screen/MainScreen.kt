@@ -73,7 +73,7 @@ fun MainScreen(
                 .padding(top = 8.dp),
             text = "Проверка участка замера",
             onClick = {
-                navController.navigateSingleTopTo(Screen.MeasurementCheck.route)
+                navController.navigateSingleTopTo(Screen.SectionTypeSelection.route)
             }
         )
 

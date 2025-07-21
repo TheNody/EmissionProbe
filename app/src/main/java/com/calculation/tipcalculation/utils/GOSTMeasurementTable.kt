@@ -5,8 +5,8 @@ data class MeasurementRule(
     val dMax: Double,
     val lOverDeMin: Double,
     val lOverDeMax: Double,
-    val totalPoints: Int,   // это n
-    val diameterPoints: Int // это n⌀
+    val totalPoints: Int,
+    val diameterPoints: Int
 )
 
 object GOSTMeasurementTable {
@@ -15,9 +15,9 @@ object GOSTMeasurementTable {
         // До 200 мм
         MeasurementRule(dMin = 0.0, dMax = 200.0, lOverDeMin = 5.5, lOverDeMax = Double.MAX_VALUE, totalPoints = 1, diameterPoints = 1),
 
-        // 200–900 мм включ.
-        MeasurementRule(dMin = 200.0, dMax = 900.0, lOverDeMin = 5.5, lOverDeMax = Double.MAX_VALUE, totalPoints = 1, diameterPoints = 1),
-        MeasurementRule(dMin = 200.0, dMax = 900.0, lOverDeMin = 4.0, lOverDeMax = 5.5, totalPoints = 2, diameterPoints = 2),
+        // 200–500 мм включ.
+        MeasurementRule(dMin = 200.01, dMax = 500.0, lOverDeMin = 5.5, lOverDeMax = Double.MAX_VALUE, totalPoints = 1, diameterPoints = 1),
+        MeasurementRule(dMin = 200.01, dMax = 500.0, lOverDeMin = 4.0, lOverDeMax = 5.5, totalPoints = 2, diameterPoints = 2),
 
         // Св. 500 до 900 мм включ.
         MeasurementRule(dMin = 500.01, dMax = 900.0, lOverDeMin = 5.5, lOverDeMax = Double.MAX_VALUE, totalPoints = 4, diameterPoints = 2),

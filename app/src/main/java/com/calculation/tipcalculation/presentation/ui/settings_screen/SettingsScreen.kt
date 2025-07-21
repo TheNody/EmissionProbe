@@ -53,7 +53,7 @@ fun SettingsScreen(
                 .padding(top = 8.dp),
             text = "Количество измерений",
             onClick = {
-                navController.navigateSingleTopTo(Screen.SpeedCount.route)
+                navController.navigate(Screen.SpeedCount.route)
             }
         )
 

@@ -23,7 +23,9 @@ import com.calculation.tipcalculation.presentation.ui.internal_screen.InternalCa
 import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_calc.InternalFilterCalcScreen
 import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_result.InternalResultScreen
 import com.calculation.tipcalculation.presentation.ui.main_screen.MainScreen
-import com.calculation.tipcalculation.presentation.ui.measurement_check.MeasurementCheckScreen
+import com.calculation.tipcalculation.presentation.ui.measurement_check.SectionTypeSelectionScreen
+import com.calculation.tipcalculation.presentation.ui.measurement_check.rectangular.MeasurementScreen
+import com.calculation.tipcalculation.presentation.ui.measurement_check.round.MeasurementRoundScreen
 import com.calculation.tipcalculation.presentation.ui.settings_screen.SettingsScreen
 import com.calculation.tipcalculation.presentation.ui.speed_screen.SpeedCountScreen
 import com.calculation.tipcalculation.presentation.ui.used_documents.UsedDocumentsScreen
@@ -126,8 +128,14 @@ fun AppNavigation(
         composable(Screen.ExternalFilterCalc.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             ExternalFilterCalcScreen(navController = navController)
         }
-        composable(Screen.MeasurementCheck.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
-            MeasurementCheckScreen()
+        composable(Screen.SectionTypeSelection.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            SectionTypeSelectionScreen(navController = navController)
+        }
+        composable(Screen.RectangularSection.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            MeasurementScreen(navController = navController)
+        }
+        composable(Screen.RoundSection.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            MeasurementRoundScreen(navController = navController)
         }
         composable(Screen.UsedDocuments.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             UsedDocumentsScreen(

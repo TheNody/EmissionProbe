@@ -38,6 +38,8 @@ import com.calculation.tipcalculation.domain.usecase.internal.internal_result.in
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.DeleteInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.GetInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.CalculateMeasurementPointsUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.round.CalculateRoundSectionUseCase
 import com.calculation.tipcalculation.domain.usecase.speed_count.DeleteSpeedUseCase
 import com.calculation.tipcalculation.domain.usecase.speed_count.GetSpeedUseCase
 import com.calculation.tipcalculation.domain.usecase.speed_count.InsertSpeedUseCase
@@ -274,4 +276,17 @@ object UseCaseModule {
     fun provideInvalidateExportedReportsUseCase(
         repository: ExportedReportRepository
     ): InvalidateExportedReportsUseCase = InvalidateExportedReportsUseCase(repository)
+
+    //Measurment UseCases
+    @Provides
+    @Singleton
+    fun provideCalculateMeasurementPointsUseCase(): CalculateMeasurementPointsUseCase {
+        return CalculateMeasurementPointsUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCalculateRoundSectionUseCase(): CalculateRoundSectionUseCase {
+        return CalculateRoundSectionUseCase()
+    }
 }
