@@ -60,9 +60,9 @@ fun ExternalResultScreen(
                             )
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            ResultText("P атм", "%.2f мм рт. ст.".format(it.patm))
-                            ResultText("P ср.", "%.2f мм вод. ст.".format(it.plsr))
-                            ResultText("P реом.", "%.2f мм рт. ст.".format(it.preom))
+                            ResultText("P атм", "%.2f Па".format(it.patm))
+                            ResultText("P ср.", "%.2f Па".format(it.plsr))
+                            ResultText("P реом.", "%.2f Па".format(it.preom))
                             ResultText("t среды", "%.2f °C".format(it.tsr))
                             ResultText("t асп.", "%.2f °C".format(it.tasp))
                             ResultText("Скорости", it.speeds.joinToString("; ") { v -> "%.2f".format(v) })

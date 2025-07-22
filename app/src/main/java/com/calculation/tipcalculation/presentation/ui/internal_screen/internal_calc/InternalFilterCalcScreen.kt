@@ -58,7 +58,7 @@ fun InternalFilterCalcScreen(
 
     val fields = remember {
         listOf(
-            InputFieldState("Введите P атм. (мм рт. ст.)").apply {
+            InputFieldState("Введите P атм. (Па)").apply {
                 value = savedResult?.patm?.toString() ?: ""
             },
             InputFieldState("Введите t среды (°C)").apply {
@@ -67,15 +67,14 @@ fun InternalFilterCalcScreen(
             InputFieldState("Введите t асп. (°C)").apply {
                 value = savedResult?.tasp?.toString() ?: ""
             },
-            InputFieldState("Введите P ср. (мм вод. ст.)").apply {
+            InputFieldState("Введите P ср. (Па)").apply {
                 value = savedResult?.plsr?.toString() ?: ""
             },
-            InputFieldState("Введите P реом. (мм рт. ст.)").apply {
+            InputFieldState("Введите P реом. (Па)").apply {
                 value = savedResult?.preom?.toString() ?: ""
             }
         )
     }
-
 
     val speedValues = remember(speedCount) {
         val savedSpeeds = savedResult?.speeds?.map { it.toString() }

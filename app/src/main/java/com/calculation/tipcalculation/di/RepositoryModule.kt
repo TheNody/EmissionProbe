@@ -1,9 +1,15 @@
 package com.calculation.tipcalculation.di
 
+import com.calculation.tipcalculation.data.repository.CalculatorRepositoryImpl
 import com.calculation.tipcalculation.data.repository.ExternalResultRepositoryImpl
 import com.calculation.tipcalculation.data.repository.InternalResultRepositoryImpl
+import com.calculation.tipcalculation.data.repository.RectangularInputRepositoryImpl
+import com.calculation.tipcalculation.data.repository.RoundInputRepositoryImpl
+import com.calculation.tipcalculation.domain.repository.CalculatorRepository
 import com.calculation.tipcalculation.domain.repository.ExternalResultRepository
 import com.calculation.tipcalculation.domain.repository.InternalResultRepository
+import com.calculation.tipcalculation.domain.repository.RectangularInputRepository
+import com.calculation.tipcalculation.domain.repository.RoundInputRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,4 +31,22 @@ abstract class RepositoryModule {
     abstract fun bindExternalResultRepository(
         impl: ExternalResultRepositoryImpl
     ): ExternalResultRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindRoundInputRepository(
+        impl: RoundInputRepositoryImpl
+    ): RoundInputRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindRectangularInputRepository(
+        impl: RectangularInputRepositoryImpl
+    ): RectangularInputRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCalculatorRepository(
+        impl: CalculatorRepositoryImpl
+    ): CalculatorRepository
 }

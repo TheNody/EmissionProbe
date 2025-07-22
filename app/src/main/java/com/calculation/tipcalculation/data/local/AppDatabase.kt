@@ -11,9 +11,11 @@ import com.calculation.tipcalculation.data.local.entity.*
         ExternalFilterTipEntity::class,
         SpeedCountEntity::class,
         InternalResultEntity::class,
-        ExternalResultEntity::class
+        ExternalResultEntity::class,
+        RoundResultEntity::class,
+        RectangularResultEntity::class
     ],
-    version = 4,
+    version = 6,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -23,4 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun speedDao(): SpeedDao
     abstract fun internalResultDao(): InternalResultDao
     abstract fun externalResultDao(): ExternalResultDao
+    abstract fun roundResultDao(): RoundResultDao
+    abstract fun rectangularResultDao(): RectangularResultDao
+
 }

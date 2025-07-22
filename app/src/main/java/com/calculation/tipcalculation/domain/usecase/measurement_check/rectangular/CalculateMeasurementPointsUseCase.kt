@@ -9,8 +9,11 @@ import com.calculation.tipcalculation.utils.RectangularMeasurementRules
 class CalculateMeasurementPointsUseCase {
     operator fun invoke(input: MeasurementInput): MeasurementResult {
         val (a, b, l) = input
+
         val de = 2 * a * b / (a + b)
-        val lOverDe = l / de
+
+        val rawLOverDe = l / de
+        val adjustedLOverDe = if (rawLOverDe < 8.0) 4.0 else rawLOverDe
 
         val aspectRatio = maxOf(a, b) / minOf(a, b)
         val aspectCategory = when {
@@ -21,17 +24,24 @@ class CalculateMeasurementPointsUseCase {
 
         val rule = RectangularMeasurementRules.rules.firstOrNull {
             de in it.dMin..it.dMax &&
-                    lOverDe in it.lOverDMin..it.lOverDMax &&
+                    adjustedLOverDe in it.lOverDMin..it.lOverDMax &&
                     it.aspectCategory == aspectCategory
         }
 
         val ki = rule?.let { GostKiTable.getByTotalPoints(it.totalPoints) }
 
+        val lz = if (rawLOverDe < 8.0) {
+            0.35 * l - 0.4
+        } else {
+            3.0 * de
+        }
+
         return MeasurementResult(
             de = de,
-            lOverDe = lOverDe,
+            lOverDe = rawLOverDe,
             rule = rule,
-            ki = ki
+            ki = ki,
+            lz = lz
         )
     }
 }

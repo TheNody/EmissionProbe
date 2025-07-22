@@ -67,11 +67,11 @@ fun InternalResultScreen(
                             )
 
                             Spacer(modifier = Modifier.height(16.dp))
-                            ResultText("P атм", "${it.patm} мм рт. ст.")
+                            ResultText("P атм", "${"%.2f".format(it.patm)} Па")
                             ResultText("t среды", "${it.tsr} °C")
                             ResultText("t асп.", "${it.tasp} °C")
-                            ResultText("P ср.", "${it.plsr} мм вод. ст.")
-                            ResultText("P реом.", "${it.preom} мм рт. ст.")
+                            ResultText("P ср.", "${"%.2f".format(it.plsr)} Па")
+                            ResultText("P реом.", "${"%.2f".format(it.preom)} Па")
                             ResultText("Скорости", it.speeds.joinToString("; ") { v -> "%.2f".format(v) })
                             ResultText("Выбранный диаметр", "%.4f".format(it.selectedTip))
 

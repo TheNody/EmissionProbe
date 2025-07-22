@@ -8,5 +8,6 @@ data class RoundSectionResult(
     val de: Double,
     val lOverDe: Double,
     val rule: MeasurementRule,
-    val ki: KiCoefficients?
+    val ki: KiCoefficients?,
+    val lz: Double
 )

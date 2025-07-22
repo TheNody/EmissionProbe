@@ -7,6 +7,10 @@ import com.calculation.tipcalculation.domain.repository.ExternalResultRepository
 import com.calculation.tipcalculation.domain.repository.FilterTipRepository
 import com.calculation.tipcalculation.domain.repository.InternalResultHistoryRepository
 import com.calculation.tipcalculation.domain.repository.InternalResultRepository
+import com.calculation.tipcalculation.domain.repository.RectangularInputRepository
+import com.calculation.tipcalculation.domain.repository.RectangularResultHistoryRepository
+import com.calculation.tipcalculation.domain.repository.RoundInputRepository
+import com.calculation.tipcalculation.domain.repository.RoundResultHistoryRepository
 import com.calculation.tipcalculation.domain.repository.SpeedCountRepository
 import com.calculation.tipcalculation.domain.usecase.external.export_excel.AddExportedReportUseCase
 import com.calculation.tipcalculation.domain.usecase.external.export_excel.ExportExternalResultToExcelUseCase
@@ -39,7 +43,21 @@ import com.calculation.tipcalculation.domain.usecase.internal.internal_result.in
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.GetInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.internal.internal_result.internal_result_history.InsertInternalResultHistoryUseCase
 import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.CalculateMeasurementPointsUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.history.ClearRectangularHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.history.DeleteRectangularResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.history.GetRectangularHistoryFlowUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.history.InsertRectangularResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.result.ClearRectangularInputUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.result.GetRectangularInputUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.rectangular.result.SetRectangularInputUseCase
 import com.calculation.tipcalculation.domain.usecase.measurement_check.round.CalculateRoundSectionUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.round.history.DeleteAllRoundResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.round.history.DeleteRoundResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.round.history.GetRoundResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.round.history.InsertRoundResultHistoryUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.round.result.ClearRoundInputUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.round.result.GetRoundInputUseCase
+import com.calculation.tipcalculation.domain.usecase.measurement_check.round.result.SetRoundInputUseCase
 import com.calculation.tipcalculation.domain.usecase.speed_count.DeleteSpeedUseCase
 import com.calculation.tipcalculation.domain.usecase.speed_count.GetSpeedUseCase
 import com.calculation.tipcalculation.domain.usecase.speed_count.InsertSpeedUseCase
@@ -289,4 +307,92 @@ object UseCaseModule {
     fun provideCalculateRoundSectionUseCase(): CalculateRoundSectionUseCase {
         return CalculateRoundSectionUseCase()
     }
+
+    // Round Input UseCases
+    @Provides
+    @Singleton
+    fun provideSetRoundInputUseCase(
+        repository: RoundInputRepository
+    ): SetRoundInputUseCase = SetRoundInputUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetRoundInputUseCase(
+        repository: RoundInputRepository
+    ): GetRoundInputUseCase = GetRoundInputUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideClearRoundInputUseCase(
+        repository: RoundInputRepository
+    ): ClearRoundInputUseCase = ClearRoundInputUseCase(repository)
+
+    // Round Result History UseCases
+    @Provides
+    @Singleton
+    fun provideInsertRoundResultHistoryUseCase(
+        repository: RoundResultHistoryRepository
+    ): InsertRoundResultHistoryUseCase = InsertRoundResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetRoundResultHistoryUseCase(
+        repository: RoundResultHistoryRepository
+    ): GetRoundResultHistoryUseCase = GetRoundResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteRoundResultHistoryUseCase(
+        repository: RoundResultHistoryRepository
+    ): DeleteRoundResultHistoryUseCase = DeleteRoundResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteAllRoundResultHistoryUseCase(
+        repository: RoundResultHistoryRepository
+    ): DeleteAllRoundResultHistoryUseCase = DeleteAllRoundResultHistoryUseCase(repository)
+
+    //Rectangular Input Use Cases
+    @Provides
+    @Singleton
+    fun provideSetRectangularInputUseCase(
+        repository: RectangularInputRepository
+    ): SetRectangularInputUseCase = SetRectangularInputUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetRectangularInputUseCase(
+        repository: RectangularInputRepository
+    ): GetRectangularInputUseCase = GetRectangularInputUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideClearRectangularInputUseCase(
+        repository: RectangularInputRepository
+    ): ClearRectangularInputUseCase = ClearRectangularInputUseCase(repository)
+
+    // Rectangular Result History UseCases
+    @Provides
+    @Singleton
+    fun provideInsertRectangularResultHistoryUseCase(
+        repository: RectangularResultHistoryRepository
+    ): InsertRectangularResultHistoryUseCase = InsertRectangularResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteRectangularResultHistoryUseCase(
+        repository: RectangularResultHistoryRepository
+    ): DeleteRectangularResultHistoryUseCase = DeleteRectangularResultHistoryUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetRectangularHistoryFlowUseCase(
+        repository: RectangularResultHistoryRepository
+    ): GetRectangularHistoryFlowUseCase = GetRectangularHistoryFlowUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideClearRectangularHistoryUseCase(
+        repository: RectangularResultHistoryRepository
+    ): ClearRectangularHistoryUseCase = ClearRectangularHistoryUseCase(repository)
 }

@@ -17,4 +17,6 @@ sealed class Screen(val route: String) {
     object SectionTypeSelection : Screen("section_type_selection")
     object RectangularSection : Screen("rectangular_section")
     object RoundSection : Screen("round_section")
+    object RoundResult : Screen("round_result")
+    object RectangularResult : Screen("rectangular_result")
 }

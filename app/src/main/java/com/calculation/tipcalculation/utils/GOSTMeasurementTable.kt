@@ -10,7 +10,7 @@ data class MeasurementRule(
 )
 
 object GOSTMeasurementTable {
-    private val rules = listOf(
+    val rules = listOf(
 
         // До 200 мм
         MeasurementRule(dMin = 0.0, dMax = 200.0, lOverDeMin = 5.5, lOverDeMax = Double.MAX_VALUE, totalPoints = 1, diameterPoints = 1),

@@ -7,5 +7,6 @@ data class MeasurementResult(
     val de: Double,
     val lOverDe: Double,
     val rule: MeasurementPointRule?,
-    val ki: KiCoefficients?
+    val ki: KiCoefficients?,
+    val lz: Double
 )

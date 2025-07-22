@@ -24,8 +24,10 @@ import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_c
 import com.calculation.tipcalculation.presentation.ui.internal_screen.internal_result.InternalResultScreen
 import com.calculation.tipcalculation.presentation.ui.main_screen.MainScreen
 import com.calculation.tipcalculation.presentation.ui.measurement_check.SectionTypeSelectionScreen
-import com.calculation.tipcalculation.presentation.ui.measurement_check.rectangular.MeasurementScreen
+import com.calculation.tipcalculation.presentation.ui.measurement_check.rectangular.MeasurementRectangularScreen
+import com.calculation.tipcalculation.presentation.ui.measurement_check.rectangular.result.RectangularResultScreen
 import com.calculation.tipcalculation.presentation.ui.measurement_check.round.MeasurementRoundScreen
+import com.calculation.tipcalculation.presentation.ui.measurement_check.round.result.RoundResultScreen
 import com.calculation.tipcalculation.presentation.ui.settings_screen.SettingsScreen
 import com.calculation.tipcalculation.presentation.ui.speed_screen.SpeedCountScreen
 import com.calculation.tipcalculation.presentation.ui.used_documents.UsedDocumentsScreen
@@ -131,11 +133,17 @@ fun AppNavigation(
         composable(Screen.SectionTypeSelection.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             SectionTypeSelectionScreen(navController = navController)
         }
+        composable(Screen.RectangularResult.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            RectangularResultScreen(navController = navController)
+        }
         composable(Screen.RectangularSection.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
-            MeasurementScreen(navController = navController)
+            MeasurementRectangularScreen(navController = navController)
         }
         composable(Screen.RoundSection.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             MeasurementRoundScreen(navController = navController)
+        }
+        composable(Screen.RoundResult.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
+            RoundResultScreen(navController = navController)
         }
         composable(Screen.UsedDocuments.route, enterTransition = { defaultEnter() }, exitTransition = { defaultExit() }) {
             UsedDocumentsScreen(

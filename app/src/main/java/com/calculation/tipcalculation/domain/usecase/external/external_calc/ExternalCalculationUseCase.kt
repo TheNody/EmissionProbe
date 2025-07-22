@@ -1,6 +1,5 @@
 package com.calculation.tipcalculation.domain.usecase.external.external_calc
 
-import android.util.Log
 import com.calculation.tipcalculation.domain.model.DiameterAnalysisResult
 import com.calculation.tipcalculation.domain.model.ExternalResultData
 import com.calculation.tipcalculation.domain.model.OtherResult
@@ -27,56 +26,42 @@ class ExternalCalculationUseCase @Inject constructor(
         val filterTips = filterRepository.getAllSync()
         val diameters = filterTips.map { it.value }
 
-        Log.d("ExternalCalculationUseCase", "Полученные наконечники из репозитория: $diameters")
-
-        val patmPa = CalculationCommon.convertPatmToPa(patm)
         val srznach = CalculationCommon.calculateAverage(speeds)
         val sigma = CalculationCommon.calculateSigma(speeds, srznach)
         val sko = CalculationCommon.calculateSKO(speeds)
         val averageValue = CalculationCommon.calculateIdealTip(srznach)
 
         val (closestDiameter, firstSuitableDiameter, suitableList, unsuitableList, checkedVpList) =
-            calculateDiametersStuff(
-                diameters, patmPa, plsr, tsr, tasp, preom, srznach, averageValue
-            )
+            calculateDiametersStuff(diameters, patm, plsr, tsr, tasp, preom, srznach, averageValue)
 
-        val other = calculateOtherValues(
-            patmPa, plsr, tsr, tasp, srznach, averageValue
-        )
-
-        Log.d("ExternalCalculationUseCase", "P атм в Па: $patmPa")
-        Log.d("ExternalCalculationUseCase", "Идеальный наконечник: $averageValue")
-        Log.d("ExternalCalculationUseCase", "Ближайший наконечник: $closestDiameter")
-        Log.d("ExternalCalculationUseCase", "Первый подходящий наконечник: $firstSuitableDiameter")
-        Log.d("ExternalCalculationUseCase", "Подходящие: $suitableList")
-        Log.d("ExternalCalculationUseCase", "Неподходящие: $unsuitableList")
+        val other = calculateOtherValues(patm, plsr, tsr, tasp, srznach, averageValue)
 
         return ExternalResultData(
-            patm = patm,
-            tsr = tsr,
-            tasp = tasp,
-            plsr = plsr,
-            preom = preom,
-            speeds = speeds,
-            srznach = srznach,
-            sigma = sigma,
-            sko = sko,
-            average = averageValue,
-            calculatedTip = other.calculatedTip,
-            tipSize = other.tipSize,
-            aspUsl = other.aspUsl,
-            result = other.resultValue,
-            aspUsl1 = other.aspUsl1,
-            duslov1 = other.duslov1,
-            vibrNak = other.vibrNak,
-            dreal = other.dreal,
-            vsp2 = other.vsp2,
-            closestDiameter = closestDiameter,
-            firstSuitableDiameter = firstSuitableDiameter,
-            suitableDiameters = suitableList,
-            unsuitableDiameters = unsuitableList,
-            checkedDiametersList = checkedVpList,
-            selectedVp = checkedVpList.firstOrNull { it.first == firstSuitableDiameter }?.second ?: 0.0
+            patm,
+            tsr,
+            tasp,
+            plsr,
+            preom,
+            speeds,
+            srznach,
+            sigma,
+            sko,
+            averageValue,
+            other.calculatedTip,
+            other.tipSize,
+            other.aspUsl,
+            other.resultValue,
+            other.aspUsl1,
+            other.duslov1,
+            other.vibrNak,
+            other.dreal,
+            other.vsp2,
+            closestDiameter,
+            firstSuitableDiameter,
+            suitableList,
+            unsuitableList,
+            checkedVpList,
+            checkedVpList.firstOrNull { it.first == firstSuitableDiameter }?.second ?: 0.0
         )
     }
 
@@ -148,8 +133,8 @@ class ExternalCalculationUseCase @Inject constructor(
 
         val aspUsl = if (srznach > 0) {
             val tmp = 0.00245 * tipSize.pow(2) * srznach *
-                    (patm * 133.3 + plsr * 9.807) / (273 + tsr) *
-                    sqrt((273 + tasp) / (patm * 133.3 + plsr * 9.807))
+                    (patm + plsr) / (273 + tsr) *
+                    sqrt((273 + tasp) / (patm + plsr))
             formatAsp(tmp)
         } else 0.0
 
@@ -163,16 +148,16 @@ class ExternalCalculationUseCase @Inject constructor(
 
         val aspUsl1 = if (srznach > 0) {
             val tmp = 0.00245 * tipSize.pow(2) * srznach *
-                    (patm * 133.3 + plsr * 9.807) / (273 + tsr) *
-                    sqrt((273 + tasp) / (patm * 133.3 + resultValue * 9.807))
+                    (patm + plsr) / (273 + tsr) *
+                    sqrt((273 + tasp) / (patm + resultValue))
             formatAsp(tmp)
         } else 0.0
 
         val duslov1 = if (srznach > 0) {
             sqrt(
-                aspUsl1 / 0.00245 / srznach / (patm * 133.3 + plsr * 9.807) *
+                aspUsl1 / 0.00245 / srznach / (patm + plsr) *
                         (273 + tsr) /
-                        sqrt((273 + tasp) / (patm * 133.3 + resultValue * 9.807))
+                        sqrt((273 + tasp) / (patm + resultValue))
             )
         } else 0.0
 
@@ -198,8 +183,8 @@ class ExternalCalculationUseCase @Inject constructor(
 
         val vsp2 = if (srznach > 0) {
             val tmp = 0.00245 * dreal.pow(2) * srznach *
-                    (patm * 133.3 + plsr * 9.807) / (273.2 + tsr) *
-                    sqrt((273.2 + tasp) / (patm * 133.3 + resultValue * 9.807))
+                    (patm + plsr) / (273.2 + tsr) *
+                    sqrt((273.2 + tasp) / (patm + resultValue))
             formatAsp(tmp)
         } else 0.0
 

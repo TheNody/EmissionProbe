@@ -33,21 +33,16 @@ fun ExternalFilterCalcScreen(
 
     val fields = remember {
         listOf(
-            InputFieldState("Введите P атм. (мм. рт. ст.)").apply {
-                value = savedResult?.patm?.toString() ?: ""
-            },
-            InputFieldState("Введите Р среды (мм.вод.ст.)").apply {
-                value = savedResult?.plsr?.toString() ?: ""
-            },
-            InputFieldState("Введите t среды (°C)").apply {
-                value = savedResult?.tsr?.toString() ?: ""
-            },
-            InputFieldState("Введите t асп. (°C)").apply {
-                value = savedResult?.tasp?.toString() ?: ""
-            },
-            InputFieldState("Введите P реом. (мм. рт. ст.)").apply {
-                value = savedResult?.preom?.toString() ?: ""
-            }
+            InputFieldState("Введите P атм. (Па)").apply
+            { value = savedResult?.patm?.toString() ?: "" },
+            InputFieldState("Введите Р среды (Па)").apply
+            { value = savedResult?.plsr?.toString() ?: "" },
+            InputFieldState("Введите t среды (°C)").apply
+            { value = savedResult?.tsr?.toString() ?: "" },
+            InputFieldState("Введите t асп. (°C)").apply
+            { value = savedResult?.tasp?.toString() ?: "" },
+            InputFieldState("Введите P реом. (Па)").apply
+            { value = savedResult?.preom?.toString() ?: "" }
         )
     }
 

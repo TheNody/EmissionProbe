@@ -14,11 +14,10 @@ class InternalCalculationUseCase @Inject constructor() {
         preom: Double
     ): Double {
         val srznach = CalculationCommon.calculateAverage(speeds)
-        val patmPa = CalculationCommon.convertPatmToPa(patm)
 
         return CalculationCommon.calculateVp(
             diameter = selectedDiameter,
-            patmValue = patmPa,
+            patmValue = patm,
             plsrValue = plsr,
             tsrValue = tsr,
             taspValue = tasp,

@@ -1,30 +1,19 @@
 package com.calculation.tipcalculation.presentation.ui.measurement_check.round
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Button
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.calculation.tipcalculation.R
-import com.calculation.tipcalculation.presentation.components.CustomBackground
-import com.calculation.tipcalculation.presentation.components.InputFieldWithSpacer
-import com.calculation.tipcalculation.presentation.components.MainTopBarWithBackArrowAndCustomIcon
+import com.calculation.tipcalculation.presentation.components.*
+import com.calculation.tipcalculation.presentation.navigation.Screen
 import com.calculation.tipcalculation.presentation.view_model.measurement_check.round.RoundSectionViewModel
 
 @Composable
@@ -32,79 +21,86 @@ fun MeasurementRoundScreen(
     navController: NavController,
     viewModel: RoundSectionViewModel = hiltViewModel()
 ) {
-    val result by viewModel.state.collectAsState()
+    val input by viewModel.input.collectAsState()
+    val focusManager = LocalFocusManager.current
+    val showExitDialog = remember { mutableStateOf(false) }
 
-    var d by remember { mutableStateOf("") }
-    var l by remember { mutableStateOf("") }
+    val focusRequesters = remember { List(2) { FocusRequester() } }
 
-    val dFocus = remember { FocusRequester() }
-    val lFocus = remember { FocusRequester() }
+    var d by remember { mutableStateOf(input?.d ?: "") }
+    var l by remember { mutableStateOf(input?.l ?: "") }
+
+    BackHandler {
+        showExitDialog.value = true
+    }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier.fillMaxSize()) {
-            CustomBackground()
+            CustomBackground2()
 
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
                     .statusBarsPadding()
+                    .padding(horizontal = 24.dp)
             ) {
-                Spacer(modifier = Modifier.height(10.dp))
+                item {
+                    MainTopBarWithBackArrowAndCustomIcon(
+                        title = "Круглое сечение",
+                        iconResId = R.drawable.ic_measurement,
+                        onBackClick = { showExitDialog.value = true },
+                        onCustomIconClick = {}
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
 
-                MainTopBarWithBackArrowAndCustomIcon(
-                    title = "Круглое сечение",
-                    iconResId = R.drawable.ic_measurement,
-                    onBackClick = { navController.popBackStack() },
-                    onCustomIconClick = { /* можно открыть справку */ }
-                )
+                item {
+                    InputFieldWithSpacer(
+                        value = d,
+                        onValueChange = { d = it },
+                        placeholder = "Диаметр D (мм)",
+                        focusRequester = focusRequesters[0],
+                        onDone = { focusRequesters[1].requestFocus() }
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                item {
+                    InputFieldWithSpacer(
+                        value = l,
+                        onValueChange = { l = it },
+                        placeholder = "Длина L (мм)",
+                        focusRequester = focusRequesters[1],
+                        onDone = { focusManager.clearFocus() }
+                    )
+                }
 
-                InputFieldWithSpacer(
-                    value = d,
-                    onValueChange = { d = it },
-                    placeholder = "Диаметр D (мм)",
-                    focusRequester = dFocus,
-                    onDone = { lFocus.requestFocus() }
-                )
-
-                InputFieldWithSpacer(
-                    value = l,
-                    onValueChange = { l = it },
-                    placeholder = "Длина L (мм)",
-                    focusRequester = lFocus,
-                    onDone = {
-                        val dVal = d.toDoubleOrNull()
-                        val lVal = l.toDoubleOrNull()
-                        if (dVal != null && lVal != null) {
-                            viewModel.calculate(dVal, lVal)
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    GradientConfirmButton2(
+                        modifier = Modifier.navigationBarsPadding(),
+                        onClick = {
+                            viewModel.calculate(d, l)
+                            focusManager.clearFocus()
+                            navController.navigate(Screen.RoundResult.route)
                         }
-                    }
+                    )
+                }
+            }
+
+            if (showExitDialog.value) {
+                CustomAlertDialog(
+                    titleText = "Выйти без расчёта?",
+                    bodyText = "Если вы покинете экран, введённые данные будут утеряны.",
+                    confirmButtonText = "Выйти",
+                    cancelButtonText = "Остаться",
+                    onDismissRequest = { showExitDialog.value = false },
+                    onConfirm = {
+                        showExitDialog.value = false
+                        viewModel.clear()
+                        navController.popBackStack()
+                    },
+                    onCancel = { showExitDialog.value = false }
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(onClick = {
-                    val dVal = d.toDoubleOrNull()
-                    val lVal = l.toDoubleOrNull()
-                    if (dVal != null && lVal != null) {
-                        viewModel.calculate(dVal, lVal)
-                    }
-                }) {
-                    Text("Рассчитать")
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                result?.let {
-                    Text("De: %.2f мм".format(it.de))
-                    Text("L/De: %.2f".format(it.lOverDe))
-                    Text("Количество точек: ${it.rule.totalPoints} (по диаметру: ${it.rule.diameterPoints})")
-                    it.ki?.let { ki ->
-                        Text("Коэффициенты Ki: ${ki.kValues.joinToString(", ")}")
-                    }
-                }
             }
         }
     }

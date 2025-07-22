@@ -177,9 +177,9 @@ fun ExternalCalcScreen(
 
                                     Spacer(modifier = Modifier.height(16.dp))
 
-                                    ResultText("P атм", "%.2f мм рт. ст.".format(item.patm))
-                                    ResultText("P ср.", "%.2f мм вод. ст.".format(item.plsr))
-                                    ResultText("P реом.", "%.2f мм рт. ст.".format(item.preom))
+                                    ResultText("P атм", "%.2f Па".format(item.patm))
+                                    ResultText("P ср.", "%.2f Па".format(item.plsr))
+                                    ResultText("P реом.", "%.2f Па".format(item.preom))
                                     ResultText("t среды", "%.2f °C".format(item.tsr))
                                     ResultText("t асп.", "%.2f °C".format(item.tasp))
                                     ResultText("Скорости", item.speeds.joinToString("; ") { "%.2f".format(it) })
@@ -235,7 +235,6 @@ fun ExternalCalcScreen(
                 }
             }
 
-            // Валидация
             if (validationResult != null) {
                 when (validationResult) {
                     is ValidationResult.MissingSpeeds -> {

@@ -325,6 +325,7 @@ fun BoxCard(
 fun ExpandableBoxCard(
     dateText: String,
     modifier: Modifier = Modifier,
+    sectionTypeText: String? = null,
     expandedContent: @Composable ColumnScope.() -> Unit,
     onDeleteClick: () -> Unit
 ) {
@@ -367,12 +368,22 @@ fun ExpandableBoxCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "Дата расчёта: $dateText",
-                    style = Typography.titleMedium,
-                    color = Color.White,
-                    modifier = Modifier.weight(1f)
-                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Дата расчёта: $dateText",
+                        style = Typography.titleMedium,
+                        color = Color.White
+                    )
+
+                    if (!expanded && !sectionTypeText.isNullOrBlank()) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = sectionTypeText,
+                            style = Typography.bodySmall,
+                            color = Color.White.copy(alpha = 0.8f)
+                        )
+                    }
+                }
 
                 if (!expanded) {
                     Row {
